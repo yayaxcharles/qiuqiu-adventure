@@ -165,7 +165,7 @@ export const CLIMB_SEAM = 90;
  * 往上捲的背景：中景（climbUp[bg]）一塊一塊往上接在長卷頂上；最遠景（climbUp[<關>_far]）接在最遠景長卷頂上。
  * midY／farY＝長卷頂在畫面上的 y（往上捲時會往下移）；midOff／farOff＝長卷這一層的水平捲動量
  */
-export function drawClimbBg(ctx: CanvasRenderingContext2D, bg: string, layer: 'far' | 'mid', off: number, topY: number, viewW: number): void {
+export function drawClimbBg(ctx: CanvasRenderingContext2D, bg: string, layer: 'far' | 'mid', off: number, topY: number, viewW: number, free = false): void {
   ask();
   const C = v2J?.climbUp?.[bg];
   if (!C || topY <= 0) return;
@@ -177,8 +177,9 @@ export function drawClimbBg(ctx: CanvasRenderingContext2D, bg: string, layer: 'f
     for (let xx = x; xx < viewW; xx += C.w) ctx.drawImage(im, xx, topY - C.height, C.w, C.height);
     void k;
   } else {
-    // 中景那一欄 1536 寬：畫在長卷上對應的位置；練習場這種長卷對不上的地方，夾在畫面裡（整片蓋住畫面寬）
-    const x = Math.min(0, Math.max(viewW - C.w, C.x - off));
+    // 中景那一欄 1536 寬：畫在長卷上對應的位置；練習場這種長卷對不上的地方，夾在畫面裡（整片蓋住畫面寬）。
+    // free＝關卡的攀爬段剛好停在這一欄底下（climbAligned）：照長卷一起捲，爬完往右走時這一欄跟著長卷往左移出去（旁邊露出最遠景的夜空）
+    const x = free ? C.x - off : Math.min(0, Math.max(viewW - C.w, C.x - off));
     for (const p of C.pieces as { path: string; y: number; h: number }[]) {
       const im = img(p.path);
       if (im) ctx.drawImage(im, x, topY + p.y, C.w, p.h);
@@ -187,7 +188,9 @@ export function drawClimbBg(ctx: CanvasRenderingContext2D, bg: string, layer: 'f
   // 接縫：長卷頂上下蓋一條漸層霧
   const g = ctx.createLinearGradient(0, topY - CLIMB_SEAM, 0, topY + CLIMB_SEAM * 0.6);
   const tint = layer === 'far' ? '210,190,220' : '200,205,225';
-  g.addColorStop(0, `rgba(${tint},0)`); g.addColorStop(0.55, `rgba(${tint},${layer === 'far' ? 0.5 : 0.42})`); g.addColorStop(1, `rgba(${tint},0)`);
+  // 對齊的（free）那一欄本來就是照長卷頂往上畫的，接縫幾乎看不出來：霧只留一點點，不然霧本身變成一條白帶（09-29 截圖）
+  const fog = (layer === 'far' ? 0.5 : 0.42) * (free ? 0.3 : 1);
+  g.addColorStop(0, `rgba(${tint},0)`); g.addColorStop(0.55, `rgba(${tint},${fog})`); g.addColorStop(1, `rgba(${tint},0)`);
   ctx.fillStyle = g; ctx.fillRect(0, topY - CLIMB_SEAM, viewW, CLIMB_SEAM * 1.6);
 }
 
@@ -201,4 +204,81 @@ export function v2Wall(key: string): { top: { img: HTMLImageElement; w: number; 
   const t = img(W?.top?.path), b = img(W?.body?.path);
   if (!W || !t || !b) return null;
   return { top: { img: t, w: W.top.w, h: W.top.h, standY: W.top.standY, footY: W.top.h }, body: { img: b, w: W.body.w, h: W.body.h, standY: 0, footY: W.body.h }, faceX: W.faceX };
+}
+
+/** 關卡的攀爬段鏡頭停住（hold）時，中景往上延伸的那一欄剛好蓋滿畫面嗎（第一關瀑布大攀爬照這個對齊） */
+export function climbAligned(bg: string, holdOff: number, viewW: number): boolean {
+  ask();
+  const C = v2J?.climbUp?.[bg];
+  if (!C) return false;
+  const x = C.x - holdOff;
+  return x <= 1 && x >= viewW - C.w - 1;
+}
+
+/** 先把往上捲背景的圖叫來載（進關就叫，爬到那裡才不會空一下） */
+export function warmClimbBg(keys: string[]): void {
+  ask();
+  if (!v2J) return;
+  for (const k of keys) {
+    const C = v2J.climbUp?.[k];
+    if (!C) continue;
+    if (C.path) img(C.path);
+    for (const p of (C.pieces ?? []) as { path: string }[]) img(p.path);
+  }
+}
+
+/**
+ * 瀑布（v2_terrain.json waterfall）：part＝back 畫水柱（往下捲＝在流）＋白沫＋水口，在地形後面；
+ * front 畫落水水花（4 格循環）＋水霧（左右慢慢飄），在地形（水潭）之後、角色之前。t＝秒
+ */
+export function drawWaterfall(ctx: CanvasRenderingContext2D, key: string, x: number, top: number, bottom: number, t: number, part: 'back' | 'front'): boolean {
+  ask();
+  const W = terrainJ?.waterfall?.[key];
+  if (!W) return false;
+  if (part === 'back') {
+    const col = img(W.column?.path), foam = img(W.foam?.path), lip = img(W.lip?.path);
+    if (!col) return false;
+    const cw = W.column.w as number, ch = W.column.h as number;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(x - cw / 2, top, cw, bottom - top + 20); ctx.clip();
+    const off = (t * 360) % ch;
+    for (let y = top - ch + off; y < bottom + 20; y += ch - 1) ctx.drawImage(col, x - cw / 2, Math.floor(y), cw, ch);
+    if (foam) {
+      const fh = W.foam.h as number, fo = (t * 540) % fh;
+      ctx.globalAlpha = 0.55;
+      for (let y = top - fh + fo; y < bottom + 20; y += fh - 1) ctx.drawImage(foam, x - W.foam.w / 2, Math.floor(y), W.foam.w, fh);
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+    if (lip) ctx.drawImage(lip, x - W.lip.w / 2, top - W.lip.h * 0.45, W.lip.w, W.lip.h);
+    return true;
+  }
+  const fr = (W.splash?.frames ?? []) as { path: string; w: number; h: number }[];
+  const f = fr.length ? fr[Math.floor(t * (W.splash.fps ?? 10)) % fr.length]! : null;
+  const sp = f ? img(f.path) : null;
+  const mist = img(W.mist?.path);
+  if (mist) {
+    // 兩層水霧：一層往左、一層往右，慢慢飄
+    for (const [k, a] of [[1, 0.5], [-1, 0.35]] as const) {
+      const dx = Math.sin(t * 0.35 * k + (k > 0 ? 0 : 2)) * 60;
+      ctx.globalAlpha = a;
+      ctx.drawImage(mist, x - W.mist.w / 2 + dx, bottom - W.mist.h * 0.72 - (k > 0 ? 0 : 30), W.mist.w, W.mist.h);
+    }
+    ctx.globalAlpha = 1;
+  }
+  if (sp && f) {
+    const k = (W.column.w * 1.15) / f.w;
+    ctx.drawImage(sp, x - (W.splash.baseX ?? f.w / 2) * k, bottom - f.h * k * 0.82, f.w * k, f.h * k);
+  }
+  return true;
+}
+
+/** 瀑布底下的水潭（waterfall.<套>.pool）：幾格輪播、左右重複；回傳 null＝沒有這套圖 */
+export function poolArt(key: string): { frames: HTMLImageElement[]; w: number; h: number; surfaceY: number; fps: number; bottomColor: string } | null {
+  ask();
+  const P = terrainJ?.waterfall?.[key]?.pool;
+  if (!P) return null;
+  const frames = (P.frames as { path: string }[]).map((f) => img(f.path));
+  if (frames.some((f) => !f)) return null;
+  return { frames: frames as HTMLImageElement[], w: P.frames[0].w, h: P.frames[0].h, surfaceY: P.surfaceY, fps: P.fps, bottomColor: P.bottomColor };
 }

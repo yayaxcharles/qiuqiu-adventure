@@ -100,12 +100,17 @@ export interface ClimbDef { x: number; top: number; bottom: number; art: string 
  * bg＝往上捲時中景畫哪一套往上延伸的背景（v2.json 的 climbUp，例如 s1_mid）
  */
 export interface VScrollDef { x0: number; x1: number; top: number; hold?: number; release?: number; bg?: string }
+/**
+ * 第二版瀑布（規劃 5.6）：畫在角色後面、水一直往下流；x＝水柱中心、top＝水口（瀑布頂）、bottom＝落水處（水潭水面）。
+ * art＝v2_terrain.json 的 waterfall 套名（s1、s2、s3）。底下的水潭是關卡的坑（掉下去扣血），水不會推人。
+ */
+export interface WaterfallDef { x: number; top: number; bottom: number; art: string }
 /** 給自動玩看的標記：蹬牆夾縫（x0～x1 之間、底在 bottom、要一路蹬到 top 以上） */
 export interface ShaftDef { x0: number; x1: number; top: number; bottom: number }
 
 export interface BreakableDef { x: number; kind: BreakKind; drop?: DropKind }
-/** 被綁的村貓：caged＝關在竹籠裡（先打爛竹籠） */
-export interface CaptiveDef { x: number; art: CaptiveArt; drop: DropKind; caged?: boolean }
+/** 被綁的村貓：caged＝關在竹籠裡（先打爛竹籠）；y＝綁在高處（屋頂、岩頂這種站得上去的面，沒給＝地面） */
+export interface CaptiveDef { x: number; art: CaptiveArt; drop: DropKind; caged?: boolean; y?: number }
 /** 魔王：鏡頭走到 at 就鎖住畫面、魔王出場，打倒才解鎖；final＝打倒就過關 */
 export interface BossDef { at: number; kind: EnemyKind; final?: boolean }
 
@@ -144,6 +149,7 @@ export interface StageDef {
   climbs?: ClimbDef[];
   vscroll?: VScrollDef[];
   shafts?: ShaftDef[];
+  waterfalls?: WaterfallDef[];
   /**
    * 最前景單件（art.json panels 的 fore 第幾張）掠過畫面的位置：世界 x＝這一件正好在畫面中間時球球附近的位置。
    * 前景捲得比地面快（約 1.3 倍），幾秒就過去；避開魔王與鎖畫面的地方，別擋住戰鬥。沒給就不畫前景。

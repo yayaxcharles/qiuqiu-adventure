@@ -62,7 +62,8 @@ describe('出怪表', () => {
     const final = STAGE1.bosses.find((b) => b.final)!;
     expect(final.at + VIEW_W).toBe(STAGE1.length);
     for (const s of STAGE1.spawns) expect(s.at).toBeLessThan(final.at);
-    expect(STAGE1.captives.map((c) => c.drop).sort()).toEqual(['D', 'F', 'H', 'S', 'bomb']);
+    // 第二版加長：原本 5 隻＋梯田屋頂（C）、瀑布頂（R）、原木高台（B）
+    expect(STAGE1.captives.map((c) => c.drop).sort()).toEqual(['B', 'C', 'D', 'F', 'H', 'R', 'S', 'bomb']);
   });
 });
 

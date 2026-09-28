@@ -120,7 +120,8 @@ export function walkOn(e: Enemy, w: World, dx: number): boolean {
     if (Number.isFinite(g0) && Math.abs(g0 - e.plat.y) < 8) { e.plat = null; e.x = nx; e.y = g0; return true; }
     return false;
   }
-  const g = w.groundAt(nx);
+  // 第二版：實心方塊的頂當地面、側面當牆（站在方塊上的走到邊就停，地上的走到方塊前面就停）
+  const g = w.groundFor(nx, e.y);
   if (!Number.isFinite(g) || g > e.y + 70) {
     // 前面是坑：有一樣高的平台（橋、輸送帶）就走上去
     const pl = w.platforms.find((p) => nx >= p.x + 12 && nx <= p.x + p.w - 12 && Math.abs(p.y - e.y) < 8);
@@ -140,7 +141,7 @@ export function fallStep(e: Enemy, w: World, dt: number, g = 2000): boolean {
   e.vy = Math.min(1600, e.vy + g * dt);
   // 空中橫移撞到牆（寨門、崖壁）就停在牆前，不要穿進去
   const nx = e.x + e.vx * dt;
-  if (w.groundAt(nx) < e.y - 36) e.vx = 0; else e.x = nx;
+  if (w.groundFor(nx, e.y) < e.y - 36) e.vx = 0; else e.x = nx;
   e.y += e.vy * dt;
   if (e.vy < 0) return false;
   const f = w.floorBelow(e.x, y0, e.y);
@@ -173,7 +174,7 @@ export function updateEnemy(e: Enemy, w: World, dt: number): void {
   e.harm = null;
   if (!ENEMY_DEFS[e.kind].boss) e.bodyHarm = false;
   // 腳下的地面不見了（寨門打爛、走到坑邊外）：開始往下掉
-  if (e.onGround && !e.plat && !ENEMY_DEFS[e.kind].fly && w.groundAt(e.x) > e.y + 4) { e.onGround = false; e.vy = Math.max(0, e.vy); }
+  if (e.onGround && !e.plat && !ENEMY_DEFS[e.kind].fly && w.groundFor(e.x, e.y) > e.y + 4) { e.onGround = false; e.vy = Math.max(0, e.vy); }
   const tgt = w.target();
   // 同伴發現了，隔一下自己也發現
   if (!e.aware && e.mem.alertIn !== undefined && (e.mem.alertIn -= dt) <= 0) notice(e, w);
@@ -392,12 +393,13 @@ function crow(e: Enemy, w: World, dt: number): void {
     m.holdT = (m.holdT ?? rnd(1.5, 3)) - dt;
     if (m.holdT < -1.2) m.holdT = rnd(1.8, 3.2);   // 停住 1.2 秒（holdT 在 0～−1.2 之間）後再跟
     if (m.holdT > 0 || m.holdX === undefined) m.holdX = (tgt ? tgt.x : w.camX + VIEW_W / 2) + (m.side ?? 1) * (m.off ?? 140);
-    const hx = m.holdX, hy = 290 + Math.sin(e.life * 2 + m.phase!) * 25;
+    // 盤旋高度跟著鏡頭（第二版畫面往上捲的攀爬段；沒往上捲時 camY＝0，跟原本一樣）
+    const hx = m.holdX, hy = w.camY + 290 + Math.sin(e.life * 2 + m.phase!) * 25;
     e.vx += ((hx - e.x) * 2.2 - e.vx) * Math.min(1, dt * 3);
     e.vy += ((hy - e.y) * 2.2 - e.vy) * Math.min(1, dt * 3);
     e.x += e.vx * dt; e.y += e.vy * dt;
     // 飛回盤旋高度時會衝過頭：頭頂不准衝進資訊欄（中 2）
-    if (e.y >= 270) m.low = 1; else if (m.low) { e.y = 270; if (e.vy < 0) e.vy = 0; }   // 從天上飛下來那一趟不管
+    if (e.y >= w.camY + 270) m.low = 1; else if (m.low) { e.y = w.camY + 270; if (e.vy < 0) e.vy = 0; }   // 從天上飛下來那一趟不管
     faceTo(e, tgt ? tgt.x : e.x - 1);
   };
   switch (e.state) {

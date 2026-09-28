@@ -133,6 +133,8 @@ export function createBot(): (g: Game, dt: number) => Frame {
         // 在下面（自己站在屋頂、木架上）：走過去；靠近了就「↓＋跳」跳下平台，空中朝下丟
         move = adx > 60 ? dir : 0;
         if (b.onGround && adx < 220 && p.onPlatform(w)) dropDown = true;
+        // 站在實心方塊頂上（原木高台、大岩塊）：沒辦法「↓＋跳」穿下去，直接走下邊緣
+        if (b.onGround && w.solids.some((q) => Math.abs(q.y - py) < 1 && px + BODY_HW > q.x && px - BODY_HW < q.x + q.w)) move = dir;
         if (!b.onGround && adx < 90) aimDown = true;
       } else {
         // 在高處：靠近到 260 以內，跳起來丟；太近了就退一點
@@ -218,7 +220,12 @@ export function createBot(): (g: Game, dt: number) => Frame {
 
     // 第二版地形（實心方塊、攀爬物、夾縫、往上捲的區段）：沒有要打的東西時照地形決定怎麼走（二段跳、蹬牆、攀爬、踩岩棚往上）
     let v2up = false;
-    if (!boss && (!target || Math.abs(target.x - px) > 700) && !flee && isV2(w)) {
+    // 夾縫裡、或畫面往上捲的區段還沒爬到頂而要打的在搆不到的高度：先爬（不然會在夾縫底下一直跳起來丟打不到的）
+    const inShaft = (w.stage.shafts ?? []).some((z) => px > z.x0 - 4 && px < z.x1 + 4 && py > z.top - 200 && py <= z.bottom + 2);
+    // 要打的隔著一道實心方塊（原木高台、岩壁）：丟過去會撞在方塊上 → 先照地形翻過去
+    const walled = !!target && w.solids.some((q) => q.x < Math.max(px, target.x) && q.x + q.w > Math.min(px, target.x) && q.y < handY && q.y + q.h > handY);
+    const climbFirst = inShaft || walled || (w.vsHolding() && !!target && !reachable(target));
+    if (!boss && (!target || Math.abs(target.x - px) > 700 || climbFirst) && !flee && isV2(w)) {
       const nav = v2Nav(w, s);
       if (nav) {
         move = nav.move; jump = false; riding = false;
@@ -366,6 +373,8 @@ function v2Nav(w: World, s: { kickCd: number; kickDir: number; wantAir: boolean;
   for (const pl of w.platforms) {
     const need = feet - pl.y;
     if (need < 20 || need > TWO || !near(pl.x, pl.x + pl.w)) continue;
+    // 站在岩棚上：隔太遠（跳過去要 240 以上）的先不算，一層一層跳（第一關瀑布前的岩棚）
+    if (Math.max(0, pl.x - sx1, sx0 - (pl.x + pl.w)) > 240) continue;
     const tx = Math.max(pl.x + 40, Math.min(pl.x + pl.w - 40, px));
     steps.push({ y: pl.y, go: () => (b.onGround ? toward(tx, true, need) : nav(Math.abs(px - tx) > 10 ? Math.sign(tx - px) : 0)) });
   }

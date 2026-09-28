@@ -176,7 +176,7 @@ describe('中 4：還沒打爛的門後面出來的敵人，從門前出來、�
     const w = new World(STAGE1, A.sprites.defs, MON);
     w.god = true;
     for (let i = 0; i < 130; i++) w.update(DT, F());
-    w.skipTo(16800 + VIEW_W * 0.42 + 5);
+    w.skipTo(16800 + 20793 + VIEW_W * 0.42 + 5);   // 第二版加長：山賊寨整段往後挪 20,793
     run(w, 3);
     for (const e of w.enemies.filter((x) => x.kind === 'orange_bandit' && x.dying <= 0)) expect(e.y, `山賊 x=${Math.round(e.x)}`).toBeGreaterThan(400);
   });

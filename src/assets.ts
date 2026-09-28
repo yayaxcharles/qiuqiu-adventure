@@ -227,6 +227,30 @@ export function monstersOf(stage: StageDef): string[] {
   return [...new Set([...kinds].map((k) => ENEMY_DEFS[k].img))];
 }
 
+/**
+ * 第二版加長的關卡：背景長卷改用 public/art/v2/v2.json 的 panels（舊圖＋插進去的新段落＋修過接縫的 r 版），
+ * 每層順序照 items、捲動速率照 rateSuggested；最前景（fore）照舊用 art.json。第二、三關加長時把代號加進來。
+ */
+export const V2_PANELS = new Set(['s1']);
+let v2Json: Promise<Record<string, unknown> | null> | null = null;
+function loadV2Json(): Promise<Record<string, unknown> | null> {
+  v2Json ??= fetch(`${base}art/v2/v2.json`).then((r) => (r.ok ? r.json() as Promise<Record<string, unknown>> : null), () => null);
+  return v2Json;
+}
+/** 從 v2.json 的 panels.<關> 取出三層長卷（沒有就 null） */
+export function v2PanelRefs(json: Record<string, unknown> | null, stage: string): { refs: PanelRef[]; rates: Partial<Record<LayerName, number>> } | null {
+  const P = (json?.panels as Record<string, Record<string, { items: { path: string; w: number; h: number }[]; rateSuggested?: number }>> | undefined)?.[stage];
+  if (!P) return null;
+  const refs: PanelRef[] = [], rates: Partial<Record<LayerName, number>> = {};
+  for (const layer of ['far', 'midfar', 'mid'] as const) {
+    const L = P[layer];
+    if (!L) continue;
+    L.items.forEach((it, i) => refs.push({ stage, layer, order: i + 1, path: it.path, w: it.w, h: it.h }));
+    if (typeof L.rateSuggested === 'number') rates[layer] = L.rateSuggested;
+  }
+  return { refs, rates };
+}
+
 type Job = { total: number; done: number; promise: Promise<void> };
 /** 要預熱的圖（剪影這種要現做的，給一個「到時候再做」的函式） */
 type WarmItem = CanvasImageSource | (() => CanvasImageSource);
@@ -320,7 +344,17 @@ export class AssetLoader {
       const a = this.a;
       const q: WarmItem[] = [];
       // 背景長卷
-      const refs = this.panelInfo.refs.filter((r) => r.stage === st.panels);
+      let refs = this.panelInfo.refs.filter((r) => r.stage === st.panels);
+      if (V2_PANELS.has(st.panels)) {
+        const v2 = v2PanelRefs(await loadV2Json(), st.panels);
+        if (v2) {
+          const layers = new Set(v2.refs.map((r) => r.layer));
+          refs = [...refs.filter((r) => !layers.has(r.layer)), ...v2.refs];
+          let sp0 = a.panels.get(st.panels);
+          if (!sp0) { sp0 = { layers: { far: [], midfar: [], mid: [], fore: [] }, rates: {} }; a.panels.set(st.panels, sp0); }
+          Object.assign(sp0.rates, v2.rates);
+        }
+      }
       add(refs.length);
       const panelJobs = refs.map(async (ref) => {
         // 手機：長卷載進來就縮成螢幕看得到的大小（畫的時候照 json 寫的寬高畫，大小不變）

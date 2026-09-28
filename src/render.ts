@@ -8,7 +8,7 @@
  * 地形：地面帶當材質沿著折線鋪，斜坡用錯切（shear）讓材質跟著斜，底下用地面帶最下緣的顏色填到畫面底；坑畫成深淵。
  */
 import { tintOf, type ArtImg, type Assets, type LayerName, type Panel, type TerrainArt, type TImg } from './assets';
-import { drawBlock, drawClimb, drawClimbBg, drawLedge, slopeArt, v2Ground, v2Wall } from './v2art';
+import { climbAligned, drawBlock, drawClimb, drawClimbBg, drawLedge, drawWaterfall, poolArt, slopeArt, v2Ground, v2Wall, warmClimbBg } from './v2art';
 import { Ambience } from './ambience';
 import { ENEMY_DEFS, enemyBox, kingPackBox } from './enemies';
 import { fxDraw, loopFrame, type FxSet } from './fx2';
@@ -134,6 +134,8 @@ export class Renderer {
     const camY = w.camY;
     ctx.save();
     ctx.translate(-cam, -camY);
+    // 瀑布的水柱（第二版）：最後面，地形、岩棚都蓋在它前面
+    for (const f of w.stage.waterfalls ?? []) if (w.onScreen(f.x, 700)) drawWaterfall(ctx, f.art, f.x, f.top, f.bottom, now, 'back');
     // 木柵先畫（最後面），營火、竹叢這些道具畫在木柵前面
     for (const d of w.stage.decks ?? []) if (d.x + d.w > cam - 100 && d.x < cam + VIEW_W + 100) this.drawBackDeck(ctx, w, d);
     this.drawProps(ctx, w, false, cam);
@@ -141,6 +143,7 @@ export class Renderer {
     if (!artHouse) for (const p of w.stage.platforms) if (p.look === 'roof') this.drawHouse(ctx, w, p, now);
     this.drawTerrain(ctx, w, cam);
     this.amb.drawGround(ctx, w, cam);   // 地上的水窪、屋瓦濺水（跟地面一起捲）
+    for (const f of w.stage.waterfalls ?? []) if (w.onScreen(f.x, 700)) drawWaterfall(ctx, f.art, f.x, f.top, f.bottom, now, 'front');
     if (artHouse) for (const p of w.stage.platforms) if (p.look === 'roof') this.drawHouse(ctx, w, p, now);
     for (const p of w.stage.platforms) if (p.look === 'stall' && p.x + p.w > cam - 200 && p.x < cam + VIEW_W + 200) this.drawStallArt(ctx, w, p);
     for (const p of w.stage.platforms) this.drawPlatform(ctx, w, p);
@@ -208,6 +211,7 @@ export class Renderer {
     return Math.min(want, fit);
   }
 
+  private warmedClimb: object | null = null;
   private drawBackdrop(ctx: CanvasRenderingContext2D, w: World, cam: number, now: number): void {
     const zone = w.stage.zones[Math.max(0, w.zone)] ?? w.stage.zones[0]!;
     const sky = ctx.createLinearGradient(0, 0, 0, VIEW_H);
@@ -234,7 +238,9 @@ export class Renderer {
     if (has('midfar')) { ctx.save(); ctx.translate(0, up * V_RATE.midfar); this.drawLayer(ctx, sp!.layers.midfar, cam * rMidfar); ctx.restore(); }
     this.amb.drawMidfar(ctx, w, cam, rMidfar);   // 遠層霧、風箏、飛艇、閃電劈屋脊、百鬼夜行、遠方鐵爪黑影
     if (has('mid')) { ctx.save(); ctx.translate(0, up * V_RATE.mid); this.drawLayer(ctx, sp!.layers.mid, cam * rMid); ctx.restore(); }
-    if (up > 0 && vs?.bg) drawClimbBg(ctx, vs.bg, 'mid', cam * rMid, up * V_RATE.mid, VIEW_W);
+    if (w.stage.vscroll?.length && this.warmedClimb !== w.stage) { this.warmedClimb = w.stage; warmClimbBg([w.stage.panels + '_far', ...w.stage.vscroll.map((v) => v.bg ?? '')]); }
+    // 關卡的攀爬段：鏡頭停住時中景那一欄剛好對上長卷（第一關瀑布）→ 跟著長卷捲；對不上的（練習場）夾在畫面裡
+    if (up > 0 && vs?.bg) drawClimbBg(ctx, vs.bg, 'mid', cam * rMid, up * V_RATE.mid, VIEW_W, vs.hold !== undefined && climbAligned(vs.bg, vs.hold * rMid, VIEW_W));
     this.amb.drawMid(ctx, w, cam, rMid);   // 近層霧、背景小動物、火箭、鍛爐爆炸、碎鐵（都在角色後面、不扣血）
   }
 
@@ -549,6 +555,13 @@ export class Renderer {
     // 坑：深淵；河童川那一段的坑是水（水面、倒影、波紋）
     for (const [p0, p1] of w.terrain.pits) {
       if (p1 < x0 || p0 > x1) continue;
+      // 瀑布底下的坑＝水潭（那一套瀑布自己的水潭圖）
+      const fall = (w.stage.waterfalls ?? []).find((f) => f.x > p0 - 200 && f.x < p1 + 200);
+      const pool = fall ? poolArt(fall.art) : null;
+      if (pool) {
+        this.drawWaterArt(ctx, { frames: pool.frames.map((img) => ({ img, w: pool.w, h: pool.h })) as TerrainArt['water'][string]['frames'], surfaceY: pool.surfaceY, fps: pool.fps, scale: 1, bottomColor: pool.bottomColor }, p0, p1, w.waterSurface((p0 + p1) / 2));
+        continue;
+      }
       if (w.isWaterPit(p0)) { const WA = this.a.terrain?.water.s2_river; if (WA) this.drawWaterArt(ctx, WA, p0, p1, w.waterSurface((p0 + p1) / 2)); else this.drawWater(ctx, p0, p1, w.waterSurface((p0 + p1) / 2)); continue; }
       const top = Math.min(w.terrain.lineAt(p0 - 1), w.terrain.lineAt(p1 + 1)) + 20;
       const g = ctx.createLinearGradient(0, top, 0, VIEW_H);
@@ -780,7 +793,8 @@ export class Renderer {
           ctx.save();
           ctx.globalAlpha *= i < n / 2 ? (i + 1) / (n / 2 + 1) : i < n ? 1 - (i - n / 2) / (n / 2 + 1) : 1;
           ctx.beginPath(); ctx.rect(a0 - 0.5, -3000, a1 - a0 + 1, VIEW_H + 3050); ctx.clip();
-          ctx.fillStyle = S.bottomColor; ctx.fillRect(a0 - 1, S.h - S.standY - 2, a1 - a0 + 2, VIEW_H + 400);
+          // 坡帶比平地帶淺（第一關梯田：坡帶 196、平地帶 271）：坡帶底下讓平地帶的石牆露出來，不要一大片暗色（09-29 截圖）
+          if (S.h - S.standY >= G.h - G.standY) { ctx.fillStyle = S.bottomColor; ctx.fillRect(a0 - 1, S.h - S.standY - 2, a1 - a0 + 2, VIEW_H + 400); }
           for (let u = Math.floor(a0 / S.w) * S.w; u < a1; u += S.w) ctx.drawImage(S.img, u, -S.standY, S.w + 1, S.h);
           ctx.restore();
         }

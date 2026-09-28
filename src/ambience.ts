@@ -41,8 +41,9 @@ const SPOTS: Record<string, { key: string; mx: number; cam: number; y: number; r
   s1: [
     { key: 'rice_cat', mx: 720, cam: 3000, y: 497, range: 230, speed: 26, motion: 'walk' },
     { key: 'cart_cat', mx: 900, cam: 3000, y: 497, range: 230, speed: 22, motion: 'walk' },
-    { key: 'deer', mx: 1065, cam: 11500, y: 548, range: 260, speed: 70, motion: 'hop' },
-    { key: 'torch_bandit', mx: 585, cam: 17000, y: 256, range: 40, speed: 16, motion: 'patrol' },
+    // 第二版第一關加長（09-29）：長卷在竹林前插了 3 張、山賊寨前又插 5 張 → 直接寫中景長卷座標（cam 0）
+    { key: 'deer', mx: 11980, cam: 0, y: 548, range: 260, speed: 70, motion: 'hop' },
+    { key: 'torch_bandit', mx: 22175, cam: 0, y: 256, range: 40, speed: 16, motion: 'patrol' },
   ],
   s2: [
     { key: 'fox', mx: 900, cam: 15800, y: 530, range: 280, speed: 120, motion: 'hop' },
@@ -99,7 +100,7 @@ export class Ambience {
     });
     // 竹林中段毛毛雨：地上一路散幾個水窪（世界座標，平的地方才放）
     this.puddles = [];
-    if (this.st === 's1') for (let x = 11500; x < 15200; x += rnd(380, 720)) this.puddles.push({ x, w: [90, 140, 200][Math.floor(rnd(0, 3))]!, i: Math.floor(rnd(0, 3)) });
+    if (this.st === 's1') for (let x = 20100; x < 23800; x += rnd(380, 720)) this.puddles.push({ x, w: [90, 140, 200][Math.floor(rnd(0, 3))]!, i: Math.floor(rnd(0, 3)) });
   }
 
   /** 這一段各種天氣的目標強度（照畫面中間在世界的位置） */
@@ -107,10 +108,11 @@ export class Ambience {
     const m = w.camX + VIEW_W / 2;
     const bossOn = !!w.boss && !w.boss.dead;
     switch (this.st) {
+      // 第二版第一關（42,000）：山村 0～10,600 → 梯田 → 竹林 19,200～24,770 → 山溪瀑布、山路 → 山賊寨 36,963～
       case 's1': return {
-        sun: ramp(m, -1, 0, 9800, 10800), fluff: ramp(m, -1, 0, 9800, 10800), geese: ramp(m, -1, 0, 10000, 10600),
-        fog: ramp(m, 10300, 11200, 16100, 16900), drizzle: ramp(m, 11300, 12300, 14700, 15500), flyA: ramp(m, 14900, 15600, 16300, 17000),
-        arrows: bossOn ? 0 : ramp(m, 16300, 16800, 19300, 19900), flocks: ramp(m, -1, 0, 10000, 10600) + ramp(m, 16300, 17000) * 0.6,
+        sun: ramp(m, -1, 0, 17800, 18800), fluff: ramp(m, -1, 0, 17800, 18800), geese: ramp(m, -1, 0, 10000, 10600) + ramp(m, 13000, 13600, 16000, 16600),
+        fog: ramp(m, 18900, 19800, 24700, 25500), drizzle: ramp(m, 19900, 20900, 23300, 24100), flyA: ramp(m, 23500, 24200, 36300, 37000),
+        arrows: bossOn ? 0 : ramp(m, 37100, 37600, 40100, 40700), flocks: ramp(m, -1, 0, 10000, 10600) + ramp(m, 37100, 37800) * 0.6,
       };
       case 's2': return {
         petals: ramp(m, -1, 0, 8300, 9300), bats: ramp(m, -1, 0, 15600, 16500),

@@ -163,7 +163,7 @@ export class World {
     this.camX = Math.max(0, stage.start - VIEW_W * 0.3);
     for (const b of stage.breakables) this.addBreakable(b.kind, b.x, b.drop);
     for (const c of stage.captives) {
-      const cap: Captive = { id: this.id(), x: c.x, y: this.groundAt(c.x), art: c.art, drop: c.drop, state: 'tied', t: 0, caged: !!c.caged, vx: 0, vy: 0, onGround: true };
+      const cap: Captive = { id: this.id(), x: c.x, y: c.y ?? this.groundAt(c.x), art: c.art, drop: c.drop, state: 'tied', t: 0, caged: !!c.caged, vx: 0, vy: 0, onGround: true };
       this.captives.push(cap);
       if (c.caged) { const cage = this.addBreakable('cage', c.x); cage.captive = cap; }
     }
@@ -243,6 +243,27 @@ export class World {
   }
 
   breakBox(b: Breakable): Box { return boxAt(b.x, b.y, b.w, b.h); }
+
+  /**
+   * 敵人用的地面（第二版：實心方塊也算）：x 處腳能站的面——地形、腳底以下的方塊頂；
+   * 方塊側面擋在身體高度（頂比腳高）就回傳方塊頂（比腳高一截＝牆，walkOn 就不會走進去）
+   */
+  groundFor(x: number, feet: number): number {
+    let g = this.groundAt(x);
+    for (const s of this.solids) {
+      if (x <= s.x || x >= s.x + s.w) continue;
+      if (s.y >= feet - 2) { if (s.y < g) g = s.y; } else if (s.y + s.h > feet - 150) g = Math.min(g, s.y);
+    }
+    return g;
+  }
+
+  /** x 處落地的實心方塊頂（出怪用：地面被方塊蓋住時站到方塊頂上；懸空的方塊不算，照舊站在底下的地面；沒有＝null） */
+  private solidTop(x: number): number | null {
+    const g = this.groundAt(x);
+    let t: number | null = null;
+    for (const s of this.solids) if (x > s.x && x < s.x + s.w && s.y + s.h >= g - 1 && (t === null || s.y < t)) t = s.y;
+    return t;
+  }
 
   /** 這一點在實心方塊裡面嗎（忍具、子彈撞到方塊就停） */
   inSolid(x: number, y: number): boolean {
@@ -545,16 +566,16 @@ export class World {
         // 還沒打爛的門（寨門、機關城城門）後面或門裡：改從門前出來（09-26 獨立審查 中 4：山賊出生在寨門頂上、浮在半空）
         const gate = this.breakables.find((b) => isGate(b.kind) && !b.broken && x > b.x - b.w / 2 - 40 && b.x > this.camX);
         if (gate) x = gate.x - gate.w / 2 - 60 - k * 30;
-        y = this.groundAt(x);
+        y = this.solidTop(x) ?? this.groundAt(x);
         break;
       }
-      case 'left': x = this.camX - 70 - k * 10; y = this.groundAt(x); break;
+      case 'left': x = this.camX - 70 - k * 10; y = this.solidTop(x) ?? this.groundAt(x); break;
       case 'top': x = this.camX + VIEW_W * rnd(0.5, 0.95); y = this.camY - 90; break;
       case 'hole': x = s.x ?? this.camX + VIEW_W * 0.7; y = this.terrain.groundAt(x) + 20; break;
       case 'water': x = s.x ?? this.camX + VIEW_W * 0.7; y = this.waterSurface(x) + 200; break;
       default: {
         x = (s.x ?? this.camX + VIEW_W + 100) + k * (s.spread ?? 90);
-        y = this.groundAt(x);
+        y = this.solidTop(x) ?? this.groundAt(x);
         if (s.plat) {
           plat = this.platforms.filter((p) => x >= p.x && x <= p.x + p.w).sort((a, b) => a.y - b.y)[0] ?? null;
           if (plat) y = plat.y;
@@ -1298,7 +1319,8 @@ export class World {
     let x = Math.max(this.camX + 120, Math.min(this.camX + VIEW_W - 200, p.body.x));
     if (!Number.isFinite(this.terrain.groundAt(x)) || !this.terrain.walkable(x, 1, 40, 60, 90)) x = Math.max(this.camX + 80, p.safeX);
     const hp = p.hp;
-    p.respawn(x, -80);
+    // 畫面往上捲的時候：從目前畫面的上方掉下來（在攀爬段半路倒下，不用從最底下重爬）
+    p.respawn(x, Math.min(-80, this.camY - 80));
     if (!fullHp) p.hp = Math.max(1, hp);
     this.bullets = this.bullets.filter((b) => Math.abs(b.x - x) > 500);
     this.setState('play');
