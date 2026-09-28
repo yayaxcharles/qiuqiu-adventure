@@ -96,9 +96,8 @@ export const STAGE2: StageDef = {
     { x: 1800, item: 0 }, { x: 5300, item: 5 }, { x: 6600, item: 1 }, { x: 8300, item: 3 },
     { x: 15200, item: 3 }, { x: 18700, item: 4 },
   ],
-  hints: [
-    { at: 8300, text: '河童躲在水裡：冒泡泡的地方牠會冒出來', sub: '在水裡打不到，等牠探出頭' },
-  ],
+  // 第二版（09-28 使用者：不要長篇教學、讓玩家自己發現）：關卡裡不跳教學字幕，按鍵一覽只在標題、暫停畫面
+  hints: [],
   // 打得爛的東西（terrain.json 第二批：燈籠攤、祭典木箱、酒樽堆、石燈籠、賽錢箱、木看板；火藥桶沿用第一關的）
   breakables: [
     { x: 700, kind: 's2_crate', drop: 'onigiri' }, { x: 800, kind: 's2_crate' }, { x: 1200, kind: 's2_sake_stack' },

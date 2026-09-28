@@ -128,7 +128,8 @@ export function walkOn(e: Enemy, w: World, dx: number): boolean {
     return false;
   }
   if (g < e.y - 36) return false;
-  if (nx < w.terrain.startX || nx > w.stage.length) return false;
+  // 只擋「往外走」：出生在關卡盡頭外面的（魔王戰右邊進場的小兵）要走得進來（09-28 自動玩量到山賊卡在 21275 不動）
+  if ((nx < w.terrain.startX && dx < 0) || (nx > w.stage.length && dx > 0)) return false;
   e.x = nx; e.y = g;
   return true;
 }
@@ -753,7 +754,7 @@ function orangeKing(e: Enemy, w: World, dt: number): void {
         e.p2 = true; e.hp = e.maxHp = P2_HP.orange_king ?? e.maxHp; e.invuln = 0.6; e.flash = 0.12;
         w.flashScreen(0.35); w.shakeIt(0.4);
         setState(e, 'roar'); w.say(e, '可惡——！本王生氣了！', 1.6);
-        w.banner('全身是刺！', '爪子打不下去：用丟的（靠近按攻擊也會自動改丟）', 'warn', 2.6);
+        w.banner('全身是刺！', '', 'warn', 2.0);   // 第二版：攻略字幕拿掉（讓玩家自己發現）
         w.event('bossPhase', { kind: e.kind, phase: 2 });
       }
       break;

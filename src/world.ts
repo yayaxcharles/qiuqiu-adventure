@@ -15,7 +15,7 @@ import { popAllClones, popClone } from './enemies2';
 import { arhatBlocks, splitCentipede } from './enemies3';
 import type { Frame } from './input';
 import type { Platform, World as PhysWorld } from './physics';
-import { Player } from './player';
+import { CLAW, HAND, Player } from './player';
 import { Animator, type AnimDefs } from './sprite';
 import type { PlatformDef, SpawnDef, StageDef } from './stages/types';
 import { Terrain } from './terrain';
@@ -31,6 +31,18 @@ export const DOWN_TIME = 2.0;
 export const CLEAR_TIME = 3.6;
 /** 蒸氣噴口：噴幾秒、噴之前冒小煙（預兆）幾秒 */
 export const VENT_ON = 0.9, VENT_WARN = 0.6;
+/** 手裏劍（第二版第 3 節削弱）：飛行速度、飛多久（射程＝兩者相乘） */
+export const SHURIKEN_SPEED = 760, SHURIKEN_LIFE = 1.0;
+/** 揮爪打中小兵：往後推（速度會衰減，實際推約 80 像素）、僵住幾秒 */
+export const CLAW_PUSH_V = 650, CLAW_STUN = 0.25;
+/**
+ * 揮爪傷害：小兵 40（不變）；魔王 25（第二版新加）。揮爪變快變遠之後，自動玩量到魔王戰反而比改前快 30～45%
+ * （爪子 40 一下，比削弱後的手裏劍強太多）；魔王改 25 之後回到規劃要的「魔王戰變長」方向（平衡_v2p1_final.csv）。
+ */
+export const CLAW_DMG = 40, CLAW_DMG_BOSS = 25;
+/** 新動作第一次提示（第二版第 7 節）：這次開網頁每種只出一次；記在程式記憶體裡，不寫本機儲存 */
+const TIPS_SHOWN = new Set<string>();
+export const TIP_TIME = 1.5;
 
 const rnd = (a: number, b: number): number => a + Math.random() * (b - a);
 
@@ -209,7 +221,8 @@ export class World {
 
   /** 前面貼著可以揮爪的東西（敵人、木箱、竹籠） */
   meleeTarget(x: number, y: number, facing: number): boolean {
-    const zone = { x0: Math.min(x + facing * 10, x + facing * 150), x1: Math.max(x + facing * 10, x + facing * 150), y0: y - 170, y1: y };
+    // 觸發揮爪的距離：身體前方 10～190（第二版第 4 節；爪子搆到 210，留 20 讓衝過來的也打得到）
+    const zone = { x0: Math.min(x + facing * 10, x + facing * 190), x1: Math.max(x + facing * 10, x + facing * 190), y0: y - CLAW.height, y1: y };
     // 全身是刺的橘皮大王（第二階段）不算：靠近按攻擊一律改丟忍具，不會自己出爪去撞刺（09-26 獨立審查 高 3）
     for (const e of this.enemies) if (!e.dying && !e.dead && e.state !== 'enter' && e.invuln < 5 && !spiky(e) && overlap(zone, enemyBox(e))) return true;
     for (const b of this.breakables) if (!b.broken && b.kind !== 'tower' && !isGate(b.kind) && overlap(zone, this.breakBox(b))) return true;
@@ -367,6 +380,7 @@ export class World {
 
     this.triggerSpawns(dt);
     this.triggerHints();
+    this.triggerTips(dt);
     this.stepPlatforms(dt);
     const p = this.player;
     const frozen = { ...f, left: false, right: false, up: false, down: false, attackPressed: false, attackHeld: false, subPressed: false, jumpPressed: false, dashPressed: false };
@@ -448,14 +462,34 @@ export class World {
       e.group = 1000 + i; e.facing = -1;
       this.boss = e;
       const d = ENEMY_DEFS[bd.kind];
-      const HINT: Partial<Record<EnemyKind, string>> = {
-        drum_tanuki: '跳過地面震波！鼓棒舉起來就退開', orange_king: '跳起來打背後的魚乾背包！',
-        frog_daimyo: '舌頭伸出來就蹲下！地上紅圈是牠要砸的地方', tanuki_lord: '石像打不動，等牠裂開！',
-        roomba_king: '吸塵的時候往反方向跑！地上紅區是衝撞範圍', iron_claw: '巨爪橫掃要跳！飛彈看地上的紅圈',
-      };
-      this.banner((bd.final ? '魔王 ' : '中魔王 ') + d.name, HINT[bd.kind] ?? '', 'boss', 2.2);
+      // 第二版：不寫攻略字幕（09-28 使用者：讓玩家自己發現），只報名字
+      this.banner((bd.final ? '魔王 ' : '中魔王 ') + d.name, '', 'boss', 2.2);
       this.event('bossEnter', { kind: bd.kind });
     });
+  }
+
+  /** 球球頭上閃的小按鍵提示（最多 6 個字） */
+  tip: { text: string; t: number } | null = null;
+  private triggerTips(dt: number): void {
+    if (this.tip && (this.tip.t += dt) > TIP_TIME) this.tip = null;
+    const p = this.player, b = p.body;
+    if (this.tip || this.state !== 'play' || !p.alive || !b.onGround) return;
+    const show = (key: string, text: string): void => { TIPS_SHOWN.add(key); this.tip = { text, t: 0 }; this.event('tip', { key }); };
+    if (!TIPS_SHOWN.has('roll')) {
+      // 用得到翻滾：衝過來的敵人、低的橫飛苦無朝你來
+      const charge = this.enemies.some((e) => e.dying <= 0 && e.state === 'charge' && (b.x - e.x) * e.facing > 0 && Math.abs(e.x - b.x) < 700);
+      const kunai = this.bullets.some((k) => k.kind === 'kunai' && (b.x - k.x) * k.vx > 0 && Math.abs(k.x - b.x) < 600 && k.y > b.y - 150);
+      if (charge || kunai) { show('roll', 'I 滾'); return; }
+    }
+    if (!TIPS_SHOWN.has('diag')) {
+      const hx = b.x + b.facing * HAND.diag.x, hy = b.y + HAND.diag.y;
+      const t = this.enemies.find((e) => {
+        if (e.dying > 0 || !ENEMY_DEFS[e.kind].fly || (e.x - hx) * b.facing <= 0 || !this.onScreen(e.x, -20)) return false;
+        const bx = enemyBox(e), ddx = Math.abs(e.x - hx), ddy = hy - (bx.y0 + bx.y1) / 2, a = Math.atan2(ddy, ddx) * 180 / Math.PI;
+        return ddy > 0 && a > 25 && a < 65 && Math.hypot(ddx, ddy) < 700;
+      });
+      if (t) show('diag', b.facing > 0 ? '↑＋→ 斜丟' : '↑＋← 斜丟');
+    }
   }
 
   private hintsDone = new Set<number>();
@@ -701,7 +735,8 @@ export class World {
 
   fireWeapon(id: WeaponId, x: number, y: number, aim: Aim, facing: 1 | -1, pvx: number): void {
     const d = WEAPONS[id];
-    const dx = aim === 'up' ? 0 : aim === 'down' ? 0 : facing, dy = aim === 'up' ? -1 : aim === 'down' ? 1 : 0;
+    const dx = aim === 'up' || aim === 'down' ? 0 : aim === 'diag' ? facing * Math.SQRT1_2 : facing;
+    const dy = aim === 'up' ? -1 : aim === 'down' ? 1 : aim === 'diag' ? -Math.SQRT1_2 : 0;
     const carry = aim === 'fwd' || aim === 'low' ? pvx * 0.3 : 0;
     const shot = (kind: ShotKind, speed: number, o: Partial<Shot> = {}): Shot => {
       const s: Shot = {
@@ -712,7 +747,8 @@ export class World {
       return s;
     };
     switch (id) {
-      case 'shuriken': shot('shuriken', 1150, { life: 0.8, r: 22, spin: 26 * facing }); break;
+      // 第二版第 3 節削弱：1150→760、飛 1 秒（射程 760，約畫面六成寬）；同時最多 3 枚在 player.ts
+      case 'shuriken': shot('shuriken', SHURIKEN_SPEED, { life: SHURIKEN_LIFE, r: 22, spin: 26 * facing }); break;
       case 'H': shot('bo', 1450, { life: 0.7, r: 18, y: y + rnd(-7, 7), x: x + rnd(-6, 6) }); break;
       case 'R': shot('fuma', 920, { life: 3.2, r: 56, pierce: true, rehit: 0.22, spin: 16 * facing }); break;
       case 'F': shot('flame', 0, { life: 0.38, r: 44, pierce: true, rehit: 0.08, vx: 0, vy: 0 }); break;
@@ -733,8 +769,10 @@ export class World {
     this.event('fire', { weapon: id, aim });
   }
 
-  throwSub(kind: SubId, x: number, y: number, facing: 1 | -1, pvx: number, up: boolean): void {
-    const b: Bomb = { id: this.id(), kind, x, y, vx: facing * (kind === 'smoke' ? 120 : up ? 220 : 430) + pvx * 0.35, vy: kind === 'smoke' ? -220 : up ? -820 : -560, rot: 0, age: 0 };
+  /** 副武器：朝前（vx 430, vy -560）、↑ 高拋（220, -820）、↑＋方向斜上（330, -760）；煙玉不變 */
+  throwSub(kind: SubId, x: number, y: number, facing: 1 | -1, pvx: number, aim: 'fwd' | 'up' | 'diag'): void {
+    const [vx, vy] = kind === 'smoke' ? [120, -220] : aim === 'up' ? [220, -820] : aim === 'diag' ? [330, -760] : [430, -560];
+    const b: Bomb = { id: this.id(), kind, x, y, vx: facing * vx + pvx * 0.35, vy, rot: 0, age: 0 };
     this.bombs.push(b);
     this.event('sub', { kind });
   }
@@ -846,6 +884,13 @@ export class World {
       const len = s.phase, th = s.kind === 'flame' ? 44 : 22;
       if (len <= 1) return;
       if (s.aim === 'up') areas.push({ x0: s.x - th, x1: s.x + th, y0: s.y - len, y1: s.y });
+      else if (s.aim === 'diag') {
+        // 斜的長條：沿線放 5 個小方塊（寬 = 條的粗細）
+        for (let i = 1; i <= 5; i++) {
+          const d = len * i / 5 - th, cx = s.x + s.facing * d * Math.SQRT1_2, cy = s.y - d * Math.SQRT1_2;
+          areas.push({ x0: cx - th, x1: cx + th, y0: cy - th, y1: cy + th });
+        }
+      }
       else if (s.aim === 'down') areas.push({ x0: s.x - th, x1: s.x + th, y0: s.y, y1: s.y + len });
       else areas.push({ x0: Math.min(s.x, s.x + s.facing * len), x1: Math.max(s.x, s.x + s.facing * len), y0: s.y - th, y1: s.y + th });
     } else areas.push({ x0: s.x - s.r, x1: s.x + s.r, y0: s.y - s.r, y1: s.y + s.r });
@@ -908,7 +953,12 @@ export class World {
         this.event('thorns', {});
         continue;
       }
-      this.damageEnemy(e, 40, { x: e.x - facing * 25, y: this.player.body.y - 110, dir: facing, kind: 'claw' });
+      this.damageEnemy(e, e.boss ? CLAW_DMG_BOSS : CLAW_DMG, { x: e.x - facing * 25, y: this.player.body.y - 110, dir: facing, kind: 'claw' });
+      // 擊退：小兵（非魔王、非重甲、不會飛、在地上）往後推約 80 像素、僵住 0.25 秒（被打斷，這一招不算）
+      const d = ENEMY_DEFS[e.kind];
+      if (e.hp > 0 && e.dying <= 0 && !e.boss && !d.heavy && !d.fly && e.onGround) {
+        e.stun = Math.max(e.stun, CLAW_STUN); e.vx = facing * CLAW_PUSH_V; e.warn = 0; e.harm = null; e.bodyHarm = false;
+      }
       for (let i = 0; i < 6; i++) this.fx({ kind: 'spark', x: e.x - facing * 25, y: this.player.body.y - 110, vx: rnd(-260, 260) - facing * 80, vy: rnd(-240, 60), life: 0.22, r: 3, color: '#fff3c4' });
     }
     for (const b of this.breakables) {
@@ -1165,9 +1215,9 @@ export class World {
     }
     for (const e of this.enemies) {
       if (e.dying > 0 || e.dead) continue;
-      if (e.harm && overlap(pb, e.harm)) this.hurtPlayer(e.x < p.body.x ? 1 : -1, `${e.kind}:${e.state}`);
-      else if (e.bodyHarm && overlap(pb, enemyBox(e))) this.hurtPlayer(e.x < p.body.x ? 1 : -1, `${e.kind}:${e.state}`);
-      else if (e.boss && e.state !== 'die' && p.body.y > e.y - 100 && overlap(pb, enemyBox(e))) {
+      if (e.harm && overlap(pb, e.harm)) this.hurtPlayer(e.x < p.body.x ? 1 : -1, `${e.kind}:${e.state}`, 'harm');
+      else if (e.bodyHarm && overlap(pb, enemyBox(e))) { if (!p.clawGuard()) this.hurtPlayer(e.x < p.body.x ? 1 : -1, `${e.kind}:${e.state}`, 'body'); }
+      else if (e.boss && e.state !== 'die' && p.act !== 'roll' && p.body.y > e.y - 100 && overlap(pb, enemyBox(e))) {
         // 魔王站著、走路：碰到只會被推開（不扣血）
         const eb = enemyBox(e), side = p.body.x < e.x ? -1 : 1;
         const depth = side < 0 ? pb.x1 - eb.x0 : eb.x1 - pb.x0;
@@ -1181,15 +1231,16 @@ export class World {
   /** 現在抓得到球球嗎（蛙大名的舌頭）：無敵、倒下、開發用無敵都抓不到 */
   canGrab(): boolean {
     const p = this.player;
-    return !this.god && this.state === 'play' && p.alive && p.invincible <= 0 && p.held <= 0;
+    return !this.god && this.state === 'play' && p.alive && p.invincible <= 0 && p.held <= 0 && !p.rollSafe();
   }
 
   /** 扣一滴血；無敵中、開發用無敵、倒下中不算。回傳有沒有真的扣到 */
-  hurtPlayer(dir: 1 | -1, src = ''): boolean {
+  /** how：被什麼方式打到（body＝敵人身體碰到、harm＝敵人出招的判定；平衡報表分「揮爪中被碰到」用） */
+  hurtPlayer(dir: 1 | -1, src = '', how = ''): boolean {
     const p = this.player;
-    if (this.god || this.state !== 'play' || !p.alive || p.invincible > 0) return false;
+    if (this.god || this.state !== 'play' || !p.alive || p.invincible > 0 || p.rollSafe()) return false;
     p.hp -= 1;
-    this.event('playerHurt', { hp: p.hp, src });
+    this.event('playerHurt', { hp: p.hp, src, act: p.act, how });
     this.hitstop = Math.max(this.hitstop, 0.08);
     this.shakeIt(0.2);
     if (p.hp <= 0) this.playerDown();
@@ -1327,7 +1378,6 @@ function pick<T>(xs: readonly T[]): T { return xs[Math.floor(Math.random() * xs.
 /** 球球手的位置（火焰、鎖鏈黏在手上） */
 export function handOf(p: Player): { x: number; y: number } {
   const b = p.body, aim = p.lastAim;
-  const H: Record<Aim, [number, number]> = { fwd: [120, -112], up: [28, -190], down: [36, -60], low: [104, -62] };
-  const [hx, hy] = H[aim];
+  const { x: hx, y: hy } = HAND[aim];
   return { x: b.x + b.facing * hx, y: b.y + hy };
 }

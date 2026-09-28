@@ -31,13 +31,24 @@ const CROUCH: Params = { ...PARAMS, runSpeed: 110 };
 /** 衝刺：固定速度往前衝，時間夾在 0.22～0.4 秒，前 0.25 秒無敵 */
 const DASH_SPEED = 760, DASH_MIN = 0.22, DASH_MAX = 0.4, DASH_IFRAMES = 0.25, DASH_COOLDOWN = 0.3;
 const DASH: Params = { ...PARAMS, runSpeed: DASH_SPEED, accelGround: 1e6, accelAir: 1e6 };
-/** 揮爪：出手到打中 1.8 倍速、打中後第 8 格起 2.6 倍；打中後第 10 格起可以取消；打中判定 hit 前 1 格到後 3 格、身體前方 10～150 像素 */
-const CLAW = { rate: 1.8, recoverAfter: 8, recoverRate: 2.6, cancelAfter: 10, win: [-1, 3], reach: [10, 150] } as const;
+/**
+ * 揮爪（第二版規劃第 4 節，09-28 使用者：揮爪時常被碰到扣血）：從第 6 格開始播、打中前 2.4 倍速（出手到打中約 0.17 秒）；
+ * 打中後第 8 格起 2.6 倍；打中後第 10 格起可以取消；打中判定 hit 前 2 格到後 4 格、身體前方 0～210、高 190。
+ * 出爪護身：出爪開始到打中後第 4 格，被敵人「身體」碰到不扣血（子彈、敵人出招的判定照扣）。
+ */
+export const CLAW = { from: 6, rate: 2.4, recoverAfter: 8, recoverRate: 2.6, cancelAfter: 10, win: [-2, 4], reach: [0, 210], height: 190, guardUntil: 4 } as const;
+/** 翻滾（第二版 5.1）：地上按衝刺鍵。0.4 秒、速度 700（約 280 像素）、0.04～0.34 秒碰到什麼都不扣血、身體矮到 84、滾完 0.25 秒才能再滾、最後 0.08 秒可以接跳或丟 */
+export const ROLL = { time: 0.4, speed: 700, safe: [0.04, 0.34], height: 84, cooldown: 0.25, cancel: 0.08 } as const;
+const ROLL_P: Params = { ...PARAMS, runSpeed: ROLL.speed, accelGround: 1e6, accelAir: 1e6 };
+/** 手裏劍同時在畫面上最多幾枚（第 4 枚按了不出手；第二版第 3 節） */
+export const SHURIKEN_MAX = 3;
 /** 丟：1.6 倍速，從出手前一格開始播（越南大戰按下去就飛出去，不等前搖）；出手後第 2 格起可以取消 */
 const THROW = { rate: 1.6, cancelAfter: 2 } as const;
 /** 手的位置（相對腳底、面向右，畫面像素）：朝前、朝上、空中朝下、蹲著 */
-const HAND: Record<Aim, { x: number; y: number }> = {
+export const HAND: Record<Aim, { x: number; y: number }> = {
   fwd: { x: 120, y: -112 }, up: { x: 28, y: -190 }, down: { x: 36, y: -60 }, low: { x: 104, y: -62 },
+  // 斜上：朝前和朝上中間（斜丟動作圖還沒生，等圖出來用 release 那一格重量）
+  diag: { x: 92, y: -168 },
 };
 /** 沒有跳躍動作時，空中定格在跑步的這一格 */
 const AIR_FALLBACK = { anim: 'run', frame: 11 };
@@ -48,7 +59,7 @@ const HURT_RATE = 2.2, HURT_MAX = 0.55;
 const DOWN_RATE = 1.3;
 const STILL: Ctrl = { left: false, right: false, jumpHeld: false, jumpPressed: false };
 
-type Act = 'move' | 'land' | 'claw' | 'throw' | 'dash' | 'hurt' | 'down';
+type Act = 'move' | 'land' | 'claw' | 'throw' | 'dash' | 'roll' | 'hurt' | 'down';
 
 export class Player {
   body: Body;
@@ -91,9 +102,21 @@ export class Player {
 
   get alive(): boolean { return this.act !== 'down'; }
 
-  /** 身體判定：蹲著矮一截（苦無從頭上飛過去） */
+  /** 翻滾開始後幾秒（沒在滾＝-1） */
+  rollT = -1;
+
+  /** 翻滾中、碰到什麼都不扣血的那段 */
+  rollSafe(): boolean { return this.act === 'roll' && this.rollT >= ROLL.safe[0] && this.rollT <= ROLL.safe[1]; }
+
+  /** 出爪護身：揮爪開始到打中後第 4 格，敵人身體碰到不扣血 */
+  clawGuard(): boolean {
+    const an = this.anim;
+    return this.act === 'claw' && an.name === 'claw' && an.frame <= (an.def?.markers.hit ?? 0) + CLAW.guardUntil;
+  }
+
+  /** 身體判定：蹲著矮一截（苦無從頭上飛過去）；翻滾更矮 */
   box(): Box {
-    const b = this.body, h = this.crouching ? 92 : 150;
+    const b = this.body, h = this.act === 'roll' ? ROLL.height : this.crouching ? 92 : 150;
     return { x0: b.x - 26, y0: b.y - h, x1: b.x + 26, y1: b.y };
   }
 
@@ -133,6 +156,7 @@ export class Player {
     this.crouching = false;
     if (this.act === 'claw' || this.act === 'hurt' || (this.act === 'throw' && b.onGround)) ctrl = { ...STILL, jumpHeld: f.jumpHeld };
     else if (this.act === 'dash') { ctrl = { left: b.facing < 0, right: b.facing > 0, jumpHeld: f.jumpHeld, jumpPressed: false }; p = DASH; }
+    else if (this.act === 'roll') { ctrl = { left: b.facing < 0, right: b.facing > 0, jumpHeld: f.jumpHeld, jumpPressed: false }; p = ROLL_P; }
     else if (b.onGround && f.down && an.has('crouch')) {
       p = CROUCH; this.crouching = true;
       if (!an.has('crouchwalk')) {
@@ -147,7 +171,12 @@ export class Player {
       this.crouching = false;
     }
     if (this.act === 'throw' && an.name === 'crouchthrow') this.crouching = true;
+    const x0 = b.x;
     const { jumped, landed } = stepBody(b, ctrl, dt, w.physWorld(), p);
+    if (this.act === 'roll') {
+      // 滾出平台邊緣：照速度飛出去、變成往下掉；撞到牆：停在牆前、提早結束
+      if (!b.onGround || Math.abs(b.x - x0) < ROLL.speed * dt * 0.3) this.endRoll();
+    }
     if (jumped) { w.dust(b.x, b.y, 5, -1); if (this.act === 'land') this.act = 'move'; w.event('jump'); }
     if (landed) {
       w.dust(b.x, b.y, 7, 0);
@@ -178,7 +207,7 @@ export class Player {
 
   private attack(f: Frame, w: World, pressed: boolean, canAct: boolean): void {
     const b = this.body, an = this.anim;
-    if (this.act === 'hurt' || this.act === 'dash' || this.act === 'claw') {
+    if (this.act === 'hurt' || this.act === 'dash' || this.act === 'claw' || (this.act === 'roll' && !this.cancellable())) {
       if (pressed && this.act === 'claw') this.queued = { kind: 'claw', t: BUFFER };
       return;
     }
@@ -188,7 +217,12 @@ export class Player {
       return;
     }
     if (this.fireCd > 0 || (!canAct && this.act !== 'throw')) return;
-    const aim: Aim = f.up ? 'up' : (!b.onGround && f.down) ? 'down' : this.crouching || (b.onGround && f.down && an.has('crouch')) ? 'low' : 'fwd';
+    if (this.arsenal.weapon === 'shuriken' && w.shots.filter((s) => s.kind === 'shuriken').length >= SHURIKEN_MAX) return;
+    if (this.act === 'roll') this.endRoll();
+    const dirNow = (f.right ? 1 : 0) - (f.left ? 1 : 0);
+    // 斜上：按著的方向跟面向不同就先轉過去（↑＋← 一定朝左上丟）
+    if (f.up && dirNow !== 0 && dirNow !== b.facing) b.facing = dirNow > 0 ? 1 : -1;
+    const aim: Aim = f.up && dirNow !== 0 ? 'diag' : f.up ? 'up' : (!b.onGround && f.down) ? 'down' : this.crouching || (b.onGround && f.down && an.has('crouch')) ? 'low' : 'fwd';
     const weapon = this.arsenal.use();
     this.fireCd = WEAPONS[weapon].cooldown;
     this.lastAim = aim;
@@ -215,7 +249,8 @@ export class Player {
       an.play('crouchthrow', { restart: true, from: Math.max(0, rel - 1), rate: THROW.rate, onEnd: () => { if (this.act === 'throw') this.act = 'move'; } });
       return;
     }
-    const name = aim === 'up' && an.has('throwup') ? 'throwup' : !b.onGround && an.has('airthrow') ? 'airthrow' : 'throw';
+    // 斜上：還沒有斜丟動作圖，暫用朝上丟（throwup）代替（docs/2026-09-28_待生Vids片段.md）
+    const name = (aim === 'up' || aim === 'diag') && an.has('throwup') ? 'throwup' : !b.onGround && an.has('airthrow') ? 'airthrow' : 'throw';
     if (!an.has(name)) return;
     const d = an.defs[name]!, rel = d.markers.release ?? 0;
     this.act = 'throw'; this.airThrow = !b.onGround;
@@ -229,12 +264,13 @@ export class Player {
     if (!kind) return;
     this.subCd = 0.35;
     const b = this.body;
-    w.throwSub(kind, b.x + b.facing * 60, b.y - 130, b.facing, b.vx, f.up);
+    const dir = (f.right ? 1 : 0) - (f.left ? 1 : 0);
+    w.throwSub(kind, b.x + b.facing * 60, b.y - 130, b.facing, b.vx, f.up ? (dir !== 0 ? 'diag' : 'up') : 'fwd');
   }
 
   private startClaw(): void {
     this.act = 'claw'; this.clawHit.clear();
-    this.anim.play('claw', { restart: true, rate: CLAW.rate, onEnd: () => { this.act = 'move'; } });
+    this.anim.play('claw', { restart: true, from: CLAW.from, rate: CLAW.rate, onEnd: () => { this.act = 'move'; } });
   }
 
   private actStep(dt: number, w: World): void {
@@ -245,8 +281,11 @@ export class Player {
       if (an.frame >= hit + CLAW.win[0] && an.frame <= hit + CLAW.win[1]) {
         const b = this.body;
         const x0 = b.x + b.facing * CLAW.reach[0], x1 = b.x + b.facing * CLAW.reach[1];
-        w.clawHits({ x0: Math.min(x0, x1), x1: Math.max(x0, x1), y0: b.y - 170, y1: b.y }, b.facing, this.clawHit);
+        w.clawHits({ x0: Math.min(x0, x1), x1: Math.max(x0, x1), y0: b.y - CLAW.height, y1: b.y }, b.facing, this.clawHit);
       }
+    } else if (this.act === 'roll') {
+      this.rollT += dt;
+      if (this.rollT >= ROLL.time) this.endRoll();
     } else if (this.act === 'dash' || this.act === 'hurt') {
       this.actT -= dt;
       if (this.actT <= 0) {
@@ -260,6 +299,7 @@ export class Player {
     const an = this.anim, m = an.def?.markers;
     if (this.act === 'claw') return an.frame >= (m?.hit ?? 0) + CLAW.cancelAfter;
     if (this.act === 'throw') return an.frame >= (m?.release ?? 0) + THROW.cancelAfter;
+    if (this.act === 'roll') return this.rollT >= ROLL.time - ROLL.cancel;
     return false;
   }
 
@@ -271,6 +311,7 @@ export class Player {
       return true;
     }
     if (!an.has('dash') || this.dashCd > 0 || (!b.onGround && this.airDashUsed)) return false;
+    if (b.onGround) { this.startRoll(w); return true; }
     const d = an.defs.dash!, go = d.markers.go ?? 0, stop = d.markers.stop ?? d.frames.length - 1;
     this.act = 'dash';
     this.actT = Math.min(DASH_MAX, Math.max(DASH_MIN, (stop - go) / d.fps));
@@ -281,6 +322,28 @@ export class Player {
     an.play('dash', { restart: true, from: go, to: stop, rate: (stop - go) / d.fps / this.actT });
     w.dust(b.x, b.y, 6, -b.facing);
     return true;
+  }
+
+  /**
+   * 翻滾：翻滾動作圖還沒生，暫用衝刺（dash）動作的衝出去那段代替（docs/2026-09-28_待生Vids片段.md）。
+   * 無敵不用 invincible（那會連出招判定、抓人都擋掉、還會一閃一閃），由 world 看 rollSafe()。
+   */
+  private startRoll(w: World): void {
+    const b = this.body, an = this.anim;
+    this.act = 'roll'; this.rollT = 0;
+    this.dashCd = ROLL.time + ROLL.cooldown;
+    b.vx = b.facing * ROLL.speed;
+    const d = an.defs.dash!, go = d.markers.go ?? 0, stop = d.markers.stop ?? d.frames.length - 1;
+    an.play('dash', { restart: true, from: go, to: stop, rate: (stop - go) / d.fps / ROLL.time });
+    w.dust(b.x, b.y, 6, -b.facing);
+    w.event('roll', {});
+  }
+
+  private endRoll(): void {
+    if (this.act !== 'roll') return;
+    this.act = 'move'; this.rollT = -1;
+    const b = this.body;
+    if (b.onGround) b.vx = Math.sign(b.vx) * Math.min(Math.abs(b.vx), PARAMS.runSpeed);
   }
 
   private startLand(): void {

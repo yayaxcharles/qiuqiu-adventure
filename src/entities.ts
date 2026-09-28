@@ -114,7 +114,8 @@ export interface Shot {
   aim: Aim;
   facing: 1 | -1;
 }
-export type Aim = 'fwd' | 'up' | 'down' | 'low';
+/** 朝前、朝上、空中朝下、蹲著低丟、斜上 45 度（↑＋方向，第二版第 2 節） */
+export type Aim = 'fwd' | 'up' | 'down' | 'low' | 'diag';
 
 export type BulletKind = 'kunai' | 'bone' | 'wave' | 'blast' | 'spark'
   // 第二關：燈籠鬼的火球、河童的水彈、面具舞者會飛回來的扇子、白狐巫女會追人的狐火、狸大人的葉子手裏劍、

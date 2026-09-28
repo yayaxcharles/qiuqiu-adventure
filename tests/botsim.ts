@@ -35,8 +35,9 @@ export function seedRandom(seed: number): () => void {
 export interface SimResult { cleared: boolean; sec: number; g: Game; stuck: string }
 
 /** 自動玩一關；卡住 40 秒沒前進就停下來，回傳卡在哪 */
-export function simulate(stage: StageDef, maxSec = 900): SimResult {
+export function simulate(stage: StageDef, maxSec = 900, eventCap = 6000): SimResult {
   const g = new Game(fakeAssets());
+  g.eventCap = eventCap;
   g.bot = createBot();
   g.start(stage);
   const DT = 1 / 120;

@@ -25,7 +25,7 @@ export interface WeaponDef {
 }
 
 export const WEAPONS: Record<WeaponId, WeaponDef> = {
-  shuriken: { id: 'shuriken', name: '手裏劍', like: '手槍', ammo: Infinity, auto: false, cooldown: 0.13, dmg: 10, icon: 'shuriken' },
+  shuriken: { id: 'shuriken', name: '手裏劍', like: '手槍', ammo: Infinity, auto: false, cooldown: 0.22, dmg: 10, icon: 'shuriken' },
   H: { id: 'H', name: '棒手裏劍連射！', like: '重機槍', ammo: 200, auto: true, cooldown: 1 / 13, dmg: 7, icon: 'weapon_H' },
   R: { id: 'R', name: '風魔大手裏劍！', like: '火箭', ammo: 20, auto: false, cooldown: 0.45, dmg: 24, icon: 'weapon_R' },
   F: { id: 'F', name: '火藥竹筒！', like: '火焰槍', ammo: 30, auto: true, cooldown: 0.42, dmg: 7, icon: 'weapon_F' },

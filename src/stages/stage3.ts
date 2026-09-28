@@ -98,12 +98,8 @@ export const STAGE3: StageDef = {
     { x: 1500, item: 4 }, { x: 6200, item: 1 }, { x: 8900, item: 0 }, { x: 11000, item: 3 },
     { x: 12500, item: 5 }, { x: 15500, item: 2 }, { x: 17800, item: 4 },
   ],
-  hints: [
-    { at: 2400, text: '鐵羅漢正面擋手裏劍', sub: '從背後打、用爆裂符、或趁牠出拳的時候打' },
-    { at: 3100, text: '城門有石獅守著：先打爛石獅，城門才打得動', sub: '' },
-    { at: 5000, text: '蒸氣噴口：冒小煙就要噴了', sub: '等它停，或走上面的鐵走道' },
-    { at: 14300, text: '牆太高跳不上去：站上升降台', sub: '' },
-  ],
+  // 第二版（09-28 使用者：不要長篇教學、讓玩家自己發現）：關卡裡不跳教學字幕，按鍵一覽只在標題、暫停畫面
+  hints: [],
   breakables: [
     { x: 700, kind: 's3_crate', drop: 'onigiri' }, { x: 1350, kind: 's3_oil_drum' },
     { x: 2050, kind: 's3_gearbox', drop: 'fish' }, { x: 2900, kind: 's3_crate' }, { x: 3150, kind: 's3_oil_drum' }, { x: 3600, kind: 's3_crate' },

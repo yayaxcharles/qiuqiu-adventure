@@ -17,7 +17,7 @@ import { HURT_IFRAMES, SCALE, type Player } from './player';
 import { drawFrame, type FrameDef } from './sprite';
 import type { DeckDef, PlatformDef, ZoneDef } from './stages/types';
 import { SUB_ORDER, SUBS, WEAPONS } from './weapons';
-import type { World } from './world';
+import { TIP_TIME, type World } from './world';
 
 const FONT = '"Microsoft JhengHei", "Noto Sans TC", sans-serif';
 /** 出招預兆：紅色邊光（身體原色不變）＋這麼多的紅色疊色，一閃一閃 */
@@ -76,8 +76,9 @@ export class Renderer {
     const b = w.player.body, f = b.facing;
     if (ev.type === 'fire' && this.fx('throw_flash')) {
       const aim = ev.aim as string | undefined;
-      const up = aim === 'up', down = aim === 'down';
-      this.oneShots.push({ key: 'throw_flash', x: b.x + (up || down ? f * 20 : f * 72), y: b.y - (up ? 205 : down ? 60 : 122), t: 0, life: 0.09, s: 0.5, flip: f < 0 && !up && !down, rot: up ? -Math.PI / 2 : down ? Math.PI / 2 : 0 });
+      const up = aim === 'up', down = aim === 'down', diag = aim === 'diag';
+      if (diag) this.oneShots.push({ key: 'throw_flash', x: b.x + f * 60, y: b.y - 175, t: 0, life: 0.09, s: 0.5, rot: f > 0 ? -Math.PI / 4 : -Math.PI * 3 / 4 });
+      else this.oneShots.push({ key: 'throw_flash', x: b.x + (up || down ? f * 20 : f * 72), y: b.y - (up ? 205 : down ? 60 : 122), t: 0, life: 0.09, s: 0.5, flip: f < 0 && !up && !down, rot: up ? -Math.PI / 2 : down ? Math.PI / 2 : 0 });
     }
     if (ev.type === 'respawn' && typeof ev.x === 'number') {
       const g = w.groundAt(ev.x);
@@ -162,6 +163,7 @@ export class Renderer {
     ctx.save();
     ctx.translate(-cam, 0);
     this.clawArc(w.player);
+    this.drawTip(ctx, w);
     for (const o of this.oneShots) if (o.key !== 'respawn_pillar') this.drawOneShot(ctx, o);
     for (const s of w.shots) this.drawShot(ctx, s, now);
     for (const b of w.bombs) this.drawIcon(ctx, b.kind === 'bigbomb' ? 'horoku' : b.kind === 'smoke' ? 'smoke_ball' : 'bomb_tag', b.x, b.y, b.kind === 'bigbomb' ? 58 : 44, b.rot);
@@ -1637,12 +1639,27 @@ export class Renderer {
     const b = p.body;
     ctx.save();
     if (p.hidden > 0) ctx.globalAlpha = 0.35;
-    else if (p.act !== 'dash' && p.invincible > 0 && p.invincible < HURT_IFRAMES * 3 && Math.floor(p.invincible * 16) % 2 === 0) ctx.globalAlpha = 0.45;
+    else if (p.act !== 'dash' && p.act !== 'roll' && p.invincible > 0 && p.invincible < HURT_IFRAMES * 3 && Math.floor(p.invincible * 16) % 2 === 0) ctx.globalAlpha = 0.45;
     if (p.act === 'down' && !this.a.sprites.defs.down) {
       // 沒有倒下動作：把這一格慢慢放倒
       ctx.translate(b.x - cam, b.y); ctx.rotate(-b.facing * p.downT * 1.35); ctx.translate(-(b.x - cam), -b.y);
     }
     drawFrame(ctx, img, fr, b.x - cam, b.y, b.facing, SCALE / (this.a.sprites.shrink ?? 1));   // 圖已縮成畫面大小（shrink）
+    ctx.restore();
+  }
+
+  /** 新動作第一次提示：球球頭上一個小按鍵牌（最多 6 個字、1.5 秒，前後淡入淡出） */
+  private drawTip(ctx: CanvasRenderingContext2D, w: World): void {
+    const tip = w.tip;
+    if (!tip) return;
+    const b = w.player.body, k = tip.t / TIP_TIME;
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, tip.t / 0.12, (TIP_TIME - tip.t) / 0.25);
+    ctx.font = `900 26px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const tw = ctx.measureText(tip.text).width + 28, x = b.x, y = b.y - 232 - Math.sin(Math.min(1, k * 6) * Math.PI / 2) * 6;
+    ctx.fillStyle = 'rgba(20,12,8,.78)'; ctx.strokeStyle = '#ffd23a'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.roundRect(x - tw / 2, y - 21, tw, 42, 10); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff3c4'; ctx.fillText(tip.text, x, y + 1);
     ctx.restore();
   }
 
@@ -1705,7 +1722,7 @@ export class Renderer {
   }
 
   private drawShot(ctx: CanvasRenderingContext2D, s: Shot, now: number): void {
-    const ang = s.aim === 'up' ? -Math.PI / 2 : s.aim === 'down' ? Math.PI / 2 : s.facing > 0 ? 0 : Math.PI;
+    const ang = s.aim === 'up' ? -Math.PI / 2 : s.aim === 'down' ? Math.PI / 2 : s.aim === 'diag' ? (s.facing > 0 ? -Math.PI / 4 : -Math.PI * 3 / 4) : s.facing > 0 ? 0 : Math.PI;
     switch (s.kind) {
       case 'shuriken':
         if (!this.drawIcon(ctx, 'shuriken', s.x, s.y, 42, s.rot)) {

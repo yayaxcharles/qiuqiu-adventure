@@ -29,6 +29,8 @@ export class Game {
   continueT = 0;
   /** 這一關到目前為止的所有事件（自動檢查、截圖用；最多留 6000 筆） */
   eventLog: GameEvent[] = [];
+  /** eventLog 最多留幾筆（測試的平衡報表要整關的事件，會調大） */
+  eventCap = 6000;
   /** 自動玩：有設就不看鍵盤（main.ts 帶 ?bot 會接上 autopilot.ts） */
   bot: ((g: Game, dt: number) => Frame) | null = null;
   /** 開局就開無敵（?god） */
@@ -89,7 +91,7 @@ export class Game {
         const w = this.world!;
         if (f.pausePressed) { this.go('pause'); break; }
         w.update(dt, f);
-        for (const ev of w.events) { sfx.play(ev); this.renderer.onEvent(ev, w); if (this.eventLog.length < 6000) this.eventLog.push(ev); }
+        for (const ev of w.events) { sfx.play(ev); this.renderer.onEvent(ev, w); if (this.eventLog.length < this.eventCap) this.eventLog.push(ev); }
         voice.onFrame(w, w.events);   // 日文配音（事件＋敵人頭上新冒的對話框）
         w.events.length = 0;
         if (w.state === 'continue') { this.continueT = CONTINUE_SECONDS; this.go('continue'); }
@@ -193,8 +195,8 @@ export class Game {
       '右邊：跳（按久跳高）　攻（貼近敵人自動揮爪、遠一點丟忍具）　符（爆裂符）　換（換副武器）',
       '右上角：❚❚ 暫停　⛶ 全螢幕',
     ] : [
-      '← → 移動　↑ 按住朝上丟　↓ 蹲（空中按住朝下丟）　空白鍵／K 跳（按久跳高）',
-      'J 攻擊：貼近敵人自動揮爪、遠一點丟忍具（撿到的忍具按住連丟）　L 丟爆裂符　Q 換副武器　I 衝刺',
+      '← → 移動　↑ 朝上丟　↑＋← → 斜上丟　↓ 蹲（空中朝下丟）　空白鍵／K 跳',
+      'J 攻擊（貼近自動揮爪）　L 爆裂符　Q 換副武器　I 地上翻滾／空中衝刺',
       'P 暫停　R 動作練習場' + (this.devKeys ? '　｜開發用：1～9 換忍具、0 手裏劍、F5～F7 補副武器、F2 無敵' : ''),
     ];
     help.forEach((h, i) => ctx.fillText(h, VIEW_W / 2, y + i * 32));

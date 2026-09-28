@@ -500,7 +500,7 @@ export function phaseUp(e: Enemy, w: World, line: string): void {
   e.invuln = 0.6; e.flash = 0.12;
   w.flashScreen(0.3); w.shakeIt(0.35);
   setState(e, 'roar'); w.say(e, line, 1.6);
-  if (e.kind === 'iron_claw') w.banner('雷射：看地上的紅線', '低的躲上屋脊、高的蹲下；暴走衝撞也躲上屋脊', 'warn', 2.8);
+  // 第二版：攻略字幕拿掉（09-28 使用者：不要教學，讓玩家自己發現），地上的紅線本身就是提示
   w.event('bossPhase', { kind: e.kind, phase: 2 });
 }
 function pickP2(e: Enemy): number { return P2_HP[e.kind] ?? e.maxHp; }

@@ -27,6 +27,8 @@ export function createBot(): (g: Game, dt: number) => Frame {
     const px = b.x, py = b.y;
 
     let jump = false, crouch = false, flee = 0;
+    /** 這個威脅可以用翻滾穿過去（衝過來的、低的橫飛子彈）：地上、能滾、前面 280 內沒坑就滾，不然照舊跳 */
+    let rollable = false;
     // ── 躲 ──
     for (const bl of w.bullets) {
       const dx = bl.x - px, closing = -Math.sign(dx) * bl.vx;
@@ -37,7 +39,8 @@ export function createBot(): (g: Game, dt: number) => Frame {
         // 斜著往下打來的（燈籠鬼瞄準的火球）：往反方向跑開
         if ((bl.kind === 'fireball' || bl.kind === 'pellet') && bl.vy > 60 && t < 0.6 && Math.abs(dx) < 380) { flee = dx > 0 ? -1 : 1; continue; }
         if (t < 0.4 && Math.abs(bl.y + bl.vy * t - (py - 90)) < 90) {
-          if (Math.abs(bl.vy) < 60 && bl.y < py - 100 && p.anim.has('crouch') && b.onGround) crouch = true; else jump = true;
+          if (Math.abs(bl.vy) < 60 && bl.y < py - 100 && p.anim.has('crouch') && b.onGround) crouch = true;
+          else { jump = true; if (t < 0.25 && Math.abs(bl.vy) < 200) rollable = true; }
         }
       } else if (bl.kind === 'bone' || bl.kind === 'garbage') {
         const t = Math.max(0, (py - 80 - bl.y) / Math.max(200, bl.vy));
@@ -52,10 +55,10 @@ export function createBot(): (g: Game, dt: number) => Frame {
     for (const e of alive) {
       const dx = e.x - px, adx = Math.abs(dx);
       const toward = (dir: number): boolean => dir * dx < 0;
-      if (e.state === 'charge' && toward(e.facing) && adx < 330) jump = true;
+      if (e.state === 'charge' && toward(e.facing) && adx < 330) { jump = true; rollable = true; }
       if (e.kind === 'orange_king') {
         const spd = e.p2 ? 800 : 540;
-        if (e.state === 'roll' && toward(e.mem.dir ?? -1) && adx < spd * 0.32 + 130) jump = true;
+        if (e.state === 'roll' && toward(e.mem.dir ?? -1) && adx < spd * 0.32 + 130) { jump = true; rollable = adx < spd * 0.2 + 130; }
         if (e.state === 'rollWind' && adx < 200) flee = dx > 0 ? -1 : 1;
         if ((e.state === 'crushShadow' || e.state === 'belly') && Math.abs((e.mem.tx ?? e.x) - px) < 230) flee = (e.mem.tx ?? e.x) > px ? -1 : 1;
       }
@@ -213,6 +216,16 @@ export function createBot(): (g: Game, dt: number) => Frame {
     if (move > 0) f.right = true; else if (move < 0) f.left = true;
     if (crouch) { f.down = true; s.crouchT = 0.3; }
 
+    // 翻滾：躲的是衝過來的東西、而且面向滾的方向前面 280 沒坑（也不是高台）→ 滾過去，不跳
+    let roll = false;
+    if (jump && rollable && b.onGround && p.dashCd <= 0 && p.act !== 'claw' && !riding) {
+      const fdir = move !== 0 ? Math.sign(move) : b.facing, g0 = w.groundAt(px);
+      let clear = true;
+      for (let d = 20; d <= 300; d += 20) { const g1 = w.groundAt(px + fdir * d); if (!Number.isFinite(g1) || g1 < g0 - STEP_UP) { clear = false; break; } }
+      if (clear) { roll = true; jump = false; if (move === 0) move = fdir; }
+    }
+    if (roll) { f.dashPressed = true; if (move > 0) { f.right = true; f.left = false; } else if (move < 0) { f.left = true; f.right = false; } }
+
     // 跳：按住 0.32 秒跳滿；下平台＝↓＋跳
     if (leaveRidge) dropDown = true;
     if (dropDown && !jump && s.jumpCd <= 0) { f.down = true; f.jumpPressed = true; s.jumpCd = 0.45; }
@@ -223,11 +236,26 @@ export function createBot(): (g: Game, dt: number) => Frame {
     const facingTargets = onScreen.filter((e) => (e.x - px) * b.facing > -30);
     let inFront = facingTargets.length > 0 || !!blocker || (!!boss && (boss.x - px) * b.facing > 0) || (!!shootable && (shootable.x - px) * b.facing > 0);
     const above = onScreen.find((e) => (ENEMY_DEFS[e.kind].fly || !reachable(e)) && Math.abs(e.x - (px + b.facing * 28)) < 70 && enemyBox(e).y1 < py - 150);
-    if (above) f.up = true;
+    // 斜上：飛的、高處的敵人在面前斜上 25～65 度、700 以內 → ↑＋方向斜丟（不用走到正下方）
+    const hx = px + b.facing * 92, hy = py - 168;
+    const diagT = above ? null : onScreen.find((e) => {
+      if (!(ENEMY_DEFS[e.kind].fly || !reachable(e)) || (e.x - hx) * b.facing <= 0) return false;
+      const bx = enemyBox(e), cy = (bx.y0 + bx.y1) / 2, ddx = Math.abs(e.x - hx), ddy = hy - cy;
+      const ang = Math.atan2(ddy, ddx) * 180 / Math.PI;
+      return ddy > 0 && ang > 25 && ang < 65 && Math.hypot(ddx, ddy) < 700;
+    });
+    if (above) {
+      f.up = true;
+      // ↑＋方向會變成斜丟：正上方的要放開方向鍵那一下才丟得直
+      if (s.atkT <= 0) { f.left = false; f.right = false; }
+    } else if (diagT && !boss) {
+      f.up = true;
+      if (!f.left && !f.right) { if (b.facing > 0) f.right = true; else f.left = true; }
+    }
     if (aimDown) { f.down = true; inFront = true; }
     // 跳起來丟：上升到快最高點才丟（手的高度剛好對到屋頂上的敵人、大王的背包）
     if ((jumpThrow || kingP1) && !b.onGround && b.vy < -250) inFront = false;
-    if (inFront || above) {
+    if (inFront || above || diagT) {
       if (WEAPONS[p.arsenal.weapon].auto) f.attackHeld = true;
       if (s.atkT <= 0) { f.attackPressed = true; s.atkT = 0.13; }
     }

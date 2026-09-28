@@ -41,6 +41,7 @@ try {
   await page.waitForFunction(() => !!window.__qq?.game, null, { timeout: 90000 });
   await page.evaluate(() => {
     const c = document.getElementById('game');
+    if (window.__qq.game.eventCap !== undefined) window.__qq.game.eventCap = 1e6;   // 剪片的時間表要整關的事件
     // 聲音：sfx.ts 的混音輸出（音效＋配樂，程式合成）接成音軌；舊版打包沒有這個就照舊只錄畫面
     const tracks = [...c.captureStream(30).getVideoTracks()];
     const mix = window.__qqAudio?.getMixStream?.();
@@ -64,10 +65,13 @@ try {
     setInterval(() => { const v = window.__qqVoice?.music?.(); if (v != null) window.__duck.push([+v.toFixed(3), window.__qqVoice.busy() ? 1 : 0]); }, 100);
   });
   const t0 = Date.now();
+  /** 剪片用：影片第幾秒（約）＝遊戲第幾秒；加上重要事件（魔王、翻滾、斜丟、被打） */
+  const timeline = [];
   let last = 0;
   for (;;) {
     await sleep(1000);
-    const st = await page.evaluate(() => { const g = window.__qq.game, w = g.world; return { screen: g.screen, st: g.screenT, t: w ? +w.time.toFixed(0) : 0, x: w ? Math.round(w.player.body.x) : 0 }; });
+    const st = await page.evaluate(() => { const g = window.__qq.game, w = g.world; return { screen: g.screen, st: g.screenT, t: w ? +w.time.toFixed(0) : 0, tf: w ? +w.time.toFixed(2) : 0, x: w ? Math.round(w.player.body.x) : 0 }; });
+    timeline.push([+((Date.now() - t0) / 1000).toFixed(2), st.screen, st.tf]);
     if (Date.now() - last > 20000) { last = Date.now(); console.log(`  ${((Date.now() - t0) / 1000).toFixed(0)} 秒｜${st.screen}｜遊戲 ${st.t} 秒｜x=${st.x}｜已錄 ${(bytes / 1e6).toFixed(1)} MB`); }
     if (st.screen === 'result' && st.st > 6) break;
     if (Date.now() - t0 > 10 * 60 * 1000) { console.log('超過 10 分鐘，停止'); break; }
@@ -77,6 +81,8 @@ try {
   writeFileSync(FILE.replace(/\.webm$/, '_voice.json'), JSON.stringify(vlog));
   console.log(`配音紀錄：${vlog.log ? vlog.log.filter((l) => l.act === 'play').length + ' 句' : '沒有（這份打包沒有配音）'}`);
   console.log(`有沒有錄聲音：${await page.evaluate(() => window.__recAudio) ? '有' : '沒有（這份打包沒有 __qqAudio）'}`);
+  const keyEv = await page.evaluate(() => window.__qq.game.eventLog.filter((e) => ['bossEnter', 'bossDown', 'roll', 'playerHurt'].includes(e.type) || (e.type === 'fire' && e.aim === 'diag')));
+  writeFileSync(FILE.replace(/\.webm$/, '_timeline.json'), JSON.stringify({ timeline, events: keyEv }));
   await page.evaluate(() => window.__rec.stop());
   await page.waitForFunction(() => window.__recDone === true, null, { timeout: 30000 });
   console.log(`錄好：${FILE}（${(bytes / 1e6).toFixed(1)} MB）`);
