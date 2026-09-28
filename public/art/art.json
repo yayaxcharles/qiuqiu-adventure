@@ -1,0 +1,2155 @@
+{
+ "_說明": "三大關場景與特效（tools/gen_stage_art.py 生、tools/post_stage_art.py 後製）。座標一律是圖片像素、左上角 (0,0)。tile=true 可左右無縫重複；地面帶的 standPx＝站立面離圖底的像素，surfaceY＝站立面離圖頂的像素；center＝特效中心點 [x,y]；facing＝圖上朝向（right/left，反向請水平翻轉）；anchor＝擺放基準點（bottom-center＝底部中間貼地、top-center＝頂部中間掛在上方）；source＝用的是哪一次生圖原檔（art_raw/stage_art/）；seam／flatness 只是檢查用數字（seam.tiled 在 1～3 左右＝接縫處跟圖內一般相鄰兩欄差不多，flatness＝地表跟站立面差 3 像素以內的欄數比例）。",
+ "bamboo_flame": {
+  "path": "fx/bamboo_flame.webp",
+  "w": 2103,
+  "h": 290,
+  "use": "F 火藥竹筒噴出的火焰（左端接竹筒口、往右噴，可橫向拉長）",
+  "center": [
+   1051,
+   145
+  ],
+  "source": "fx2_stretch.try1.png",
+  "facing": "right",
+  "origin": "left-middle",
+  "stretchX": [
+   520,
+   1950
+  ],
+  "note": "左端是竹筒噴口、右端約 1950 以後是收尾的火苗尖，拉長時只拉 stretchX 這段，頭尾保持原寬"
+ },
+ "bamboo_tube": {
+  "path": "fx/bamboo_tube.webp",
+  "w": 543,
+  "h": 207,
+  "use": "F 火藥竹筒：竹筒本體（掛在球球手上）",
+  "center": [
+   271,
+   103
+  ],
+  "source": "fx2_props.try2.png",
+  "facing": "right"
+ },
+ "blow_dart": {
+  "path": "fx/blow_dart.webp",
+  "w": 526,
+  "h": 146,
+  "use": "B 吹箭",
+  "center": [
+   263,
+   73
+  ],
+  "source": "fx2_props.try2.png",
+  "facing": "right"
+ },
+ "bo_shuriken": {
+  "path": "fx/bo_shuriken.webp",
+  "w": 549,
+  "h": 95,
+  "use": "棒手裏劍（旋轉用）",
+  "center": [
+   274,
+   47
+  ],
+  "source": "fx2_props.try2.png"
+ },
+ "bomb_tag": {
+  "path": "fx/bomb_tag.webp",
+  "w": 223,
+  "h": 468,
+  "use": "副武器：爆裂符（拋物線飛行中的符紙）",
+  "center": [
+   111,
+   234
+  ],
+  "source": "fx_weapons.try1.png"
+ },
+ "caltrop": {
+  "path": "fx/caltrop.webp",
+  "w": 378,
+  "h": 325,
+  "use": "S 撒菱：落地的一顆（會扎到走過的敵人）",
+  "center": [
+   189,
+   162
+  ],
+  "source": "fx2_props.try2.png"
+ },
+ "enemy_fireball": {
+  "path": "fx/enemy_fireball.webp",
+  "w": 381,
+  "h": 232,
+  "use": "敵人子彈：火球（燈籠鬼等）",
+  "center": [
+   108,
+   117
+  ],
+  "source": "fx_misc.try1.png",
+  "facing": "left"
+ },
+ "enemy_leaf": {
+  "path": "fx/enemy_leaf.webp",
+  "w": 326,
+  "h": 149,
+  "use": "敵人子彈：葉子手裏劍（狸大人）",
+  "center": [
+   115,
+   88
+  ],
+  "source": "fx_misc.try1.png",
+  "facing": "left"
+ },
+ "enemy_water": {
+  "path": "fx/enemy_water.webp",
+  "w": 324,
+  "h": 203,
+  "use": "敵人子彈：水彈（河童）",
+  "center": [
+   104,
+   103
+  ],
+  "source": "fx_misc.try1.png",
+  "facing": "left"
+ },
+ "explosion_1": {
+  "path": "fx/explosion_1.webp",
+  "w": 248,
+  "h": 220,
+  "use": "爆炸第 1 格（共 4 格，由小到大）",
+  "center": [
+   124,
+   110
+  ],
+  "source": "fx_explosion.try1.png"
+ },
+ "explosion_2": {
+  "path": "fx/explosion_2.webp",
+  "w": 368,
+  "h": 334,
+  "use": "爆炸第 2 格（共 4 格，由小到大）",
+  "center": [
+   184,
+   167
+  ],
+  "source": "fx_explosion.try1.png"
+ },
+ "explosion_3": {
+  "path": "fx/explosion_3.webp",
+  "w": 571,
+  "h": 530,
+  "use": "爆炸第 3 格（共 4 格，由小到大）",
+  "center": [
+   285,
+   265
+  ],
+  "source": "fx_explosion.try1.png"
+ },
+ "explosion_4": {
+  "path": "fx/explosion_4.webp",
+  "w": 606,
+  "h": 613,
+  "use": "爆炸第 4 格（共 4 格，由小到大）",
+  "center": [
+   303,
+   306
+  ],
+  "source": "fx_explosion.try1.png"
+ },
+ "fire_dragon": {
+  "path": "fx/fire_dragon.webp",
+  "w": 2165,
+  "h": 352,
+  "use": "F 火遁·火龍（左端接手、往右噴，可橫向拉長）",
+  "center": [
+   1082,
+   176
+  ],
+  "source": "fx_beams.try1.png",
+  "facing": "right",
+  "origin": "left-middle",
+  "stretchX": [
+   300,
+   1650
+  ],
+  "note": "左端是噴口、右端約 1700 以後是龍頭；拉長時只拉 stretchX 這段，頭尾保持原寬"
+ },
+ "fuma_shuriken": {
+  "path": "fx/fuma_shuriken.webp",
+  "w": 426,
+  "h": 440,
+  "use": "R 風魔大手裏劍（旋轉用）",
+  "center": [
+   213,
+   220
+  ],
+  "source": "fx_weapons.try1.png"
+ },
+ "fx_ambient": {
+  "_說明": "會動的點綴（透明，tools/gen_panels.py ambient）。每關一串，每項 frames 是同一種東西的幾張：竹葉／閃電／煙火／燈籠是「不同樣子」隨機挑或輪播，炊煙／蒸氣是由小到大的動畫格。煙、蒸氣、光暈有半透明邊緣，請直接用 alpha 疊。",
+  "s1": [
+   {
+    "name": "s1_bamboo_leaf",
+    "use": "第一關飄落的竹葉（6 個角度，輪播＝翻轉飄落）",
+    "frames": [
+     {
+      "path": "fx_ambient/s1_bamboo_leaf_1.webp",
+      "w": 359,
+      "h": 333
+     },
+     {
+      "path": "fx_ambient/s1_bamboo_leaf_2.webp",
+      "w": 242,
+      "h": 375
+     },
+     {
+      "path": "fx_ambient/s1_bamboo_leaf_3.webp",
+      "w": 414,
+      "h": 197
+     },
+     {
+      "path": "fx_ambient/s1_bamboo_leaf_4.webp",
+      "w": 315,
+      "h": 353
+     },
+     {
+      "path": "fx_ambient/s1_bamboo_leaf_5.webp",
+      "w": 130,
+      "h": 384
+     },
+     {
+      "path": "fx_ambient/s1_bamboo_leaf_6.webp",
+      "w": 395,
+      "h": 254
+     }
+    ],
+    "source": "amb_s1_bamboo_leaf.try1.png"
+   },
+   {
+    "name": "s1_smoke",
+    "use": "第一關炊煙（4 格：小→大、越來越淡）",
+    "frames": [
+     {
+      "path": "fx_ambient/s1_smoke_1.webp",
+      "w": 182,
+      "h": 241
+     },
+     {
+      "path": "fx_ambient/s1_smoke_2.webp",
+      "w": 292,
+      "h": 411
+     },
+     {
+      "path": "fx_ambient/s1_smoke_3.webp",
+      "w": 458,
+      "h": 559
+     },
+     {
+      "path": "fx_ambient/s1_smoke_4.webp",
+      "w": 519,
+      "h": 629
+     }
+    ],
+    "source": "amb_s1_smoke.try1.png"
+   }
+  ],
+  "s2": [
+   {
+    "name": "s2_firework",
+    "use": "第二關煙火（4 種綻放，程式放大＋淡出）",
+    "frames": [
+     {
+      "path": "fx_ambient/s2_firework_1.webp",
+      "w": 551,
+      "h": 501
+     },
+     {
+      "path": "fx_ambient/s2_firework_2.webp",
+      "w": 527,
+      "h": 496
+     },
+     {
+      "path": "fx_ambient/s2_firework_3.webp",
+      "w": 534,
+      "h": 499
+     },
+     {
+      "path": "fx_ambient/s2_firework_4.webp",
+      "w": 515,
+      "h": 506
+     }
+    ],
+    "source": "amb_s2_firework.try1.png"
+   },
+   {
+    "name": "s2_lantern",
+    "use": "第二關飄的燈籠（河燈、紅燈籠、天燈）",
+    "frames": [
+     {
+      "path": "fx_ambient/s2_lantern_1.webp",
+      "w": 415,
+      "h": 312
+     },
+     {
+      "path": "fx_ambient/s2_lantern_2.webp",
+      "w": 338,
+      "h": 523
+     },
+     {
+      "path": "fx_ambient/s2_lantern_3.webp",
+      "w": 400,
+      "h": 547
+     }
+    ],
+    "source": "amb_s2_lantern.try1.png"
+   }
+  ],
+  "s3": [
+   {
+    "name": "s3_steam",
+    "use": "第三關蒸氣（4 格：小→大、越來越淡）",
+    "frames": [
+     {
+      "path": "fx_ambient/s3_steam_1.webp",
+      "w": 244,
+      "h": 144
+     },
+     {
+      "path": "fx_ambient/s3_steam_2.webp",
+      "w": 393,
+      "h": 258
+     },
+     {
+      "path": "fx_ambient/s3_steam_3.webp",
+      "w": 498,
+      "h": 381
+     },
+     {
+      "path": "fx_ambient/s3_steam_4.webp",
+      "w": 572,
+      "h": 458
+     }
+    ],
+    "source": "amb_s3_steam.try1.png"
+   },
+   {
+    "name": "s3_lightning",
+    "use": "第三關閃電（3 種，閃一下就消失）",
+    "frames": [
+     {
+      "path": "fx_ambient/s3_lightning_1.webp",
+      "w": 409,
+      "h": 1032
+     },
+     {
+      "path": "fx_ambient/s3_lightning_2.webp",
+      "w": 380,
+      "h": 1032
+     },
+     {
+      "path": "fx_ambient/s3_lightning_3.webp",
+      "w": 368,
+      "h": 1032
+     }
+    ],
+    "source": "amb_s3_lightning.try1.png"
+   },
+   {
+    "name": "s3_rain",
+    "use": "第三關雨（前 3 個雨絲、後 2 個落地水花）",
+    "frames": [
+     {
+      "path": "fx_ambient/s3_rain_1.webp",
+      "w": 276,
+      "h": 523
+     },
+     {
+      "path": "fx_ambient/s3_rain_2.webp",
+      "w": 201,
+      "h": 389
+     },
+     {
+      "path": "fx_ambient/s3_rain_3.webp",
+      "w": 178,
+      "h": 326
+     },
+     {
+      "path": "fx_ambient/s3_rain_4.webp",
+      "w": 249,
+      "h": 161
+     },
+     {
+      "path": "fx_ambient/s3_rain_5.webp",
+      "w": 273,
+      "h": 211
+     }
+    ],
+    "source": "amb_s3_rain.try1.png"
+   }
+  ]
+ },
+ "hit_spark": {
+  "path": "fx/hit_spark.webp",
+  "w": 335,
+  "h": 309,
+  "use": "打中火花",
+  "center": [
+   167,
+   154
+  ],
+  "source": "fx_misc.try1.png"
+ },
+ "horoku": {
+  "path": "fx/horoku.webp",
+  "w": 303,
+  "h": 406,
+  "use": "焙烙玉：圓形陶罐炸彈",
+  "center": [
+   151,
+   203
+  ],
+  "source": "fx2_props.try2.png"
+ },
+ "kunai": {
+  "path": "fx/kunai.webp",
+  "w": 440,
+  "h": 126,
+  "use": "H 苦無連射的子彈",
+  "center": [
+   220,
+   63
+  ],
+  "source": "fx_weapons.try1.png",
+  "facing": "right"
+ },
+ "kusarigama_chain": {
+  "path": "fx/kusarigama_chain.webp",
+  "w": 2099,
+  "h": 236,
+  "use": "鎖鎌鏈條一段（可橫向重複拼接／拉長，右端接鐮刀）",
+  "center": [
+   1049,
+   118
+  ],
+  "source": "fx2_stretch.try1.png",
+  "facing": "right",
+  "origin": "left-middle",
+  "stretchX": [
+   0,
+   1950
+  ],
+  "note": "左端是鏈條斷面（接手）、右端約 1950 以後是鐵環，拉長時只拉 stretchX 這段，鐵環保持原寬"
+ },
+ "kusarigama_sickle": {
+  "path": "fx/kusarigama_sickle.webp",
+  "w": 552,
+  "h": 253,
+  "use": "L 鎖鎌：鐮刀頭（鏈子另一端）",
+  "center": [
+   276,
+   126
+  ],
+  "source": "fx2_props.try2.png"
+ },
+ "lightning": {
+  "path": "fx/lightning.webp",
+  "w": 2180,
+  "h": 248,
+  "use": "L 雷遁·紫電（左端接手、往右，可橫向拉長）",
+  "center": [
+   1090,
+   124
+  ],
+  "source": "fx_beams.try1.png",
+  "facing": "right",
+  "origin": "left-middle",
+  "stretchX": [
+   150,
+   2000
+  ],
+  "note": "整條粗細平均，可整張橫向拉長或只拉 stretchX"
+ },
+ "mouse_fire_1": {
+  "path": "fx/mouse_fire_1.webp",
+  "w": 656,
+  "h": 486,
+  "use": "鼠火（跑步姿勢 1）",
+  "center": [
+   328,
+   243
+  ],
+  "source": "fx2_mouse.try1.png",
+  "facing": "right",
+  "anchor": "bottom-center"
+ },
+ "mouse_fire_2": {
+  "path": "fx/mouse_fire_2.webp",
+  "w": 757,
+  "h": 512,
+  "use": "鼠火（跑步姿勢 2）",
+  "center": [
+   378,
+   256
+  ],
+  "source": "fx2_mouse.try1.png",
+  "facing": "right",
+  "anchor": "bottom-center"
+ },
+ "needle": {
+  "path": "fx/needle.webp",
+  "w": 423,
+  "h": 46,
+  "use": "S 散針的一根",
+  "center": [
+   211,
+   23
+  ],
+  "source": "fx_weapons.try1.png",
+  "facing": "right"
+ },
+ "npc_calico_happy": {
+  "path": "npc/calico_happy.webp",
+  "w": 684,
+  "h": 761,
+  "use": "被救後揮手的村貓（三花）；腳底＝圖底",
+  "center": [
+   342,
+   380
+  ],
+  "source": "npc_calico.try1.png",
+  "facing": "left",
+  "anchor": "bottom-center"
+ },
+ "npc_calico_tied": {
+  "path": "npc/calico_tied.webp",
+  "w": 635,
+  "h": 760,
+  "use": "被綁的村貓（三花），綁在木樁上；腳底＝圖底",
+  "center": [
+   317,
+   380
+  ],
+  "source": "npc_calico.try1.png",
+  "facing": "left",
+  "anchor": "bottom-center"
+ },
+ "npc_grey_happy": {
+  "path": "npc/grey_happy.webp",
+  "w": 608,
+  "h": 777,
+  "use": "被救後揮手的村貓（灰虎斑）；腳底＝圖底",
+  "center": [
+   304,
+   388
+  ],
+  "source": "npc_grey.try1.png",
+  "facing": "left",
+  "anchor": "bottom-center"
+ },
+ "npc_grey_tied": {
+  "path": "npc/grey_tied.webp",
+  "w": 566,
+  "h": 777,
+  "use": "被綁的村貓（灰虎斑），綁在木樁上；腳底＝圖底",
+  "center": [
+   283,
+   388
+  ],
+  "source": "npc_grey.try1.png",
+  "facing": "left",
+  "anchor": "bottom-center"
+ },
+ "npc_tuxedo_happy": {
+  "path": "npc/tuxedo_happy.webp",
+  "w": 619,
+  "h": 767,
+  "use": "被救後揮手的村貓（黑白賓士）；腳底＝圖底",
+  "center": [
+   309,
+   383
+  ],
+  "source": "npc_tuxedo.try1.png",
+  "facing": "left",
+  "anchor": "bottom-center"
+ },
+ "npc_tuxedo_tied": {
+  "path": "npc/tuxedo_tied.webp",
+  "w": 619,
+  "h": 761,
+  "use": "被綁的村貓（黑白賓士），綁在木樁上；腳底＝圖底",
+  "center": [
+   309,
+   380
+  ],
+  "source": "npc_tuxedo.try1.png",
+  "facing": "left",
+  "anchor": "bottom-center"
+ },
+ "panels": {
+  "_說明": "連續長卷背景（tools/gen_panels.py）。每關分四層，由後往前：far（天空＋最遠的山雲，不透明）→ midfar（遠方城鎮森林山寨，上方透明）→ mid（近處建築，天空透明，細節最多）→ 角色與地形 → fore（前景單件，透明）。far／midfar／mid 的 items 照順序由左到右緊貼著排：第 i 張放在該層的 x＝items[i].x（已累加好的整數；請畫在整數像素上以免出現細縫），圖高都是 720＝畫面高、圖頂貼齊畫面頂。圖層位移＝鏡頭 x × rate；rate 已算成「關卡走到底時每一層剛好捲到自己的最右端」（以 mid 0.55 為準，worldLength＝那樣算出的關卡總長；關卡若更長，就把 far／midfar 的 rate 照 (totalW-1280)/(關卡長-1280) 重算）。mid 下方約 200 像素是較暗的地面帶，地形蓋在上面；第三關 mid_04～06 是工廠室內、整張不透明（會把後兩層蓋住）。fore 是單件前景，由關卡自己擺（anchor＝貼畫面頂或底），建議捲動速率 1.2～1.4，偶爾掠過畫面、不要擋主角太久。keptDiff／seamRms 只是接縫檢查數字。",
+  "s1": {
+   "far": {
+    "totalW": 5040,
+    "items": [
+     {
+      "path": "bg/s1/far_01.webp",
+      "x": 0,
+      "w": 1680,
+      "h": 720,
+      "scene": "金黃黃昏",
+      "source": "s1_far_01.try1.png"
+     },
+     {
+      "path": "bg/s1/far_02.webp",
+      "x": 1680,
+      "w": 1680,
+      "h": 720,
+      "scene": "夕陽落下",
+      "source": "s1_far_02.try1.png"
+     },
+     {
+      "path": "bg/s1/far_03.webp",
+      "x": 3360,
+      "w": 1680,
+      "h": 720,
+      "scene": "暮色星空",
+      "source": "s1_far_03.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 2.11,
+      "seamRms": 3.5
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 4.9,
+      "seamRms": 8.6
+     }
+    ],
+    "rate": 0.1886
+   },
+   "midfar": {
+    "totalW": 6480,
+    "items": [
+     {
+      "path": "bg/s1/midfar_01.webp",
+      "x": 0,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方山村與梯田",
+      "source": "s1_midfar_01.try1.png"
+     },
+     {
+      "path": "bg/s1/midfar_02.webp",
+      "x": 1620,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方河谷與竹山",
+      "source": "s1_midfar_02.try1.png"
+     },
+     {
+      "path": "bg/s1/midfar_03.webp",
+      "x": 3240,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方竹海",
+      "source": "s1_midfar_03.try1.png"
+     },
+     {
+      "path": "bg/s1/midfar_04.webp",
+      "x": 4860,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方山崖上的山賊寨",
+      "source": "s1_midfar_04.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 2.96,
+      "seamRms": 5.3
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 2.86,
+      "seamRms": 4.6
+     },
+     {
+      "between": [
+       3,
+       4
+      ],
+      "keptDiff": 1.94,
+      "seamRms": 3.3
+     }
+    ],
+    "rate": 0.2609
+   },
+   "mid": {
+    "totalW": 12240,
+    "items": [
+     {
+      "path": "bg/s1/mid_01.webp",
+      "x": 0,
+      "w": 1530,
+      "h": 720,
+      "scene": "村口石燈籠與梯田",
+      "source": "s1_mid_01.try1.png"
+     },
+     {
+      "path": "bg/s1/mid_02.webp",
+      "x": 1530,
+      "w": 1530,
+      "h": 720,
+      "scene": "民家屋簷與曬魚架",
+      "source": "s1_mid_02.try1.png"
+     },
+     {
+      "path": "bg/s1/mid_03.webp",
+      "x": 3060,
+      "w": 1530,
+      "h": 720,
+      "scene": "小市集",
+      "source": "s1_mid_03.try1.png"
+     },
+     {
+      "path": "bg/s1/mid_04.webp",
+      "x": 4590,
+      "w": 1530,
+      "h": 720,
+      "scene": "石橋與溪",
+      "source": "s1_mid_04.try1.png"
+     },
+     {
+      "path": "bg/s1/mid_05.webp",
+      "x": 6120,
+      "w": 1530,
+      "h": 720,
+      "scene": "竹林入口",
+      "source": "s1_mid_05.try1.png"
+     },
+     {
+      "path": "bg/s1/mid_06.webp",
+      "x": 7650,
+      "w": 1530,
+      "h": 720,
+      "scene": "竹林深處",
+      "source": "s1_mid_06.try1.png"
+     },
+     {
+      "path": "bg/s1/mid_07.webp",
+      "x": 9180,
+      "w": 1530,
+      "h": 720,
+      "scene": "山賊寨外木柵與瞭望台",
+      "source": "s1_mid_07.try2.png"
+     },
+     {
+      "path": "bg/s1/mid_08.webp",
+      "x": 10710,
+      "w": 1530,
+      "h": 720,
+      "scene": "山賊寨大門與營火廣場",
+      "source": "s1_mid_08.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 6.52,
+      "seamRms": 8.6
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 6.62,
+      "seamRms": 9.1
+     },
+     {
+      "between": [
+       3,
+       4
+      ],
+      "keptDiff": 6.04,
+      "seamRms": 7.9
+     },
+     {
+      "between": [
+       4,
+       5
+      ],
+      "keptDiff": 5.94,
+      "seamRms": 5.8
+     },
+     {
+      "between": [
+       5,
+       6
+      ],
+      "keptDiff": 5.31,
+      "seamRms": 5.2
+     },
+     {
+      "between": [
+       6,
+       7
+      ],
+      "keptDiff": 5.03,
+      "seamRms": 5.1
+     },
+     {
+      "between": [
+       7,
+       8
+      ],
+      "keptDiff": 4.5,
+      "seamRms": 5.6
+     }
+    ],
+    "rate": 0.55
+   },
+   "worldLength": 21207,
+   "fore": {
+    "rate": 1.3,
+    "items": [
+     {
+      "path": "bg/s1/fore_01.webp",
+      "w": 582,
+      "h": 900,
+      "name": "竹幹叢",
+      "anchor": "bottom",
+      "source": "s1_fore_01.try1.png",
+      "use": "從畫面底往上長、上端超出畫面頂（圖底貼畫面底）"
+     },
+     {
+      "path": "bg/s1/fore_02.webp",
+      "w": 537,
+      "h": 900,
+      "name": "松樹幹",
+      "anchor": "bottom",
+      "source": "s1_fore_02.try1.png",
+      "use": "從畫面底往上長、上端超出畫面頂（圖底貼畫面底）"
+     },
+     {
+      "path": "bg/s1/fore_03.webp",
+      "w": 862,
+      "h": 330,
+      "name": "木柵欄",
+      "anchor": "bottom",
+      "source": "s1_fore_03.try1.png",
+      "use": "擺在畫面最下方（圖底貼畫面底），擋在地面前緣"
+     },
+     {
+      "path": "bg/s1/fore_04.webp",
+      "w": 354,
+      "h": 520,
+      "name": "晾衣竹竿",
+      "anchor": "top",
+      "source": "s1_fore_04.try1.png",
+      "use": "從畫面頂垂下（圖頂貼畫面頂）"
+     },
+     {
+      "path": "bg/s1/fore_05.webp",
+      "w": 549,
+      "h": 330,
+      "name": "芒草叢",
+      "anchor": "bottom",
+      "source": "s1_fore_05.try1.png",
+      "use": "擺在畫面最下方（圖底貼畫面底），擋在地面前緣"
+     },
+     {
+      "path": "bg/s1/fore_06.webp",
+      "w": 622,
+      "h": 330,
+      "name": "山賊尖木樁",
+      "anchor": "bottom",
+      "source": "s1_fore_06.try1.png",
+      "use": "擺在畫面最下方（圖底貼畫面底），擋在地面前緣"
+     }
+    ]
+   }
+  },
+  "s2": {
+   "far": {
+    "totalW": 5040,
+    "items": [
+     {
+      "path": "bg/s2/far_01.webp",
+      "x": 0,
+      "w": 1680,
+      "h": 720,
+      "scene": "煙火夜空",
+      "source": "s2_far_01.try1.png"
+     },
+     {
+      "path": "bg/s2/far_02.webp",
+      "x": 1680,
+      "w": 1680,
+      "h": 720,
+      "scene": "滿月",
+      "source": "s2_far_02.try1.png"
+     },
+     {
+      "path": "bg/s2/far_03.webp",
+      "x": 3360,
+      "w": 1680,
+      "h": 720,
+      "scene": "深夜雲與星",
+      "source": "s2_far_03.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 3.81,
+      "seamRms": 3.4
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 6.07,
+      "seamRms": 9.7
+     }
+    ],
+    "rate": 0.1886
+   },
+   "midfar": {
+    "totalW": 6480,
+    "items": [
+     {
+      "path": "bg/s2/midfar_01.webp",
+      "x": 0,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方祭典小鎮",
+      "source": "s2_midfar_01.try1.png"
+     },
+     {
+      "path": "bg/s2/midfar_02.webp",
+      "x": 1620,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方河岸與長橋",
+      "source": "s2_midfar_02.try1.png"
+     },
+     {
+      "path": "bg/s2/midfar_03.webp",
+      "x": 3240,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方沼澤",
+      "source": "s2_midfar_03.try1.png"
+     },
+     {
+      "path": "bg/s2/midfar_04.webp",
+      "x": 4860,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方神社山",
+      "source": "s2_midfar_04.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 3.06,
+      "seamRms": 4.6
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 2.2,
+      "seamRms": 5.4
+     },
+     {
+      "between": [
+       3,
+       4
+      ],
+      "keptDiff": 1.86,
+      "seamRms": 3.9
+     }
+    ],
+    "rate": 0.2609
+   },
+   "mid": {
+    "totalW": 12240,
+    "items": [
+     {
+      "path": "bg/s2/mid_01.webp",
+      "x": 0,
+      "w": 1530,
+      "h": 720,
+      "scene": "夜祭入口鳥居",
+      "source": "s2_mid_01.try1.png"
+     },
+     {
+      "path": "bg/s2/mid_02.webp",
+      "x": 1530,
+      "w": 1530,
+      "h": 720,
+      "scene": "攤位街",
+      "source": "s2_mid_02.try1.png"
+     },
+     {
+      "path": "bg/s2/mid_03.webp",
+      "x": 3060,
+      "w": 1530,
+      "h": 720,
+      "scene": "煙火廣場",
+      "source": "s2_mid_03.try1.png"
+     },
+     {
+      "path": "bg/s2/mid_04.webp",
+      "x": 4590,
+      "w": 1530,
+      "h": 720,
+      "scene": "河堤",
+      "source": "s2_mid_04.try1.png"
+     },
+     {
+      "path": "bg/s2/mid_05.webp",
+      "x": 6120,
+      "w": 1530,
+      "h": 720,
+      "scene": "木橋",
+      "source": "s2_mid_05.try1.png"
+     },
+     {
+      "path": "bg/s2/mid_06.webp",
+      "x": 7650,
+      "w": 1530,
+      "h": 720,
+      "scene": "河童的沼澤",
+      "source": "s2_mid_06.try1.png"
+     },
+     {
+      "path": "bg/s2/mid_07.webp",
+      "x": 9180,
+      "w": 1530,
+      "h": 720,
+      "scene": "神社石階",
+      "source": "s2_mid_07.try1.png"
+     },
+     {
+      "path": "bg/s2/mid_08.webp",
+      "x": 10710,
+      "w": 1530,
+      "h": 720,
+      "scene": "神社本殿",
+      "source": "s2_mid_08.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 5.96,
+      "seamRms": 7.3
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 4.56,
+      "seamRms": 5.2
+     },
+     {
+      "between": [
+       3,
+       4
+      ],
+      "keptDiff": 5.87,
+      "seamRms": 6.4
+     },
+     {
+      "between": [
+       4,
+       5
+      ],
+      "keptDiff": 6.34,
+      "seamRms": 8.0
+     },
+     {
+      "between": [
+       5,
+       6
+      ],
+      "keptDiff": 4.65,
+      "seamRms": 6.6
+     },
+     {
+      "between": [
+       6,
+       7
+      ],
+      "keptDiff": 4.33,
+      "seamRms": 6.6
+     },
+     {
+      "between": [
+       7,
+       8
+      ],
+      "keptDiff": 5.64,
+      "seamRms": 6.6
+     }
+    ],
+    "rate": 0.55
+   },
+   "worldLength": 21207,
+   "fore": {
+    "rate": 1.3,
+    "items": [
+     {
+      "path": "bg/s2/fore_01.webp",
+      "w": 789,
+      "h": 520,
+      "name": "燈籠串",
+      "anchor": "top",
+      "source": "s2_fore_01.try1.png",
+      "use": "從畫面頂垂下（圖頂貼畫面頂）"
+     },
+     {
+      "path": "bg/s2/fore_02.webp",
+      "w": 385,
+      "h": 900,
+      "name": "鳥居柱",
+      "anchor": "bottom",
+      "source": "s2_fore_02.try1.png",
+      "use": "從畫面底往上長、上端超出畫面頂（圖底貼畫面底）"
+     },
+     {
+      "path": "bg/s2/fore_03.webp",
+      "w": 622,
+      "h": 330,
+      "name": "朱紅橋欄杆",
+      "anchor": "bottom",
+      "source": "s2_fore_03.try1.png",
+      "use": "擺在畫面最下方（圖底貼畫面底），擋在地面前緣"
+     },
+     {
+      "path": "bg/s2/fore_04.webp",
+      "w": 534,
+      "h": 330,
+      "name": "蘆葦香蒲",
+      "anchor": "bottom",
+      "source": "s2_fore_04.try1.png",
+      "use": "擺在畫面最下方（圖底貼畫面底），擋在地面前緣"
+     },
+     {
+      "path": "bg/s2/fore_05.webp",
+      "w": 495,
+      "h": 520,
+      "name": "垂下的楓枝",
+      "anchor": "top",
+      "source": "s2_fore_05.try1.png",
+      "use": "從畫面頂垂下（圖頂貼畫面頂）"
+     },
+     {
+      "path": "bg/s2/fore_06.webp",
+      "w": 426,
+      "h": 760,
+      "name": "祭典布簾",
+      "anchor": "bottom",
+      "source": "s2_fore_06.try1.png",
+      "use": "從畫面底往上長、上端超出畫面頂（圖底貼畫面底）"
+     }
+    ]
+   }
+  },
+  "s3": {
+   "far": {
+    "totalW": 5040,
+    "items": [
+     {
+      "path": "bg/s3/far_01.webp",
+      "x": 0,
+      "w": 1680,
+      "h": 720,
+      "scene": "煙霧黃昏",
+      "source": "s3_far_01.try1.png"
+     },
+     {
+      "path": "bg/s3/far_02.webp",
+      "x": 1680,
+      "w": 1680,
+      "h": 720,
+      "scene": "暴風雲聚集",
+      "source": "s3_far_02.try1.png"
+     },
+     {
+      "path": "bg/s3/far_03.webp",
+      "x": 3360,
+      "w": 1680,
+      "h": 720,
+      "scene": "雷雨",
+      "source": "s3_far_03.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 2.74,
+      "seamRms": 4.1
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 3.4,
+      "seamRms": 5.0
+     }
+    ],
+    "rate": 0.1886
+   },
+   "midfar": {
+    "totalW": 6480,
+    "items": [
+     {
+      "path": "bg/s3/midfar_01.webp",
+      "x": 0,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方機關城下町",
+      "source": "s3_midfar_01.try1.png"
+     },
+     {
+      "path": "bg/s3/midfar_02.webp",
+      "x": 1620,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方城牆與城門塔",
+      "source": "s3_midfar_02.try1.png"
+     },
+     {
+      "path": "bg/s3/midfar_03.webp",
+      "x": 3240,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方工廠群",
+      "source": "s3_midfar_03.try1.png"
+     },
+     {
+      "path": "bg/s3/midfar_04.webp",
+      "x": 4860,
+      "w": 1620,
+      "h": 720,
+      "scene": "遠方天守閣",
+      "source": "s3_midfar_04.try1.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 3.69,
+      "seamRms": 5.0
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 2.19,
+      "seamRms": 3.5
+     },
+     {
+      "between": [
+       3,
+       4
+      ],
+      "keptDiff": 3.26,
+      "seamRms": 4.9
+     }
+    ],
+    "rate": 0.2609
+   },
+   "mid": {
+    "totalW": 12240,
+    "items": [
+     {
+      "path": "bg/s3/mid_01.webp",
+      "x": 0,
+      "w": 1530,
+      "h": 720,
+      "scene": "城下石牆",
+      "source": "s3_mid_01.try1.png"
+     },
+     {
+      "path": "bg/s3/mid_02.webp",
+      "x": 1530,
+      "w": 1530,
+      "h": 720,
+      "scene": "齒輪城門",
+      "source": "s3_mid_02.try1.png"
+     },
+     {
+      "path": "bg/s3/mid_03.webp",
+      "x": 3060,
+      "w": 1530,
+      "h": 720,
+      "scene": "蒸汽管走廊",
+      "source": "s3_mid_03.try1.png"
+     },
+     {
+      "path": "bg/s3/mid_04.webp",
+      "x": 4590,
+      "w": 1530,
+      "h": 720,
+      "scene": "輸送帶工廠",
+      "source": "s3_mid_04.try1.png"
+     },
+     {
+      "path": "bg/s3/mid_05.webp",
+      "x": 6120,
+      "w": 1530,
+      "h": 720,
+      "scene": "鍛爐",
+      "source": "s3_mid_05.try1.png"
+     },
+     {
+      "path": "bg/s3/mid_06.webp",
+      "x": 7650,
+      "w": 1530,
+      "h": 720,
+      "scene": "升降機井",
+      "source": "s3_mid_06.try2.png"
+     },
+     {
+      "path": "bg/s3/mid_07.webp",
+      "x": 9180,
+      "w": 1530,
+      "h": 720,
+      "scene": "天守閣樓梯",
+      "source": "s3_mid_07.try1.png"
+     },
+     {
+      "path": "bg/s3/mid_08.webp",
+      "x": 10710,
+      "w": 1530,
+      "h": 720,
+      "scene": "暴風雨屋頂",
+      "source": "s3_mid_08.try3.png"
+     }
+    ],
+    "seams": [
+     {
+      "between": [
+       1,
+       2
+      ],
+      "keptDiff": 5.65,
+      "seamRms": 6.5
+     },
+     {
+      "between": [
+       2,
+       3
+      ],
+      "keptDiff": 6.93,
+      "seamRms": 5.7
+     },
+     {
+      "between": [
+       3,
+       4
+      ],
+      "keptDiff": 2.94,
+      "seamRms": 3.1
+     },
+     {
+      "between": [
+       4,
+       5
+      ],
+      "keptDiff": 3.18,
+      "seamRms": 3.5
+     },
+     {
+      "between": [
+       5,
+       6
+      ],
+      "keptDiff": 3.61,
+      "seamRms": 3.5
+     },
+     {
+      "between": [
+       6,
+       7
+      ],
+      "keptDiff": 3.68,
+      "seamRms": 2.6
+     },
+     {
+      "between": [
+       7,
+       8
+      ],
+      "keptDiff": 10.36,
+      "seamRms": 5.8
+     }
+    ],
+    "rate": 0.55
+   },
+   "worldLength": 21207,
+   "fore": {
+    "rate": 1.3,
+    "items": [
+     {
+      "path": "bg/s3/fore_01.webp",
+      "w": 142,
+      "h": 520,
+      "name": "吊鉤鐵鍊",
+      "anchor": "top",
+      "source": "s3_fore_01.try1.png",
+      "use": "從畫面頂垂下（圖頂貼畫面頂）"
+     },
+     {
+      "path": "bg/s3/fore_02.webp",
+      "w": 379,
+      "h": 900,
+      "name": "直立蒸汽管",
+      "anchor": "bottom",
+      "source": "s3_fore_02.try1.png",
+      "use": "從畫面底往上長、上端超出畫面頂（圖底貼畫面底）"
+     },
+     {
+      "path": "bg/s3/fore_03.webp",
+      "w": 835,
+      "h": 330,
+      "name": "鐵欄杆",
+      "anchor": "bottom",
+      "source": "s3_fore_03.try1.png",
+      "use": "擺在畫面最下方（圖底貼畫面底），擋在地面前緣"
+     },
+     {
+      "path": "bg/s3/fore_04.webp",
+      "w": 646,
+      "h": 330,
+      "name": "大齒輪（下半在畫面外）",
+      "anchor": "bottom",
+      "source": "s3_fore_04.try1.png",
+      "use": "擺在畫面最下方（圖底貼畫面底），擋在地面前緣"
+     },
+     {
+      "path": "bg/s3/fore_05.webp",
+      "w": 273,
+      "h": 520,
+      "name": "破布旗",
+      "anchor": "top",
+      "source": "s3_fore_05.try1.png",
+      "use": "從畫面頂垂下（圖頂貼畫面頂）"
+     },
+     {
+      "path": "bg/s3/fore_06.webp",
+      "w": 262,
+      "h": 900,
+      "name": "鋼樑柱",
+      "anchor": "bottom",
+      "source": "s3_fore_06.try1.png",
+      "use": "從畫面底往上長、上端超出畫面頂（圖底貼畫面底）"
+     }
+    ]
+   }
+  }
+ },
+ "paper_crane": {
+  "path": "fx/paper_crane.webp",
+  "w": 403,
+  "h": 336,
+  "use": "C 式神紙鶴",
+  "center": [
+   201,
+   168
+  ],
+  "source": "fx_weapons.try1.png",
+  "facing": "right"
+ },
+ "poison_puff": {
+  "path": "fx/poison_puff.webp",
+  "w": 405,
+  "h": 456,
+  "use": "中毒狀態的紫色小泡泡",
+  "center": [
+   202,
+   228
+  ],
+  "source": "fx2_smoke.try1.png"
+ },
+ "props_s1_bamboo": {
+  "path": "props/s1_bamboo.webp",
+  "w": 406,
+  "h": 721,
+  "use": "第一關前景：竹叢（高）",
+  "center": [
+   203,
+   360
+  ],
+  "source": "props_s1.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s1_campfire": {
+  "path": "props/s1_campfire.webp",
+  "w": 366,
+  "h": 408,
+  "use": "第一關前景：營火",
+  "center": [
+   183,
+   204
+  ],
+  "source": "props_s1.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s1_fish_rack": {
+  "path": "props/s1_fish_rack.webp",
+  "w": 487,
+  "h": 403,
+  "use": "第一關前景：曬魚架",
+  "center": [
+   243,
+   201
+  ],
+  "source": "props_s1.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s1_palisade": {
+  "path": "props/s1_palisade.webp",
+  "w": 429,
+  "h": 385,
+  "use": "第一關前景：山賊寨木柵",
+  "center": [
+   214,
+   192
+  ],
+  "source": "props_s1.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s2_food_stall": {
+  "path": "props/s2_food_stall.webp",
+  "w": 507,
+  "h": 479,
+  "use": "第二關前景：祭典攤位",
+  "center": [
+   253,
+   239
+  ],
+  "source": "props_s2.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s2_lantern_string": {
+  "path": "props/s2_lantern_string.webp",
+  "w": 631,
+  "h": 269,
+  "use": "第二關前景：燈籠串（掛在畫面上方）",
+  "center": [
+   315,
+   134
+  ],
+  "source": "props_s2.try1.png",
+  "anchor": "top-center"
+ },
+ "props_s2_stone_lantern": {
+  "path": "props/s2_stone_lantern.webp",
+  "w": 226,
+  "h": 418,
+  "use": "第二關前景：石燈籠",
+  "center": [
+   113,
+   209
+  ],
+  "source": "props_s2.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s2_torii": {
+  "path": "props/s2_torii.webp",
+  "w": 618,
+  "h": 635,
+  "use": "第二關前景：鳥居",
+  "center": [
+   309,
+   317
+  ],
+  "source": "props_s2.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s3_chain_hook": {
+  "path": "props/s3_chain_hook.webp",
+  "w": 181,
+  "h": 669,
+  "use": "第三關前景：吊鉤鐵鍊（從畫面上方垂下）",
+  "center": [
+   90,
+   334
+  ],
+  "source": "props_s3.try1.png",
+  "anchor": "top-center"
+ },
+ "props_s3_forge": {
+  "path": "props/s3_forge.webp",
+  "w": 389,
+  "h": 577,
+  "use": "第三關前景：鍛爐",
+  "center": [
+   194,
+   288
+  ],
+  "source": "props_s3.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s3_gear": {
+  "path": "props/s3_gear.webp",
+  "w": 517,
+  "h": 526,
+  "use": "第三關前景：大齒輪（可旋轉）",
+  "center": [
+   258,
+   263
+  ],
+  "source": "props_s3.try1.png",
+  "anchor": "bottom-center"
+ },
+ "props_s3_steam_pipe": {
+  "path": "props/s3_steam_pipe.webp",
+  "w": 558,
+  "h": 542,
+  "use": "第三關前景：蒸汽管",
+  "center": [
+   279,
+   271
+  ],
+  "source": "props_s3.try1.png",
+  "anchor": "bottom-center"
+ },
+ "s1_1_far": {
+  "path": "bg/s1_1_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第一關·黃昏山村 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 2.27,
+   "tiled": 0.83
+  },
+  "source": "s1_1_far.try1.png"
+ },
+ "s1_1_ground": {
+  "path": "bg/s1_1_ground.webp",
+  "w": 1235,
+  "h": 156,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 32,
+  "use": "第一關·黃昏山村 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.84,
+  "seam": {
+   "raw": 3.58,
+   "tiled": 0.65
+  },
+  "source": "s1_1_ground.try2.png"
+ },
+ "s1_2_far": {
+  "path": "bg/s1_2_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第一關·竹林 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 6.08,
+   "tiled": 1.58
+  },
+  "source": "s1_2_far.try1.png"
+ },
+ "s1_2_ground": {
+  "path": "bg/s1_2_ground.webp",
+  "w": 1233,
+  "h": 196,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 72,
+  "use": "第一關·竹林 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.596,
+  "seam": {
+   "raw": 2.94,
+   "tiled": 0.31
+  },
+  "source": "s1_2_ground.try1.png"
+ },
+ "s1_3_far": {
+  "path": "bg/s1_3_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第一關·山賊寨 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 3.51,
+   "tiled": 0.92
+  },
+  "source": "s1_3_far.try1.png"
+ },
+ "s1_3_ground": {
+  "path": "bg/s1_3_ground.webp",
+  "w": 1240,
+  "h": 169,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 45,
+  "use": "第一關·山賊寨 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.604,
+  "seam": {
+   "raw": 1.68,
+   "tiled": 0.99
+  },
+  "source": "s1_3_ground.try1.png"
+ },
+ "s2_1_far": {
+  "path": "bg/s2_1_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第二關·夜祭燈籠街 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 2.75,
+   "tiled": 1.34
+  },
+  "source": "s2_1_far.try2.png"
+ },
+ "s2_1_ground": {
+  "path": "bg/s2_1_ground.webp",
+  "w": 1009,
+  "h": 168,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 44,
+  "use": "第二關·夜祭燈籠街 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.775,
+  "seam": {
+   "raw": 5.2,
+   "tiled": 1.83
+  },
+  "source": "s2_1_ground.try1.png"
+ },
+ "s2_2_far": {
+  "path": "bg/s2_2_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第二關·河堤木橋 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 3.51,
+   "tiled": 1.52
+  },
+  "source": "s2_2_far.try1.png"
+ },
+ "s2_2_ground": {
+  "path": "bg/s2_2_ground.webp",
+  "w": 1017,
+  "h": 163,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 39,
+  "use": "第二關·河堤木橋 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.858,
+  "seam": {
+   "raw": 2.26,
+   "tiled": 1.62
+  },
+  "source": "s2_2_ground.try1.png"
+ },
+ "s2_3_far": {
+  "path": "bg/s2_3_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第二關·山頂神社 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 1.92,
+   "tiled": 0.97
+  },
+  "source": "s2_3_far.try1.png"
+ },
+ "s2_3_ground": {
+  "path": "bg/s2_3_ground.webp",
+  "w": 1280,
+  "h": 198,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 74,
+  "use": "第二關·山頂神社 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.812,
+  "seam": {
+   "raw": 3.87,
+   "tiled": 1.61
+  },
+  "source": "s2_3_ground.try1.png"
+ },
+ "s3_1_far": {
+  "path": "bg/s3_1_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第三關·機關城下 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 5.86,
+   "tiled": 1.23
+  },
+  "source": "s3_1_far.try1.png"
+ },
+ "s3_1_ground": {
+  "path": "bg/s3_1_ground.webp",
+  "w": 1189,
+  "h": 179,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 55,
+  "use": "第三關·機關城下 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 1.0,
+  "seam": {
+   "raw": 3.19,
+   "tiled": 2.37
+  },
+  "source": "s3_1_ground.try1.png"
+ },
+ "s3_2_far": {
+  "path": "bg/s3_2_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第三關·工廠內部 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 4.12,
+   "tiled": 2.1
+  },
+  "source": "s3_2_far.try1.png"
+ },
+ "s3_2_ground": {
+  "path": "bg/s3_2_ground.webp",
+  "w": 1357,
+  "h": 180,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 56,
+  "use": "第三關·工廠內部 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.839,
+  "seam": {
+   "raw": 4.19,
+   "tiled": 0.29
+  },
+  "source": "s3_2_ground.try1.png"
+ },
+ "s3_3_far": {
+  "path": "bg/s3_3_far.webp",
+  "w": 1412,
+  "h": 720,
+  "tile": true,
+  "use": "第三關·暴風雨天守閣頂 遠景（天空＋遠方景物），高 720，左右可無縫重複；地面帶蓋在它下方",
+  "seam": {
+   "raw": 2.83,
+   "tiled": 0.9
+  },
+  "source": "s3_3_far.try1.png"
+ },
+ "s3_3_ground": {
+  "path": "bg/s3_3_ground.webp",
+  "w": 1123,
+  "h": 155,
+  "tile": true,
+  "standPx": 124,
+  "surfaceY": 31,
+  "use": "第三關·暴風雨天守閣頂 地面帶（透明），圖底貼齊畫面底；腳踩的水平線在圖底往上 124 像素（= 畫面 y 596）",
+  "flatness": 0.68,
+  "seam": {
+   "raw": 1.38,
+   "tiled": 3.14
+  },
+  "source": "s3_3_ground.try1.png"
+ },
+ "shuriken": {
+  "path": "fx/shuriken.webp",
+  "w": 249,
+  "h": 250,
+  "use": "預設武器：手裏劍（旋轉用，中心＝圖中心）",
+  "center": [
+   124,
+   125
+  ],
+  "source": "fx_weapons.try1.png"
+ },
+ "smoke": {
+  "path": "fx/smoke.webp",
+  "w": 325,
+  "h": 266,
+  "use": "煙霧團（忍術煙、落地煙）",
+  "center": [
+   162,
+   133
+  ],
+  "source": "fx_misc.try1.png"
+ },
+ "smoke_ball": {
+  "path": "fx/smoke_ball.webp",
+  "w": 313,
+  "h": 314,
+  "use": "煙玉：丟出去的小黑球",
+  "center": [
+   156,
+   157
+  ],
+  "source": "fx2_smoke.try1.png"
+ },
+ "smoke_cloud_big": {
+  "path": "fx/smoke_cloud_big.webp",
+  "w": 857,
+  "h": 712,
+  "use": "煙玉炸開後放出的大煙團（隱身用）",
+  "center": [
+   428,
+   356
+  ],
+  "source": "fx2_smoke.try1.png"
+ },
+ "ui_ending": {
+  "path": "ui/ending.webp",
+  "w": 1080,
+  "h": 720,
+  "use": "結局圖：球球跟村貓們在天守閣頂看夕陽",
+  "source": "ui_ending.try1.png",
+  "note": "3:2 比例，放 1280x720 畫面時請等比放大到寬 1280 再上下裁切（主角們在下半部，裁上方天空）"
+ },
+ "ui_stage1_title": {
+  "path": "ui/stage1_title.webp",
+  "w": 1279,
+  "h": 720,
+  "use": "第 1 關的關卡標題圖（純圖，無文字；上方中間留空給程式疊關卡名）",
+  "source": "ui_stage1_title.try2.png"
+ },
+ "ui_stage2_title": {
+  "path": "ui/stage2_title.webp",
+  "w": 1279,
+  "h": 720,
+  "use": "第 2 關的關卡標題圖（純圖，無文字；上方中間留空給程式疊關卡名）",
+  "source": "ui_stage2_title.try2.png"
+ },
+ "ui_stage3_title": {
+  "path": "ui/stage3_title.webp",
+  "w": 1279,
+  "h": 720,
+  "use": "第 3 關的關卡標題圖（純圖，無文字；上方中間留空給程式疊關卡名）",
+  "source": "ui_stage3_title.try2.png"
+ },
+ "weapon_B": {
+  "path": "icons/weapon_B.webp",
+  "w": 359,
+  "h": 336,
+  "use": "掉落道具：B 吹箭",
+  "center": [
+   179,
+   168
+  ],
+  "source": "icons2.try3.png"
+ },
+ "weapon_C": {
+  "path": "icons/weapon_C.webp",
+  "w": 364,
+  "h": 352,
+  "use": "掉落道具：C 式神紙鶴",
+  "center": [
+   182,
+   176
+  ],
+  "source": "icons.try1.png"
+ },
+ "weapon_D": {
+  "path": "icons/weapon_D.webp",
+  "w": 356,
+  "h": 324,
+  "use": "掉落道具：D 毛球彈",
+  "center": [
+   178,
+   162
+  ],
+  "source": "icons2.try3.png"
+ },
+ "weapon_F": {
+  "path": "icons/weapon_F.webp",
+  "w": 358,
+  "h": 351,
+  "use": "掉落道具：F 火藥竹筒（新版，取代舊版火遁）",
+  "center": [
+   179,
+   175
+  ],
+  "source": "icons2.try3.png"
+ },
+ "weapon_F_old": {
+  "path": "icons/weapon_F_old.webp",
+  "w": 344,
+  "h": 345,
+  "use": "掉落道具：F 火遁·火龍（舊版，已被新忍具取代，保留備用）",
+  "center": [
+   172,
+   172
+  ],
+  "source": "icons.try1.png"
+ },
+ "weapon_H": {
+  "path": "icons/weapon_H.webp",
+  "w": 348,
+  "h": 330,
+  "use": "掉落道具：H 苦無連射",
+  "center": [
+   174,
+   165
+  ],
+  "source": "icons.try1.png"
+ },
+ "weapon_I": {
+  "path": "icons/weapon_I.webp",
+  "w": 372,
+  "h": 364,
+  "use": "掉落道具：I 鼠火（地走り）",
+  "center": [
+   186,
+   182
+  ],
+  "source": "icons2.try3.png"
+ },
+ "weapon_L": {
+  "path": "icons/weapon_L.webp",
+  "w": 375,
+  "h": 386,
+  "use": "掉落道具：L 鎖鎌（新版，取代舊版雷遁）",
+  "center": [
+   187,
+   193
+  ],
+  "source": "icons2.try3.png"
+ },
+ "weapon_L_old": {
+  "path": "icons/weapon_L_old.webp",
+  "w": 366,
+  "h": 393,
+  "use": "掉落道具：L 雷遁·紫電（舊版，已被新忍具取代，保留備用）",
+  "center": [
+   183,
+   196
+  ],
+  "source": "icons.try1.png"
+ },
+ "weapon_R": {
+  "path": "icons/weapon_R.webp",
+  "w": 347,
+  "h": 351,
+  "use": "掉落道具：R 風魔大手裏劍",
+  "center": [
+   173,
+   175
+  ],
+  "source": "icons.try1.png"
+ },
+ "weapon_S": {
+  "path": "icons/weapon_S.webp",
+  "w": 358,
+  "h": 355,
+  "use": "掉落道具：S 撒菱（新版，取代舊版散針）",
+  "center": [
+   179,
+   177
+  ],
+  "source": "icons2.try3.png"
+ },
+ "weapon_S_old": {
+  "path": "icons/weapon_S_old.webp",
+  "w": 353,
+  "h": 323,
+  "use": "掉落道具：S 散針（舊版，已被新忍具取代，保留備用）",
+  "center": [
+   176,
+   161
+  ],
+  "source": "icons.try1.png"
+ },
+ "weapon_bomb": {
+  "path": "icons/weapon_bomb.webp",
+  "w": 190,
+  "h": 350,
+  "use": "掉落道具：爆裂符 +10",
+  "center": [
+   95,
+   175
+  ],
+  "source": "icon_bomb.try1.png"
+ },
+ "weapon_bomb_alt": {
+  "path": "icons/weapon_bomb_alt.webp",
+  "w": 359,
+  "h": 370,
+  "use": "掉落道具：爆裂符（拼版版本，畫成炸藥棒，備用）",
+  "center": [
+   179,
+   185
+  ],
+  "source": "icons.try1.png"
+ },
+ "weapon_horoku": {
+  "path": "icons/weapon_horoku.webp",
+  "w": 313,
+  "h": 407,
+  "use": "掉落道具：焙烙玉（大炸彈，撿到才有）",
+  "center": [
+   156,
+   203
+  ],
+  "source": "icons2.try3.png"
+ },
+ "weapon_smoke": {
+  "path": "icons/weapon_smoke.webp",
+  "w": 258,
+  "h": 403,
+  "use": "掉落道具：煙玉（撿到才有）",
+  "center": [
+   129,
+   201
+  ],
+  "source": "icons2.try3.png"
+ }
+}

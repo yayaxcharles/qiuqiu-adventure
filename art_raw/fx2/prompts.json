@@ -1,0 +1,667 @@
+{
+  "b_fireball_cyan": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 3 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a ghostly enemy FIREBALL flying to the LEFT: a round glowing CYAN and pale-blue spirit flame ball with a white core, its flame tail trailing to the RIGHT, a few pale sparks; all three frames the same size and shape, only the flame tongues and the tail flicker differently. The 3 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. Frame 3 loops back into frame 1.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:12"
+    }
+  ],
+  "b_foxfire": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1983,
+        793
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 3 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a floating FOXFIRE (kitsune-bi): a teardrop-shaped spirit flame of pale blue and white, glowing, with a bright white core and a wispy flame tip pointing UP; all three frames the same size, only the flame shape flickers. The 3 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. Frame 3 loops back into frame 1.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:13"
+    }
+  ],
+  "b_garbage": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 3 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out in one row from left to right, NOT touching each other, with wide transparent gaps between them: (1) a crushed dented empty tin CAN with a peeling label (no writing); (2) a dirty grey-white FISH SKELETON with head and tail; (3) a crumpled dirty PAPER BALL with a stain. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:15"
+    }
+  ],
+  "b_fireball": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 3 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: an enemy FIREBALL flying to the LEFT: a round glowing orange-red ball of fire with a bright yellow-white core, its flame tail trailing to the RIGHT, a few sparks; all three frames the same size and shape, only the flame tongues and the tail flicker differently. The 3 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. Frame 3 loops back into frame 1.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:15"
+    }
+  ],
+  "b_wave": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 3 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a GROUND SHOCKWAVE sliding along the floor to the RIGHT (seen from the side): a low curved arc of bright yellow-orange energy rising from the ground line, with flying dirt clods and small rocks, dust at its base; every frame has its flat bottom edge on the same baseline. The 3 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. The three frames show the wave pulsing: (1) compact and bright, (2) taller with more debris, (3) wider and crackling.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:17"
+    }
+  ],
+  "b_water_splash": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1536,
+        1024
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 5 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out in two rows: 2 items in the top row, 3 items in the bottom row, NOT touching each other, with wide transparent gaps between them: Top row: (1) and (2) two frames of a WATER BULLET flying to the LEFT: a glossy blue water blob with a white shine and a splashy tail trailing to the right, slightly different wobble in each frame. Bottom row: (3), (4), (5) three frames of a WATER SPLASH seen from the side, rising from a flat baseline: (3) a small crown of water just starting, (4) a tall full splash crown with droplets, (5) the splash falling apart into scattered droplets. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:27"
+    }
+  ],
+  "b_misc": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1536,
+        1024
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 5 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out in two rows: 3 items in the top row, 2 items in the bottom row, NOT touching each other, with wide transparent gaps between them: Top row: (1) an open red Japanese FOLDING FAN with gold ribs and a small gold wave pattern, fully spread in a half-circle, seen flat from the front; (2) and (3) two frames of a glowing ORANGE ENERGY PELLET: a small bright ball with a white-yellow core and an orange glow ring, the second frame slightly bigger and brighter. Bottom row: (4) and (5) two frames of a big shiny SOAP BUBBLE: transparent-looking with a thin bright rim, rainbow sheen and a white highlight, the second frame slightly squashed (wobbling). TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:28"
+    }
+  ],
+  "b_laser_beam": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_3x1.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A 2D side-scrolling game LASER BEAM SEGMENT, very wide 3:1 picture, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: one perfectly straight HORIZONTAL beam of energy running across the WHOLE width of the picture from the left edge to the right edge, centred vertically, about 30% of the picture height thick: a blinding white-yellow core, orange and red outer glow, small crackles of energy along its edges. HORIZONTALLY SEAMLESS: the left and right ends continue into each other exactly (same thickness, same colours). TRANSPARENT background: everything outside the drawn items is fully transparent. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:38"
+    }
+  ],
+  "b_gust": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1226,
+        1283
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 3 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a strong horizontal GUST OF WIND blowing to the RIGHT: a wide band of curling pale white-blue wind streaks and swirls with a few torn leaves caught in it, semi-transparent looking, about three times wider than tall. The 3 frames are laid out stacked in three rows from top to bottom, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. The three frames show the swirls rolling forward.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:41"
+    }
+  ],
+  "b_missile": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 3 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out in one row from left to right, NOT touching each other, with wide transparent gaps between them: (1) a cartoon ROCKET MISSILE lying horizontally with its pointed red nose to the RIGHT: a riveted dark iron body with a red nose cone, a yellow-and-black hazard band and four small tail fins at the left end, NO flame; (2) and (3) two frames of the rocket EXHAUST FLAME alone, pointing to the LEFT (a short bright jet of yellow-white fire turning orange with a puff of smoke at its end), the second frame a little longer and more flickering. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:44"
+    }
+  ],
+  "b_laser_ends": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1983,
+        793
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 2 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out side by side, NOT touching each other, with wide transparent gaps between them: (1) a MUZZLE FLASH where a laser beam fires to the RIGHT: a bright white-yellow starburst with orange rays and a round glow, flattened sideways; (2) a laser IMPACT burst: an explosive splash of white-hot sparks and orange fire spraying back to the LEFT with a few chunks of debris. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:47"
+    }
+  ],
+  "p_smoke_white": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 4 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a puff of WHITE-GREY SMOKE: a soft round cloud with a thin grey outline and light shading. The 4 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. (1) small and dense, (2) bigger and rounder, (3) big and starting to break up, (4) biggest, thin and fading into wisps.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:48"
+    }
+  ],
+  "p_smoke_black": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 4 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a puff of thick BLACK-BROWN SMOKE from a fire or explosion: a round billowing cloud with dark outlines and a faint warm orange glow at its bottom. The 4 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. (1) small and dense, (2) bigger and rounder, (3) big and starting to break up, (4) biggest, thin and fading into wisps.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:53"
+    }
+  ],
+  "p_dust": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 4 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a LANDING DUST CLOUD seen from the side: a low cloud of pale brown dust and small pebbles puffing out sideways to both left and right from a flat baseline. The 4 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. (1) a small low burst just starting, (2) spreading wide, (3) widest and rising a little, (4) fading into thin wisps.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:18:57"
+    }
+  ],
+  "p_fire": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2006,
+        784
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 4 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a small FLAME burning upward: bright yellow-white core, orange and red tongues, a thick dark outline; every frame has its base on the same baseline and is the same size. The 4 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. The four frames form a looping flicker.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:00"
+    }
+  ],
+  "p_small": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 6 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out in one row from left to right, NOT touching each other, with wide transparent gaps between them: (1) a small bright four-pointed white-yellow SPARK star with a glow; (2) a small glowing orange EMBER (a hot fleck of fire); (3) a single clear blue WATER DROP with a white shine; (4) a yellow cartoon DIZZY STAR (five points, rounded, thick dark outline, with a white shine); (5) a small purple POISON DROP with a shine; (6) a small gold COIN seen from the front with a square hole in the middle. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:07"
+    }
+  ],
+  "p_hits": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 3 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out in one row from left to right, NOT touching each other, with wide transparent gaps between them: (1) a CLAW-SLASH HIT: three parallel curved white-hot slash streaks with a bright white-yellow burst where they cross and a few sparks; (2) a SHURIKEN HIT: a sharp white-yellow star-shaped metal impact flash with thin spark lines shooting out; (3) a BLUNT HIT: a big round comic-style impact burst of jagged orange-yellow and white spikes with a white centre. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:13"
+    }
+  ],
+  "x_large": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1536,
+        1024
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 8 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a HUGE explosion (like a boss being destroyed) in the Metal Slug style: layered rolling orange and yellow fireballs with a white-hot centre, thick black-brown smoke billowing, flying debris chunks and sparks. The 8 frames are laid out in two rows of four (frames 1-4 in the top row, 5-8 in the bottom row), each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. (1) a small white-yellow flash, (2) a bright expanding fireball, (3) a big layered fireball, (4) the biggest fireball with debris flying out, (5) fire turning into thick smoke, (6) mostly black smoke with glowing embers, (7) smoke thinning, (8) last wisps of smoke. All frames are drawn at ONE consistent scale, so the explosion clearly grows and then dissipates.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:21"
+    }
+  ],
+  "q_claw": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 3 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a CLAW SWIPE ARC effect for a ninja cat swiping to the RIGHT: three parallel curved crescent slash trails of white-hot light edged with pale blue, sweeping from top-left down to the right, like a big arc. The 3 frames are laid out in one row from left to right, each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. (1) the arc just starting, short and bright, (2) the full big arc, (3) the arc fading and breaking into sparks.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:27"
+    }
+  ],
+  "hud_paws": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 3 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out in one row from left to right, NOT touching each other, with wide transparent gaps between them: (1) a FULL health icon: a cute round cat PAW PRINT, cream-white paw with bright pink toe beans and a pink palm pad, a thick dark brown outline and a small shine; (2) an EMPTY health icon: the same paw shape but dark grey-brown and hollow-looking, faded; (3) a small round wooden token with a carved cat face (no text). TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:28"
+    }
+  ],
+  "x_small": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1536,
+        1024
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 8 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a SMALL explosion (like a grenade or a small crate) in the Metal Slug style: layered rolling orange and yellow fireballs with a white-hot centre, thick black-brown smoke billowing, flying debris chunks and sparks. The 8 frames are laid out in two rows of four (frames 1-4 in the top row, 5-8 in the bottom row), each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. (1) a small white-yellow flash, (2) a bright expanding fireball, (3) a big layered fireball, (4) the biggest fireball with debris flying out, (5) fire turning into thick smoke, (6) mostly black smoke with glowing embers, (7) smoke thinning, (8) last wisps of smoke. All frames are drawn at ONE consistent scale, so the explosion clearly grows and then dissipates.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:29"
+    }
+  ],
+  "x_medium": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1536,
+        1024
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). AN ANIMATION SHEET of 8 frames for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a MEDIUM explosion (like a gunpowder barrel) in the Metal Slug style: layered rolling orange and yellow fireballs with a white-hot centre, thick black-brown smoke billowing, flying debris chunks and sparks. The 8 frames are laid out in two rows of four (frames 1-4 in the top row, 5-8 in the bottom row), each frame centred in its own equal cell, NOT touching each other, with wide transparent gaps between them. (1) a small white-yellow flash, (2) a bright expanding fireball, (3) a big layered fireball, (4) the biggest fireball with debris flying out, (5) fire turning into thick smoke, (6) mostly black smoke with glowing embers, (7) smoke thinning, (8) last wisps of smoke. All frames are drawn at ONE consistent scale, so the explosion clearly grows and then dissipates.  TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:33"
+    }
+  ],
+  "hud_frames": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1536,
+        1024
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 3 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out stacked in three rows from top to bottom, NOT touching each other, with wide transparent gaps between them: (1) a wide horizontal WOODEN SIGNBOARD frame for a game HUD: a sturdy dark weathered wooden plank frame with iron corner brackets and nail heads, a thin rope wrapped around the left and right ends, and a large EMPTY recessed flat dark-brown panel inside (plain, no texture in the inner panel, room for text), about 3.5 times wider than tall; (2) the same style frame but SHORTER, about 2.5 times wider than tall; (3) the same style frame but VERY LONG and thin, about 9 times wider than tall, with a narrow empty dark groove inside for a health bar. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:35"
+    }
+  ],
+  "q_flash": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1774,
+        887
+      ],
+      "refs": [
+        "_style_ref_land.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A SPRITE SHEET of 2 separate game sprites for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights, laid out side by side, NOT touching each other, with wide transparent gaps between them: (1) a THROWING FLASH: a small bright white-yellow burst with short speed lines pointing to the RIGHT (the flash when a shuriken leaves the hand); (2) a small round white-blue TWINKLE sparkle with four long thin rays. TRANSPARENT background: everything outside the drawn items is fully transparent. These are small game sprites, so use big bold clear shapes with a dark outline and strong contrast, not tiny noisy detail. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:39"
+    }
+  ],
+  "q_respawn": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1024,
+        1536
+      ],
+      "refs": [
+        "_style_ref_portrait.png"
+      ],
+      "prompt": "Reference image 1 is a finished background from the same game: match its drawing style, line quality and rendering, but draw ONLY what is described below (nothing from the reference scene). A RESPAWN LIGHT PILLAR effect for a 2D side-scrolling game, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a tall vertical column of warm white-gold light coming down from the top edge to the bottom edge of the picture, brightest in the middle, with soft glowing edges, small sparkles and a few floating light motes around it, and a bright round glow splash where it hits the bottom. The pillar is about 30% of the picture width. TRANSPARENT background: everything outside the drawn items is fully transparent. NO text, NO letters, NO numbers, NO characters, NO people, NO animals, NO ground, NO frame, NO border.",
+      "at": "2026-09-27 07:19:50"
+    }
+  ],
+  "sign_warning": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_3x1.png"
+      ],
+      "prompt": "A 2D game BOSS WARNING BANNER on a TRANSPARENT background, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a long horizontal banner that spans the whole width of the picture: a dark red lacquered wooden board with a big EMPTY flat dark red centre area (for text added later), framed at the top and bottom by bold yellow-and-black diagonal hazard stripes, gold metal studs, two red paper lanterns hanging at the left and right ends, and a small red warning emblem (an exclamation-mark shape made of a flame, no letters) at each end. About 6 times wider than tall. NO text, NO letters, NO characters anywhere.",
+      "at": "2026-09-27 07:20:44"
+    }
+  ],
+  "sign_clear": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_3x1.png"
+      ],
+      "prompt": "A 2D game TITLE SIGN on a TRANSPARENT background, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a horizontal wooden signboard with weathered dark wood, iron corner fittings and a red tasseled rope hanging from each end, and on it BIG BOLD Japanese brush calligraphy in shining gold with a thick black-red outline. The text on the board is EXACTLY these Chinese characters in this order and nothing else: 「任務完成！」 (the characters 任 務 完 成 and a full-width exclamation mark). Write every character correctly and completely. The sign is about 3 times wider than tall. No other text, no characters, no people.",
+      "at": "2026-09-27 07:20:48"
+    }
+  ],
+  "sign_m1": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_3x1.png"
+      ],
+      "prompt": "A 2D game TITLE SIGN on a TRANSPARENT background, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a horizontal wooden signboard with weathered dark wood, iron corner fittings and a red tasseled rope hanging from each end, and on it BIG BOLD Japanese brush calligraphy in shining gold with a thick black-red outline. The text on the board is EXACTLY these Chinese characters in this order and nothing else: 「任務一 開始！」 (the characters 任 務 一, a space, then 開 始 and a full-width exclamation mark). Write every character correctly and completely. The sign is about 3 times wider than tall. No other text, no characters, no people.",
+      "at": "2026-09-27 07:20:50"
+    }
+  ],
+  "sign_m2": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_3x1.png"
+      ],
+      "prompt": "A 2D game TITLE SIGN on a TRANSPARENT background, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a horizontal wooden signboard with weathered dark wood, iron corner fittings and a red tasseled rope hanging from each end, and on it BIG BOLD Japanese brush calligraphy in shining gold with a thick black-red outline. The text on the board is EXACTLY these Chinese characters in this order and nothing else: 「任務二 開始！」 (the characters 任 務 二, a space, then 開 始 and a full-width exclamation mark). Write every character correctly and completely. The sign is about 3 times wider than tall. No other text, no characters, no people.",
+      "at": "2026-09-27 07:20:50"
+    }
+  ],
+  "sign_m3": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_3x1.png"
+      ],
+      "prompt": "A 2D game TITLE SIGN on a TRANSPARENT background, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a horizontal wooden signboard with weathered dark wood, iron corner fittings and a red tasseled rope hanging from each end, and on it BIG BOLD Japanese brush calligraphy in shining gold with a thick black-red outline. The text on the board is EXACTLY these Chinese characters in this order and nothing else: 「任務三 開始！」 (the characters 任 務 三, a space, then 開 始 and a full-width exclamation mark). Write every character correctly and completely. The sign is about 3 times wider than tall. No other text, no characters, no people.",
+      "at": "2026-09-27 07:20:52"
+    }
+  ],
+  "sign_continue": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        2172,
+        724
+      ],
+      "refs": [
+        "_style_ref_3x1.png"
+      ],
+      "prompt": "A 2D game TITLE SIGN on a TRANSPARENT background, in richly detailed hand-painted 2D arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, bold readable silhouettes, rich shading, glowing highlights: a horizontal wooden signboard with weathered dark wood, iron corner fittings and a red tasseled rope hanging from each end, and on it BIG BOLD Japanese brush calligraphy in shining gold with a thick black-red outline. The text on the board is EXACTLY these Chinese characters in this order and nothing else: 「接關？」 (the characters 接 關 (traditional Chinese 關) and a full-width question mark). Write every character correctly and completely. The sign is about 3 times wider than tall. No other text, no characters, no people.",
+      "at": "2026-09-27 07:20:53"
+    }
+  ],
+  "boss_orange_king": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1774,
+        887
+      ],
+      "refs": [
+        "_style_ref_3x1.png",
+        "orange_king_codex1.png"
+      ],
+      "prompt": "Reference image 1 only sets the picture shape and the painting style (hand-painted Metal Slug-like game art); draw NOTHING from its scene. Reference image 2 is the BOSS character Orange King (a huge fat orange cat king with a crown and red cape): copy the character's design EXACTLY (same body shape, colours, clothes, accessories, face) but render it bigger and more dramatic with rich shading, rim light and a thick dark outline. BOSS INTRO CLOSE-UP for a fighting-game style entrance: a wide horizontal banner composition, the boss shown from the waist up (or the front half of the machine) large on the RIGHT half of the picture, facing LEFT toward the camera side with a fierce confident expression and a dynamic pose (puffing out his big belly, holding a dried fish like a sceptre), dramatic speed lines and a burst of golden energy behind it, the left 40% of the picture kept mostly empty for the boss name added later. TRANSPARENT background (no scenery, no sky). NO text, NO letters.",
+      "at": "2026-09-27 07:20:56"
+    }
+  ],
+  "boss_drum_tanuki": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1672,
+        941
+      ],
+      "refs": [
+        "_style_ref_3x1.png",
+        "drum_tanuki_codex1.png"
+      ],
+      "prompt": "Reference image 1 only sets the picture shape and the painting style (hand-painted Metal Slug-like game art); draw NOTHING from its scene. Reference image 2 is the BOSS character Drum Tanuki (a raccoon dog drummer): copy the character's design EXACTLY (same body shape, colours, clothes, accessories, face) but render it bigger and more dramatic with rich shading, rim light and a thick dark outline. BOSS INTRO CLOSE-UP for a fighting-game style entrance: a wide horizontal banner composition, the boss shown from the waist up (or the front half of the machine) large on the RIGHT half of the picture, facing LEFT toward the camera side with a fierce confident expression and a dynamic pose (raising both drumsticks over the big taiko drum), dramatic speed lines and a burst of orange energy behind it, the left 40% of the picture kept mostly empty for the boss name added later. TRANSPARENT background (no scenery, no sky). NO text, NO letters.",
+      "at": "2026-09-27 07:21:06"
+    }
+  ],
+  "cat_black": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1839,
+        855
+      ],
+      "refs": [
+        "npc_calico.try1.png"
+      ],
+      "prompt": "Reference image 1 shows two poses of a rescued village cat from this game (LEFT: tied to a wooden stake, worried; RIGHT: freed and happily waving). Redraw BOTH poses EXACTLY the same: same drawing style, same poses, same size and position, same wooden stake and ropes, same layout with the same gap between them, facing LEFT, on a TRANSPARENT background - but as a DIFFERENT village cat: an all-BLACK cat with bright yellow-green eyes wearing a short red happi jacket with a white sash. No text, no ground, no shadows, no other characters, no border.",
+      "at": "2026-09-27 07:21:31"
+    }
+  ],
+  "cat_orange_white": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1840,
+        855
+      ],
+      "refs": [
+        "npc_calico.try1.png"
+      ],
+      "prompt": "Reference image 1 shows two poses of a rescued village cat from this game (LEFT: tied to a wooden stake, worried; RIGHT: freed and happily waving). Redraw BOTH poses EXACTLY the same: same drawing style, same poses, same size and position, same wooden stake and ropes, same layout with the same gap between them, facing LEFT, on a TRANSPARENT background - but as a DIFFERENT village cat: an ORANGE-AND-WHITE cat (orange back and head, white muzzle, chest and paws) wearing a short green village kimono with a brown sash. No text, no ground, no shadows, no other characters, no border.",
+      "at": "2026-09-27 07:21:32"
+    }
+  ],
+  "boss_tanuki_lord": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1942,
+        809
+      ],
+      "refs": [
+        "_style_ref_3x1.png",
+        "tanuki_lord_codex1.png"
+      ],
+      "prompt": "Reference image 1 only sets the picture shape and the painting style (hand-painted Metal Slug-like game art); draw NOTHING from its scene. Reference image 2 is the BOSS character Tanuki Lord (a raccoon dog lord with a straw hat and a sake bottle): copy the character's design EXACTLY (same body shape, colours, clothes, accessories, face) but render it bigger and more dramatic with rich shading, rim light and a thick dark outline. BOSS INTRO CLOSE-UP for a fighting-game style entrance: a wide horizontal banner composition, the boss shown from the waist up (or the front half of the machine) large on the RIGHT half of the picture, facing LEFT toward the camera side with a fierce confident expression and a dynamic pose (grinning with a leaf on his head, ready to transform), dramatic speed lines and a burst of purple magic energy behind it, the left 40% of the picture kept mostly empty for the boss name added later. TRANSPARENT background (no scenery, no sky). NO text, NO letters.",
+      "at": "2026-09-27 07:21:32"
+    }
+  ],
+  "boss_frog_daimyo": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1774,
+        887
+      ],
+      "refs": [
+        "_style_ref_3x1.png",
+        "frog_daimyo_codex1.png"
+      ],
+      "prompt": "Reference image 1 only sets the picture shape and the painting style (hand-painted Metal Slug-like game art); draw NOTHING from its scene. Reference image 2 is the BOSS character Frog Daimyo (a frog lord in a red kimono): copy the character's design EXACTLY (same body shape, colours, clothes, accessories, face) but render it bigger and more dramatic with rich shading, rim light and a thick dark outline. BOSS INTRO CLOSE-UP for a fighting-game style entrance: a wide horizontal banner composition, the boss shown from the waist up (or the front half of the machine) large on the RIGHT half of the picture, facing LEFT toward the camera side with a fierce confident expression and a dynamic pose (snapping open his folding fan, cheeks puffed), dramatic speed lines and a burst of green-blue energy behind it, the left 40% of the picture kept mostly empty for the boss name added later. TRANSPARENT background (no scenery, no sky). NO text, NO letters.",
+      "at": "2026-09-27 07:21:34"
+    },
+    {
+      "attempt": 2,
+      "status": "ok",
+      "size": [
+        1774,
+        887
+      ],
+      "refs": [
+        "_style_ref_3x1.png",
+        "frog_daimyo_codex1.png"
+      ],
+      "prompt": "Reference image 1 only sets the picture shape and the painting style (hand-painted Metal Slug-like game art); draw NOTHING from its scene. Reference image 2 is the BOSS character Frog Daimyo (a frog lord in a red kimono): copy the character's design EXACTLY (same body shape, colours, clothes, accessories, face) but render it bigger and more dramatic with rich shading, rim light and a thick dark outline. BOSS INTRO CLOSE-UP for a fighting-game style entrance: a wide horizontal banner composition, the boss shown from the waist up (or the front half of the machine) large on the RIGHT half of the picture, facing LEFT toward the camera side with a fierce confident expression and a dynamic pose (snapping open his folding fan, cheeks puffed), dramatic speed lines and a burst of green-blue energy behind it, the left 40% of the picture kept mostly empty for the boss name added later. TRANSPARENT background (no scenery, no sky). NO text, NO letters. IMPORTANT: the frog's whole head, face and eyes are turned to the LEFT, looking at the viewer on the left side of the picture; his body also faces left.",
+      "at": "2026-09-27 07:25:05"
+    }
+  ],
+  "cat_white": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1839,
+        855
+      ],
+      "refs": [
+        "npc_calico.try1.png"
+      ],
+      "prompt": "Reference image 1 shows two poses of a rescued village cat from this game (LEFT: tied to a wooden stake, worried; RIGHT: freed and happily waving). Redraw BOTH poses EXACTLY the same: same drawing style, same poses, same size and position, same wooden stake and ropes, same layout with the same gap between them, facing LEFT, on a TRANSPARENT background - but as a DIFFERENT village cat: an all-WHITE fluffy cat with blue eyes wearing a short pink kimono with a red ribbon sash. No text, no ground, no shadows, no other characters, no border.",
+      "at": "2026-09-27 07:21:34"
+    }
+  ],
+  "boss_roomba_king": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1774,
+        887
+      ],
+      "refs": [
+        "_style_ref_3x1.png",
+        "roomba_king_codex2.png"
+      ],
+      "prompt": "Reference image 1 only sets the picture shape and the painting style (hand-painted Metal Slug-like game art); draw NOTHING from its scene. Reference image 2 is the BOSS character Roomba King (a giant robot vacuum cleaner with a crown and a sash): copy the character's design EXACTLY (same body shape, colours, clothes, accessories, face) but render it bigger and more dramatic with rich shading, rim light and a thick dark outline. BOSS INTRO CLOSE-UP for a fighting-game style entrance: a wide horizontal banner composition, the boss shown from the waist up (or the front half of the machine) large on the RIGHT half of the picture, facing LEFT toward the camera side with a fierce confident expression and a dynamic pose (charging forward, brushes spinning, one angry eye glaring), dramatic speed lines and a burst of electric blue energy behind it, the left 40% of the picture kept mostly empty for the boss name added later. TRANSPARENT background (no scenery, no sky). NO text, NO letters.",
+      "at": "2026-09-27 07:21:36"
+    }
+  ],
+  "boss_iron_claw": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1774,
+        887
+      ],
+      "refs": [
+        "_style_ref_3x1.png",
+        "iron_claw_codex1.png"
+      ],
+      "prompt": "Reference image 1 only sets the picture shape and the painting style (hand-painted Metal Slug-like game art); draw NOTHING from its scene. Reference image 2 is the BOSS character Iron Claw (a giant mechanical iron cat robot with gears and a wind-up key): copy the character's design EXACTLY (same body shape, colours, clothes, accessories, face) but render it bigger and more dramatic with rich shading, rim light and a thick dark outline. BOSS INTRO CLOSE-UP for a fighting-game style entrance: a wide horizontal banner composition, the boss shown from the waist up (or the front half of the machine) large on the RIGHT half of the picture, facing LEFT toward the camera side with a fierce confident expression and a dynamic pose (raising one huge iron claw, glowing eyes, steam bursting), dramatic speed lines and a burst of fiery orange energy behind it, the left 40% of the picture kept mostly empty for the boss name added later. TRANSPARENT background (no scenery, no sky). NO text, NO letters.",
+      "at": "2026-09-27 07:21:39"
+    }
+  ],
+  "cat_siamese": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1840,
+        855
+      ],
+      "refs": [
+        "npc_calico.try1.png"
+      ],
+      "prompt": "Reference image 1 shows two poses of a rescued village cat from this game (LEFT: tied to a wooden stake, worried; RIGHT: freed and happily waving). Redraw BOTH poses EXACTLY the same: same drawing style, same poses, same size and position, same wooden stake and ropes, same layout with the same gap between them, facing LEFT, on a TRANSPARENT background - but as a DIFFERENT village cat: a SIAMESE cat (cream body with dark brown face mask, ears, paws and tail, blue eyes) wearing a short indigo work apron over a light shirt. No text, no ground, no shadows, no other characters, no border.",
+      "at": "2026-09-27 07:21:46"
+    }
+  ],
+  "cat_calico_long": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1839,
+        855
+      ],
+      "refs": [
+        "npc_calico.try1.png"
+      ],
+      "prompt": "Reference image 1 shows two poses of a rescued village cat from this game (LEFT: tied to a wooden stake, worried; RIGHT: freed and happily waving). Redraw BOTH poses EXACTLY the same: same drawing style, same poses, same size and position, same wooden stake and ropes, same layout with the same gap between them, facing LEFT, on a TRANSPARENT background - but as a DIFFERENT village cat: a LONG-HAIRED fluffy CALICO cat (white, orange and black patches, bushy tail) wearing a short purple kimono with a yellow sash. No text, no ground, no shadows, no other characters, no border.",
+      "at": "2026-09-27 07:22:09"
+    }
+  ],
+  "cat_grey_tabby": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "size": [
+        1840,
+        855
+      ],
+      "refs": [
+        "npc_calico.try1.png"
+      ],
+      "prompt": "Reference image 1 shows two poses of a rescued village cat from this game (LEFT: tied to a wooden stake, worried; RIGHT: freed and happily waving). Redraw BOTH poses EXACTLY the same: same drawing style, same poses, same size and position, same wooden stake and ropes, same layout with the same gap between them, facing LEFT, on a TRANSPARENT background - but as a DIFFERENT village cat: a GREY TABBY cat (silver-grey with dark grey stripes) wearing a straw hat and a blue neckerchief. No text, no ground, no shadows, no other characters, no border.",
+      "at": "2026-09-27 07:22:10"
+    }
+  ]
+}

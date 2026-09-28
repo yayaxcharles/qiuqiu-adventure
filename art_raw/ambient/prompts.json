@@ -1,0 +1,758 @@
+{
+  "fog_s1_near": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [
+        "_black_2172x724.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "The input image is an empty pure black canvas. Paint on it ONLY a HORIZONTAL BAND OF LOW GROUND MIST (drifting through a bamboo forest floor), as a hand-painted visual-effect layer for a 2D side-scrolling game (soft painterly brush strokes, not a photo): thick rolling ground mist lying along the bottom: its body fills the lower half of the picture, densest along the bottom edge, and its top edge (at about 45% from the top) is made of soft billowing puffs and curling wisps; above that it fades to black. The mist is white and pale grey, semi-transparent-looking, with soft feathered edges and gentle variations of density; it must be HORIZONTALLY CONTINUOUS from the left edge to the right edge with the same average height and density everywhere (it will be repeated side by side as a seamless tile), with no single dominant cloud and no gap. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:22:30"
+    }
+  ],
+  "drizzle_2": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A full-frame SEAMLESS TILEABLE TEXTURE of light drizzle, painted as a visual-effect layer for a 2D side-scrolling game: about 120 thin short (4-7% of the picture height) pale lavender-white rain streaks of varied brightness, soft ends. All streaks are parallel, straight and slanted the same way, falling from the upper right to the lower left (about 10 degrees away from vertical). They are scattered EVENLY over the whole square (no clusters, no empty areas, no perspective, no vanishing point); streaks that cross an edge continue on the opposite edge. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:22:42"
+    }
+  ],
+  "scrap": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_2.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). A SPRITE SHEET of 4 separate FALLING RED-HOT SCRAP IRON sprites (debris thrown out by a forge explosion) for a 2D side-scrolling game, laid out in one row from left to right, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: (1) a twisted torn iron plate, (2) a broken half of a cog wheel, (3) a bent bracket with rivets, (4) a jagged iron shard. Each glows red-orange hot at its edges with dark iron in the middle and has a short trail of fire and sparks streaming back to the upper right (they fall toward the lower left). Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:22:45"
+    }
+  ],
+  "goose": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "crow_small_codex1.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "Draw a NEW character in the same game art style as the reference image: ONE single wild goose (a grey-brown bean goose with a long neck stretched forward, dark head, pale belly, orange-black bill), a gentle friendly background animal. Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Do NOT copy the reference character itself. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, FLYING with both wings spread wide in mid-flap. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:23:01"
+    }
+  ],
+  "fog_s1_far": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [
+        "_black_2172x724.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "The input image is an empty pure black canvas. Paint on it ONLY a HORIZONTAL BAND OF DISTANT TWILIGHT HAZE (between far bamboo hills), as a hand-painted visual-effect layer for a 2D side-scrolling game (soft painterly brush strokes, not a photo): a long, flat, stratified layer of distant haze made of several thin parallel wispy streaks, occupying only the middle 40% of the picture height and fading softly to black above and below; very soft and airy. The mist is white and pale grey, semi-transparent-looking, with soft feathered edges and gentle variations of density; it must be HORIZONTALLY CONTINUOUS from the left edge to the right edge with the same average height and density everywhere (it will be repeated side by side as a seamless tile), with no single dominant cloud and no gap. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:35"
+    }
+  ],
+  "fog_s3_near": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [
+        "_black_2172x724.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "The input image is an empty pure black canvas. Paint on it ONLY a HORIZONTAL BAND OF LOW FACTORY SMOKE (thick smoke rolling along the street), as a hand-painted visual-effect layer for a 2D side-scrolling game (soft painterly brush strokes, not a photo): thick, lumpy rolling smoke along the bottom: billowing round smoke puffs and dirty wisps fill the bottom half of the picture, densest along the bottom edge, fading to black above. The mist is white and pale grey, semi-transparent-looking, with soft feathered edges and gentle variations of density; it must be HORIZONTALLY CONTINUOUS from the left edge to the right edge with the same average height and density everywhere (it will be repeated side by side as a seamless tile), with no single dominant cloud and no gap. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:37"
+    }
+  ],
+  "fog_s2_far": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [
+        "_black_2172x724.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "The input image is an empty pure black canvas. Paint on it ONLY a HORIZONTAL BAND OF NIGHT RIVER MIST (far over the water), as a hand-painted visual-effect layer for a 2D side-scrolling game (soft painterly brush strokes, not a photo): a very flat, thin layer of mist hanging over distant water: long horizontal streaks and thin veils, occupying only a narrow band around the middle (about 30% of the picture height), fading to black above and below. The mist is white and pale grey, semi-transparent-looking, with soft feathered edges and gentle variations of density; it must be HORIZONTALLY CONTINUOUS from the left edge to the right edge with the same average height and density everywhere (it will be repeated side by side as a seamless tile), with no single dominant cloud and no gap. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:37"
+    }
+  ],
+  "fog_s3_far": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [
+        "_black_2172x724.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "The input image is an empty pure black canvas. Paint on it ONLY a HORIZONTAL BAND OF DISTANT FACTORY SMOG (industrial smoke haze over a city), as a hand-painted visual-effect layer for a 2D side-scrolling game (soft painterly brush strokes, not a photo): a heavy layered band of industrial smog made of long drifting smoke streaks with lumpy soot clouds in it, occupying the middle half of the picture height, fading to black above and below. The mist is white and pale grey, semi-transparent-looking, with soft feathered edges and gentle variations of density; it must be HORIZONTALLY CONTINUOUS from the left edge to the right edge with the same average height and density everywhere (it will be repeated side by side as a seamless tile), with no single dominant cloud and no gap. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:38"
+    }
+  ],
+  "fog_s2_near": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [
+        "_black_2172x724.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "The input image is an empty pure black canvas. Paint on it ONLY a HORIZONTAL BAND OF LOW RIVER MIST (creeping over the river surface), as a hand-painted visual-effect layer for a 2D side-scrolling game (soft painterly brush strokes, not a photo): low, dense mist creeping over a river surface: it fills the bottom 45% of the picture, densest along the bottom edge, with long flat curling tendrils and slow wisps rising from its top edge; above that it fades to black. The mist is white and pale grey, semi-transparent-looking, with soft feathered edges and gentle variations of density; it must be HORIZONTALLY CONTINUOUS from the left edge to the right edge with the same average height and density everywhere (it will be repeated side by side as a seamless tile), with no single dominant cloud and no gap. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:38"
+    }
+  ],
+  "drizzle_1": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A full-frame SEAMLESS TILEABLE TEXTURE of fine far drizzle, painted as a visual-effect layer for a 2D side-scrolling game: about 220 very thin, very short (2-4% of the picture height) faint pale lavender-white streaks, soft and dim. All streaks are parallel, straight and slanted the same way, falling from the upper right to the lower left (about 10 degrees away from vertical). They are scattered EVENLY over the whole square (no clusters, no empty areas, no perspective, no vanishing point); streaks that cross an edge continue on the opposite edge. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:39"
+    }
+  ],
+  "storm_rain_1": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A full-frame SEAMLESS TILEABLE TEXTURE of far dense storm rain, painted as a visual-effect layer for a 2D side-scrolling game: about 500 thin dense streaks (5-9% of the picture height) of cold blue-white rain, a fine wall of rain. All streaks are parallel, straight and slanted the same way, falling from the upper right to the lower left (about 28 degrees away from vertical). They are scattered EVENLY over the whole square (no clusters, no empty areas, no perspective, no vanishing point); streaks that cross an edge continue on the opposite edge. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:41"
+    }
+  ],
+  "drizzle_3": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A full-frame SEAMLESS TILEABLE TEXTURE of near drizzle, painted as a visual-effect layer for a 2D side-scrolling game: about 45 thin but brighter streaks (8-12% of the picture height) with a tiny round water droplet at the lower end of a few of them, pale lavender-white. All streaks are parallel, straight and slanted the same way, falling from the upper right to the lower left (about 10 degrees away from vertical). They are scattered EVENLY over the whole square (no clusters, no empty areas, no perspective, no vanishing point); streaks that cross an edge continue on the opposite edge. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:42"
+    }
+  ],
+  "moonbeam": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "A hand-painted VOLUMETRIC LIGHT effect for a 2D side-scrolling game (soft painterly rendering): four or five long soft SHAFTS OF COOL SILVER-BLUE MOONLIGHT streaming diagonally down from the upper-left corner toward the lower right, of different widths with dark gaps between them, very faint and misty, very soft feathered edges, brightest near the upper left and fading out completely before the lower right corner. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:54"
+    }
+  ],
+  "sunbeam": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "A hand-painted VOLUMETRIC LIGHT effect for a 2D side-scrolling game (soft painterly rendering): five or six broad soft SHAFTS OF WARM GOLDEN-ORANGE SUNSET LIGHT (god rays) streaming diagonally down from the upper-left corner toward the lower right, of different widths with dark gaps between them, a few tiny glowing dust motes floating inside the shafts, very soft feathered edges, the shafts brightest near the upper left and fading out completely before the lower right corner. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:23:55"
+    }
+  ],
+  "sparks": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "A SPRITE SHEET of 4 separate FALLING SPARK sprites (hot metal sparks from a forge) for a 2D side-scrolling game, laid out in one row from left to right, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: (1) a short bright spark streak with a white-hot head and an orange-yellow tail, (2) a longer spark streak curving slightly as it falls, with a glowing orange trail, (3) a small cluster of three glowing spark dots with tiny tails, (4) one spark bursting into a star of tiny branching sparklets. All falling toward the lower left (tails point to the upper right). Bright orange, yellow and white-hot. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:24:02"
+    }
+  ],
+  "heat_haze": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A SEAMLESS TILEABLE GREYSCALE TEXTURE used as a heat-haze distortion map for a game (a displacement map, not a picture): smooth soft wavy RISING RIPPLES of heat shimmer, like vertical flowing wavy streaks stretched upward, gentle continuous gradients between mid-grey, lighter grey and darker grey, NO hard edges, NO objects, NO noise speckles, evenly distributed over the whole square, the top edge continuing into the bottom edge and the left edge into the right edge. Black-and-white only, no colour.",
+      "at": "2026-09-27 07:24:03"
+    }
+  ],
+  "storm_rain_2": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A full-frame SEAMLESS TILEABLE TEXTURE of driving storm rain, painted as a visual-effect layer for a 2D side-scrolling game: about 260 long streaks (10-18% of the picture height) of cold blue-white rain of varied brightness, a strong wind-driven downpour. All streaks are parallel, straight and slanted the same way, falling from the upper right to the lower left (about 28 degrees away from vertical). They are scattered EVENLY over the whole square (no clusters, no empty areas, no perspective, no vanishing point); streaks that cross an edge continue on the opposite edge. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:24:04"
+    }
+  ],
+  "storm_rain_3": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A full-frame SEAMLESS TILEABLE TEXTURE of near heavy storm rain, painted as a visual-effect layer for a 2D side-scrolling game: about 90 long thick streaks (20-35% of the picture height) of bright blue-white rain, some smeared with motion blur, big heavy close raindrops. All streaks are parallel, straight and slanted the same way, falling from the upper right to the lower left (about 28 degrees away from vertical). They are scattered EVENLY over the whole square (no clusters, no empty areas, no perspective, no vanishing point); streaks that cross an edge continue on the opposite edge. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:24:06"
+    },
+    {
+      "attempt": 2,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "A full-frame SEAMLESS TILEABLE TEXTURE of near heavy storm rain, painted as a visual-effect layer for a 2D side-scrolling game: about 90 long thick streaks (20-35% of the picture height) of bright blue-white rain, some smeared with motion blur, big heavy close raindrops. All streaks are parallel, straight and slanted the same way, falling from the upper right to the lower left (about 28 degrees away from vertical). They are scattered EVENLY over the whole square (no clusters, no empty areas, no perspective, no vanishing point); streaks that cross an edge continue on the opposite edge. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black. IMPORTANT: every streak is a THIN, uniform, semi-transparent line of even brightness along its whole length (NO bright round droplet heads, NO comet shapes, NO glow blobs); only slightly thicker than in a far rain layer.",
+      "at": "2026-09-27 07:42:48"
+    }
+  ],
+  "puddles": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s1_land_2.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). A SPRITE SHEET of 3 separate RAIN PUDDLE decals for a 2D side-scrolling game, laid out in one row from left to right, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: three small shallow rain puddles lying on dark earth, seen from a low side angle so each puddle is a FLAT THIN HORIZONTAL ELLIPSE about five times wider than tall (small, medium and large, with irregular organic outlines), the water mirror-reflecting the pink-purple twilight sky and dark bamboo silhouettes, a few ring ripples from raindrops, a thin wet dark rim. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:08"
+    }
+  ],
+  "fireflies": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "A SPRITE SHEET of 6 separate FIREFLY LIGHT sprites for a 2D side-scrolling game, laid out in two rows of three, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: top row: the SAME single firefly in three moments of its blink: (1) glowing brightly - a tiny insect with a big bright yellow-green glowing tail and a soft round yellow-green halo around it, (2) medium glow with a smaller halo, (3) almost dark, only a small dim glow; bottom row: (4) (5) (6) three soft round out-of-focus glowing yellow-green light dots (bokeh) of large, medium and small size. All drawn large and centred in their cells. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:24:09"
+    }
+  ],
+  "paper_petals": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s2_land_1.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). A SPRITE SHEET of 4 separate FALLING PAPER PETAL sprites (festival confetti) for a 2D side-scrolling game, laid out in one row from left to right, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: (1) a pink cherry-blossom-shaped cut washi-paper petal, (2) a red folded paper petal, (3) a white washi paper petal with a thin gold edge, (4) a small gold paper plum-blossom cut-out; each slightly curled and tilted, lit by warm lantern light, each drawn large and centred in its cell. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:22"
+    }
+  ],
+  "rice_fluff": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s1_land_1.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). A SPRITE SHEET of 4 separate small DRIFTING RICE-FIELD FLUFF sprites for a 2D side-scrolling game, laid out in one row from left to right, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: (1) a single golden rice grain husk with a thin hair-like awn, (2) a soft fluffy white-gold seed tuft (a plume of fine hairs, like a grass seed), (3) a short broken piece of golden rice straw, (4) a tiny spray of three rice grains on a thin stalk. Warm golden dusk light, each drawn large and centred in its cell. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:22"
+    }
+  ],
+  "roof_splash": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_3.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). AN ANIMATION STRIP of 3 frames for a 2D side-scrolling game: HEAVY RAIN SPLASHING ON ROOF TILES, only the water (no roof, no tiles). The 3 frames are laid out in one row from left to right, each centred in its own equal cell, NOT touching each other, each with its base on the SAME height near the bottom of the cells: (1) a raindrop hitting: a small low crown of water, (2) a big splash crown spraying droplets up and sideways, (3) droplets falling back and a fading low spray. Cold blue-white water with bright highlights from lightning. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:28"
+    }
+  ],
+  "ash": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_1.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). A SPRITE SHEET of 4 separate FLOATING ASH FLAKE sprites for a 2D side-scrolling game, laid out in one row from left to right, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: thin curled flakes of ash and burnt paper: (1) a charcoal-grey curled flake with pale grey edges, (2) a flake whose edges still glow orange with embers, (3) a small crumbled ash scrap, (4) a larger torn burnt-paper flake with a glowing orange ember rim. Each drawn large and centred in its cell. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:32"
+    }
+  ],
+  "eave_drip": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_3.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). AN ANIMATION STRIP of 2 frames for a 2D side-scrolling game: RAINWATER POURING OFF THE EDGE OF A ROOF EAVE, only the water (no roof). The 2 frames are laid out side by side, NOT touching each other, each a tall thin vertical trickle hanging from the SAME height at the top of its cell down to the bottom: a wavering stream of water with drops breaking off; in frame 2 the stream wavers differently and the drops are at different heights, so the two frames loop. Cold blue-white water with bright highlights. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:38"
+    }
+  ],
+  "bird_flocks": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "A SPRITE SHEET of 3 separate small BIRD FLOCK silhouettes for the far background for a 2D side-scrolling game, laid out in one row from left to right, each flock inside its own third of the picture, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: every bird is a flat dark silhouette (dark grey-purple, no inner detail), flying to the LEFT with wings in varied flap positions: (1) a V-shaped formation of 7 wild geese, (2) a loose scattered flock of about 10 small crows, (3) a long gently wavy line of 6 birds one behind the other. Each flock is compact inside its own third. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:41"
+    },
+    {
+      "attempt": 2,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "A SPRITE SHEET of 3 separate small BIRD FLOCK silhouettes for the far background for a 2D side-scrolling game, laid out in one row from left to right, each flock inside its own third of the picture, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: every bird is a flat dark silhouette (dark grey-purple, no inner detail), flying to the LEFT with wings in varied flap positions: (1) a V-shaped formation of 7 wild geese, (2) a loose scattered flock of about 10 small crows, (3) a long gently wavy line of 6 birds one behind the other. Each flock is compact inside its own third. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border. Flock (1) MUST be a clear, symmetric V shape (an arrowhead pointing LEFT: one lead bird at the left tip, two diagonal arms of three birds each trailing back to the upper right and lower right). Make the silhouettes a bit larger and bolder.",
+      "at": "2026-09-27 07:40:13"
+    }
+  ],
+  "propeller": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_1.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). AN ANIMATION STRIP of 2 frames for a 2D side-scrolling game: a small spinning brass three-blade propeller seen EXACTLY FROM THE SIDE (edge-on, its axis pointing left-right, so the spinning blades appear as a tall narrow vertical shape): (1) the blades pointing up and down, long and sharp, (2) the blades half-turned, shorter and smeared with motion blur. The 2 frames side by side, NOT touching, the same size, centred in their cells. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:45"
+    }
+  ],
+  "kite": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_1.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). ONE MECHANICAL KITE flying in the sky, for the background of a 2D side-scrolling game, in richly detailed hand-drawn and hand-painted 2D side-scrolling arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, rich texture and shading: a big bat-wing-shaped war kite of dark patched cloth stretched on a bamboo and brass frame, small gears and a clockwork box at its centre, a little lantern hanging under it, a long tail of cloth ribbons trailing to the right and a thin kite string hanging down to the lower right; seen from the side, flying to the LEFT. Just this one object. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:46"
+    }
+  ],
+  "airship": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_1.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). ONE SMALL PATROL AIRSHIP for the background of a 2D side-scrolling game, in richly detailed hand-drawn and hand-painted 2D side-scrolling arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, rich texture and shading, seen exactly from the side, flying to the LEFT (its rounded nose points to the left edge): a cigar-shaped gas envelope of patched brown canvas held by riveted dark iron and brass bands, small tail fins at the right end, a small wooden gondola hanging underneath with round glowing portholes and a paper lantern. At the very right end of the gondola there is ONLY a round brass propeller HUB on a short shaft, with NO propeller blades (the blades are drawn separately). Just this one object. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:24:55"
+    }
+  ],
+  "bat": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "crow_small_codex1.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "Draw a NEW character in the same game art style as the reference image: ONE single small cute bat (dark purple-brown fur, big pointed ears, leathery wings with visible finger bones, small fangs, big round eyes). Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Do NOT copy the reference character itself. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, FLYING with both wings spread wide. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:03"
+    }
+  ],
+  "rice_cat": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "_src_rice_cat.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "The character: the same calico village cat (white, orange and black patches, blue jinbei with a yellow sash) carrying a big bulging straw rice sack (a tawara bale) on its back, held with both front paws over its shoulder, bent forward a little under the weight. Keep EXACTLY the same character design as the reference image (same colours, markings, costume, face and proportions). Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, standing upright on its two hind legs, in a walking stride. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:13"
+    },
+    {
+      "attempt": 2,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "_src_rice_cat.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "The character: the same calico village cat (white, orange and black patches, blue jinbei with a yellow sash) carrying a big bulging straw rice sack (a tawara bale) on its back, held with both front paws over its shoulder, bent forward a little under the weight. Keep EXACTLY the same character design as the reference image (same colours, markings, costume, face and proportions). Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, standing upright on its two hind legs, in a walking stride. Transparent background, no ground, no shadow, no text, nothing else in the image. IMPORTANT: the HEAD is also in strict side profile facing left (we see only one eye, the nose and mouth point to the left edge; the face does NOT turn toward the viewer), walking to the left.",
+      "at": "2026-09-27 07:30:12"
+    }
+  ],
+  "cart_cat": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "_src_cart_cat.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "The character: the same grey tabby village cat (beige jinbei with a brown sash) pushing a small wooden two-wheeled hand cart loaded with vegetables and a sack; the cart is IN FRONT of the cat (on the LEFT), the cat behind it pushing the handles with both paws. Keep EXACTLY the same character design as the reference image (same colours, markings, costume, face and proportions). Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, standing upright on its two hind legs, leaning forward, in a walking stride. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:13"
+    },
+    {
+      "attempt": 2,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "_src_cart_cat.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "The character: the same grey tabby village cat (beige jinbei with a brown sash) pushing a small wooden two-wheeled hand cart loaded with vegetables and a sack; the cart is IN FRONT of the cat (on the LEFT), the cat behind it pushing the handles with both paws. Keep EXACTLY the same character design as the reference image (same colours, markings, costume, face and proportions). Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, standing upright on its two hind legs, leaning forward, in a walking stride. Transparent background, no ground, no shadow, no text, nothing else in the image. IMPORTANT: the HEAD is also in strict side profile facing left (we see only one eye, the nose and mouth point to the left edge; the face does NOT turn toward the viewer), walking to the left behind the cart.",
+      "at": "2026-09-27 07:39:50"
+    }
+  ],
+  "deer": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "wild_boar_codex1.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "Draw a NEW character in the same game art style as the reference image: ONE graceful sika deer (a stag with small branching antlers, warm brown coat with white spots, white tail patch, slender legs), a calm background animal. Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Do NOT copy the reference character itself. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, standing on all four legs, one front leg lifted, ready to walk. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:21"
+    }
+  ],
+  "torch_bandit": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "orange_bandit_codex1.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "The character: the same orange tabby cat bandit with the red eye-mask bandana knotted at the back of the head, but instead of the club he holds a burning wooden TORCH raised up in his front paw (a short thick stick with a rag bound at the top, bright orange flame). Keep EXACTLY the same character design as the reference image (same colours, markings, costume, face and proportions). Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, standing upright on two legs in a patrolling walk, looking ahead, tail curled up. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:23"
+    }
+  ],
+  "fox": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "wild_boar_codex1.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Draw a NEW character in the same game art style as the reference image: ONE slender red fox (orange-red fur, white chest and tail tip, black socks, big bushy tail, pointed ears), a sly background animal. Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Do NOT copy the reference character itself. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, RUNNING on all four legs in a full stretched gallop, tail streaming behind. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:25"
+    }
+  ],
+  "carp": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "kappa_codex1.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "Draw a NEW character in the same game art style as the reference image: ONE big koi carp (white with red-orange and black patches, long whiskers, big shiny scales, flowing fins) leaping out of the water with a few water droplets flying off its body (no water surface). Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Do NOT copy the reference character itself. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, its body curved in a jumping arc, head up-left, tail flicking down-right. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:29"
+    }
+  ],
+  "fire_arrow_fly": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s1_land_3.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). ONE FLYING FIRE ARROW (a Japanese fire arrow, hiya), in richly detailed hand-drawn and hand-painted 2D side-scrolling arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, rich texture and shading: a long thin wooden arrow shaft, horizontal, the iron arrowhead at the LEFT end and grey feather fletching at the right end, a bundle of oil-soaked cloth tied just behind the arrowhead burning with bright orange flames, the flames and a thin grey smoke trail streaming back to the right along the shaft. Flying to the LEFT. Just this one object. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:25:31"
+    }
+  ],
+  "flame": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "AN ANIMATION STRIP of 3 frames for a 2D side-scrolling game: the FLAME of a burning oil rag on a fire arrow stuck in the ground (only the flame: no arrow, no ground). The 3 frames are laid out in one row from left to right, each centred in its own equal cell, NOT touching each other, with wide gaps; every flame is the SAME size and its base is at the SAME height near the bottom of the cells. A lively hand-painted flame: white-yellow core, orange and red tongues licking upward and leaning a little to the left in the wind, a few sparks. The frames form a flickering loop (3 flows back into 1). Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:25:35"
+    }
+  ],
+  "mech_soldier": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "vids",
+      "refs": [
+        "iron_claw_codex1.png"
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "prompt": "Draw a NEW character in the same game art style as the reference image: ONE SMALL CLOCKWORK CAT FOOT-SOLDIER: a little mechanical cat made of dark riveted iron plates and brass gears like the reference, glowing orange eyes, a small wind-up key on its back, a simple iron jingasa soldier hat, holding a LONG SPEAR (yari) upright on its shoulder; small and simple like a foot-soldier, NOT a boss. Match EXACTLY the drawing style of the reference character: the same cute chunky cartoon proportions, the same thick black outline and the same flat cel shading. Do NOT copy the reference character itself. Draw it in a STRICT SIDE PROFILE VIEW FACING LEFT (we see only its left side, nose pointing to the left edge of the image, like a character in a 2D side-scrolling game), full body, standing upright on two legs, marching in step. Transparent background, no ground, no shadow, no text, nothing else in the image.",
+      "at": "2026-09-27 07:25:41"
+    }
+  ],
+  "fire_arrow_stuck": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s1_land_3.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). ONE FIRE ARROW STUCK IN THE GROUND, in richly detailed hand-drawn and hand-painted 2D side-scrolling arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, rich texture and shading: a long thin wooden arrow planted in the earth at a 40 degree slant, its head buried in a small mound of dirt at the LOWER LEFT and its grey feather fletching at the UPPER RIGHT; the oil-soaked cloth bundle on the shaft just above the dirt is charred black with glowing red-orange embers but has NO flames (flames are added separately). A small patch of scorched earth around the base. Just this one object. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:25:43"
+    }
+  ],
+  "impact_glow": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "AN ANIMATION STRIP of 4 frames for a 2D side-scrolling game: a HUGE METEOR IMPACT seen from very far away, as it lights up behind a distant mountain ridge (only the light: no mountain, no ground). Every frame sits on the SAME invisible horizontal base line near the bottom of its cell (the glow is cut flat at the bottom, like a dome rising from behind a ridge). (1) a small intense white-yellow flash point with a thin vertical pillar of light, (2) an expanding white-orange glowing dome with a bright shockwave ring, (3) a big glowing orange-red hemisphere with a rising glowing mushroom plume, (4) a fading dim red-orange glow with a faint glowing smoke column. The 4 frames are laid out in one row from left to right, each centred in its own equal cell, NOT touching each other, with gaps between them. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:25:48"
+    }
+  ],
+  "big_meteor": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s2_land_3.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). ONE HUGE FLAMING METEOR streaking across the night sky, in richly detailed hand-drawn and hand-painted 2D side-scrolling arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, rich texture and shading: a glowing red-hot rock wrapped in fire at the LOWER LEFT, heading to the lower left, with a long wide trail of fire, glowing embers and dark smoke streaming back to the UPPER RIGHT corner, the trail getting thinner and fainter toward its end. Just this one object. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:25:53"
+    }
+  ],
+  "meteors": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1024,
+        1536
+      ],
+      "prompt": "A SPRITE SHEET of 2 separate SHOOTING STAR (meteor) sprites for a 2D side-scrolling game, laid out one in the upper half and one in the lower half, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: each crosses diagonally, heading to the LOWER LEFT: a small very bright head and a long thin tapering glowing tail streaming back to the upper right. (1) a slim white-blue shooting star with a long fine tail, (2) a brighter warm golden-white one with a slightly wider tail and a few small sparkles falling off it. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:25:53"
+    }
+  ],
+  "strike": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "black",
+      "refs": [],
+      "size": [
+        1374,
+        1145
+      ],
+      "prompt": "AN ANIMATION STRIP of 2 frames for a 2D side-scrolling game: a LIGHTNING BOLT STRIKING DOWN onto a castle roof ridge (only the lightning: no roof, no clouds). The 2 frames are laid out side by side, each a tall bolt running from the very top edge down to about 90% of the picture height, NOT touching each other. (1) a jagged bright white-violet main bolt with several forked side branches and a soft purple glow, ending at the bottom in a bright white impact flash burst with sparks, (2) the SAME bolt shape a moment later: thinner, dimmer violet afterimage, branches faded, only small sparks left at the bottom. Everything else is PURE SOLID BLACK (#000000): the background must be completely flat black with no texture, no vignette, no scenery, no ground, no horizon, no stars, no text, no border. The effect is made only of light, so its colours must be bright on the black.",
+      "at": "2026-09-27 07:26:06"
+    }
+  ],
+  "ridge_chunks": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_3.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). A SPRITE SHEET of 3 separate BROKEN ROOF PIECES flying apart after a lightning strike for a 2D side-scrolling game, laid out in one row from left to right, NOT touching each other, with wide empty gaps (at least 120 pixels) between them: in the same style as the dark blue-grey clay roof tiles of the castle roofs in the reference: (1) a big broken section of a roof ridge: a row of dark ridge tiles on a snapped wooden beam, (2) a smaller cluster of a few dark roof tiles stuck together with crumbling mortar, (3) a broken curved ornamental ridge-end tile of dark bronze-coloured clay (NO face, NO text). Cold white-violet lightning highlights on wet surfaces, a few small chips flying off. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:26:13"
+    }
+  ],
+  "forge_blast": [
+    {
+      "attempt": 1,
+      "status": "ok",
+      "mode": "alpha",
+      "refs": [
+        "_ref_s3_land_2.png"
+      ],
+      "size": [
+        1536,
+        1024
+      ],
+      "prompt": "Reference image 1 is a finished background scene from the same game: match its drawing style, line quality, rendering, colour palette and LIGHTING EXACTLY, but draw ONLY the thing described below (nothing from the reference scene itself). AN ANIMATION STRIP of 6 frames for a 2D side-scrolling game: a BIG FORGE FURNACE EXPLOSION, in richly detailed hand-drawn and hand-painted 2D side-scrolling arcade game art in the style of classic run-and-gun games like Metal Slug: crisp dark outlines on solid shapes, rich texture and shading. The 6 frames are laid out in TWO ROWS OF THREE (read left to right, top row then bottom row), each centred in its own equal cell, NOT touching each other, with gaps; every frame has its base at the same height near the bottom of its cell: (1) a bright white-orange flash burst, (2) an expanding fireball throwing out molten sparks, (3) a huge fireball with dark smoke starting at its edges, (4) the fire turning into billowing dark smoke with glowing embers inside, (5) a dark grey-brown smoke cloud with a few glowing embers, (6) thinning, dissipating grey smoke. Transparent background. NO ground, NO scenery, NO text, NO letters, NO frame, NO border.",
+      "at": "2026-09-27 07:26:14"
+    }
+  ]
+}

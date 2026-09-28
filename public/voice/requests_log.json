@@ -1,0 +1,216 @@
+{
+ "cap": 30,
+ "requests": [
+  {
+   "time": "2026-09-27T10:35:12",
+   "group": "announcer",
+   "role": "播報員",
+   "try": 0,
+   "kind": "tts",
+   "chars": 313,
+   "lines": 43,
+   "result": "ok 60.2s"
+  },
+  {
+   "time": "2026-09-27T10:38:28",
+   "group": "qiuqiu_kiai",
+   "role": "球球（日文氣合聲）",
+   "try": 0,
+   "kind": "tts",
+   "chars": 92,
+   "lines": 15,
+   "result": "ok 16.5s"
+  },
+  {
+   "time": "2026-09-27T10:40:48",
+   "group": "qiuqiu_line",
+   "role": "球球（中文台詞）",
+   "try": 0,
+   "kind": "tts",
+   "chars": 72,
+   "lines": 8,
+   "result": "timeout"
+  },
+  {
+   "time": "2026-09-27T10:40:51",
+   "group": "qiuqiu_line",
+   "role": "球球（中文台詞）",
+   "try": 0,
+   "kind": "quota_probe",
+   "chars": 2,
+   "lines": 8,
+   "result": "ok"
+  },
+  {
+   "time": "2026-09-27T10:43:11",
+   "group": "qiuqiu_line",
+   "role": "球球（中文台詞）",
+   "try": 0,
+   "kind": "tts",
+   "chars": 72,
+   "lines": 8,
+   "result": "timeout"
+  },
+  {
+   "time": "2026-09-27T10:43:14",
+   "group": "qiuqiu_line",
+   "role": "球球（中文台詞）",
+   "try": 0,
+   "kind": "quota_probe",
+   "chars": 2,
+   "lines": 8,
+   "result": "daily_quota"
+  },
+  {
+   "time": "2026-09-28T17:31:21",
+   "group": "qiuqiu_line",
+   "role": "球球（日文台詞）",
+   "try": 0,
+   "kind": "tts",
+   "chars": 97,
+   "lines": 8,
+   "result": "ok 17.4s"
+  },
+  {
+   "time": "2026-09-28T17:31:52",
+   "group": "villager1",
+   "role": "村貓甲（溫柔大嬸）",
+   "try": 0,
+   "kind": "tts",
+   "chars": 51,
+   "lines": 4,
+   "result": "ok 9.3s"
+  },
+  {
+   "time": "2026-09-28T17:32:13",
+   "group": "villager2",
+   "role": "村貓乙（小孩）",
+   "try": 0,
+   "kind": "tts",
+   "chars": 45,
+   "lines": 4,
+   "result": "ok 9.0s"
+  },
+  {
+   "time": "2026-09-28T17:32:34",
+   "group": "villager3",
+   "role": "村貓丙（豪爽大叔）",
+   "try": 0,
+   "kind": "tts",
+   "chars": 48,
+   "lines": 4,
+   "result": "ok 8.4s"
+  },
+  {
+   "time": "2026-09-28T17:32:57",
+   "group": "drum_tanuki",
+   "role": "太鼓狸",
+   "try": 0,
+   "kind": "tts",
+   "chars": 61,
+   "lines": 5,
+   "result": "ok 14.6s"
+  },
+  {
+   "time": "2026-09-28T17:33:23",
+   "group": "orange_king",
+   "role": "橘皮大王",
+   "try": 0,
+   "kind": "tts",
+   "chars": 73,
+   "lines": 4,
+   "result": "ok 17.3s"
+  },
+  {
+   "time": "2026-09-28T17:33:46",
+   "group": "frog_daimyo",
+   "role": "蛙大名",
+   "try": 0,
+   "kind": "tts",
+   "chars": 74,
+   "lines": 4,
+   "result": "ok 18.6s"
+  },
+  {
+   "time": "2026-09-28T17:34:14",
+   "group": "tanuki_lord",
+   "role": "狸大人",
+   "try": 0,
+   "kind": "tts",
+   "chars": 137,
+   "lines": 10,
+   "result": "ok 31.9s"
+  },
+  {
+   "time": "2026-09-28T17:34:41",
+   "group": "roomba_king",
+   "role": "掃地機王",
+   "try": 0,
+   "kind": "tts",
+   "chars": 72,
+   "lines": 4,
+   "result": "ok 19.4s"
+  },
+  {
+   "time": "2026-09-28T17:35:05",
+   "group": "iron_claw",
+   "role": "鐵爪機關貓",
+   "try": 0,
+   "kind": "tts",
+   "chars": 63,
+   "lines": 5,
+   "result": "ok 19.3s"
+  },
+  {
+   "time": "2026-09-28T17:35:26",
+   "group": "grunt",
+   "role": "小兵",
+   "try": 0,
+   "kind": "tts",
+   "chars": 42,
+   "lines": 6,
+   "result": "ok 9.9s"
+  },
+  {
+   "time": "2026-09-28T17:35:46",
+   "group": "announcer",
+   "role": "播報員",
+   "try": 1,
+   "kind": "tts",
+   "chars": 14,
+   "lines": 2,
+   "result": "ok 3.3s"
+  },
+  {
+   "time": "2026-09-28T17:38:13",
+   "group": "drum_tanuki",
+   "role": "太鼓狸",
+   "try": 1,
+   "kind": "tts",
+   "chars": 5,
+   "lines": 1,
+   "result": "ok 1.6s"
+  },
+  {
+   "time": "2026-09-28T17:38:28",
+   "group": "grunt",
+   "role": "小兵",
+   "try": 1,
+   "kind": "tts",
+   "chars": 14,
+   "lines": 2,
+   "result": "ok 2.3s"
+  },
+  {
+   "time": "2026-09-28T17:38:47",
+   "group": "orange_king",
+   "role": "橘皮大王",
+   "try": 1,
+   "kind": "tts",
+   "chars": 15,
+   "lines": 1,
+   "result": "ok 4.0s"
+  }
+ ],
+ "used": 21
+}

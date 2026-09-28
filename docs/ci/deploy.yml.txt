@@ -1,0 +1,62 @@
+# ───── 範本，目前沒有啟用（2026-09-27）─────
+# 這是「推到 main 就在雲端測試、打包、發布」的 GitHub Actions 流程。
+# 暫時放這裡、不放 .github/workflows/：本機 GitHub 命令列工具的登入權杖沒有 `workflow` 權限，
+# 推送裡只要帶著 .github/workflows/ 底下的檔，整筆推送就會被 GitHub 拒收。
+# 現在的上線方式是 tools/deploy.sh：本機打包，把 dist 推到 gh-pages 分支（網站設定＝gh-pages 分支根目錄）。
+#
+# 日後權杖有 workflow 權限（`gh auth refresh -h github.com -s workflow`）再改回雲端部署：
+#   1. 把這個檔搬回 .github/workflows/deploy.yml，並刪掉這段檔頭
+#   2. gh api -X PUT repos/yayaxcharles/qiuqiu-adventure/pages -f build_type=workflow
+#   3. tools/deploy.sh 改回「推 main → 等 Actions → 比對線上主程式檔名」（參考 qiuqiu-coop/tools/deploy.sh）
+# ─────────────────────────────────────────
+
+name: 部署到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # 也可以在 Actions 分頁手動按一次，不必硬推一筆提交
+  workflow_dispatch:
+
+# deploy-pages 走的是 OIDC 換權杖那條路，所以 pages 與 id-token 兩個權限缺一不可
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  # 刻意不取消進行中的部署：正在發布的那一次讓它跑完，排隊中的舊的自然會被新的擠掉。
+  # 取消到一半會留下半套的線上版本。
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          # 對齊作者機器上的 Node 24；cache: npm 會拿 package-lock.json 當快取鍵，所以鎖檔一定要進版控
+          node-version: '24'
+          cache: npm
+      # 用 ci 不用 install：完全照 package-lock.json 裝，版本不會偷偷漂掉
+      - run: npm ci
+      # GitHub Actions 本來就會設 CI=true。2026-09-27 盤點：tests/ 只讀 src/ 與 public/ 的 json，
+      # 沒有測試要靠本機才有的東西（vids/、art_raw/ 原圖、瀏覽器）；以後加這種測試，要看 CI 在雲端跳過
+      - run: npm test
+      # build 這條本身就是 tsc --noEmit && vite build，型別錯了會在這裡擋下來
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

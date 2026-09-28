@@ -1,0 +1,3 @@
+# 這台機器 core.autocrlf=true：sh 腳本不釘 LF 的話，別的工作目錄取出來會變 CRLF，
+# sh 每一行都多吃一個 \r，整支壞掉（qiuqiu-coop 2026-09-16 踩過）
+*.sh text eol=lf

@@ -1,0 +1,548 @@
+{
+ "_說明": "站得上去的東西與道具（tools/gen_terrain.py 生、tools/post_terrain.py 後製，畫風跟 panels 長卷背景一致）。座標一律是圖片像素、左上角 (0,0)。displayScale＝顯示時乘多少（道具類檔案存 2 倍大＝0.5；地面帶與崖壁存 1:1＝1）。standY＝腳踩的那條線在圖上第幾列；tileX／tileY／repeat＝這張可左右／上下／重複接；anchor＝擺放基準點。seam 是接縫檢查數字（1 左右＝看不出來）。模擬的遊戲畫面在 art_raw/terrain/_check/。",
+ "ground": {
+  "village": {
+   "path": "terrain/ground_village.webp",
+   "w": 976,
+   "h": 259,
+   "standY": 18,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.899,
+   "seam": 1.07,
+   "bottomColor": "#130b04",
+   "source": "ground_village.try1.png",
+   "use": "山村土路（第一關 0～10,600）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下請用 bottomColor 補滿到畫面底"
+  },
+  "bamboo": {
+   "path": "terrain/ground_bamboo.webp",
+   "w": 976,
+   "h": 297,
+   "standY": 34,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.838,
+   "seam": 1.21,
+   "bottomColor": "#100802",
+   "source": "ground_bamboo.try1.png",
+   "use": "竹林落葉土（第一關 10,600～16,170）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下請用 bottomColor 補滿到畫面底"
+  },
+  "bandit": {
+   "path": "terrain/ground_bandit.webp",
+   "w": 976,
+   "h": 256,
+   "standY": 25,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.866,
+   "seam": 1.27,
+   "bottomColor": "#0a0502",
+   "source": "ground_bandit.try1.png",
+   "use": "山賊寨木板泥地（第一關 16,170～）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下請用 bottomColor 補滿到畫面底"
+  },
+  "_zones": {
+   "s1_1_ground": "village",
+   "s1_2_ground": "bamboo",
+   "s1_3_ground": "bandit"
+  }
+ },
+ "wall": {
+  "stone": {
+   "top": {
+    "path": "terrain/wall_stone_top.webp",
+    "w": 282,
+    "h": 191,
+    "standY": 21
+   },
+   "body": {
+    "path": "terrain/wall_stone_body.webp",
+    "w": 282,
+    "h": 571,
+    "tileY": true,
+    "seam": 1.3
+   },
+   "faceX": 43,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_stone.try1.png",
+   "use": "石砌擋土牆（山村：上坡高台、民家台地、樓梯、小溪坑邊）：壁面朝左（左邊低、右邊高）。擺法：壁面 x＝落差的 x，頂端那塊的 standY 對齊高處地面的站立線，下面接 body 往下重複到畫面底。左邊高的落差請整組水平翻轉（壁面仍對齊落差 x）。"
+  },
+  "earth": {
+   "top": {
+    "path": "terrain/wall_earth_top.webp",
+    "w": 276,
+    "h": 199,
+    "standY": 29
+   },
+   "body": {
+    "path": "terrain/wall_earth_body.webp",
+    "w": 276,
+    "h": 563,
+    "tileY": true,
+    "seam": 1.29
+   },
+   "faceX": 75,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_earth.try1.png",
+   "use": "土崖帶樹根（竹林：坑邊、斜坡落差；也可用在山村斷崖）：壁面朝左（左邊低、右邊高）。擺法：壁面 x＝落差的 x，頂端那塊的 standY 對齊高處地面的站立線，下面接 body 往下重複到畫面底。左邊高的落差請整組水平翻轉（壁面仍對齊落差 x）。"
+  },
+  "log": {
+   "top": {
+    "path": "terrain/wall_log_top.webp",
+    "w": 298,
+    "h": 195,
+    "standY": 25
+   },
+   "body": {
+    "path": "terrain/wall_log_body.webp",
+    "w": 298,
+    "h": 567,
+    "tileY": true,
+    "seam": 0.98
+   },
+   "faceX": 39,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_log.try1.png",
+   "use": "木樁擋土牆（山賊寨：斜坡落差、壕溝邊）：壁面朝左（左邊低、右邊高）。擺法：壁面 x＝落差的 x，頂端那塊的 standY 對齊高處地面的站立線，下面接 body 往下重複到畫面底。左邊高的落差請整組水平翻轉（壁面仍對齊落差 x）。"
+  }
+ },
+ "house": {
+  "left": {
+   "path": "terrain/house_left.webp",
+   "w": 109,
+   "h": 315,
+   "ridgeX": 80
+  },
+  "mid": {
+   "path": "terrain/house_mid.webp",
+   "w": 163,
+   "h": 315,
+   "repeat": true
+  },
+  "right": {
+   "path": "terrain/house_right.webp",
+   "w": 262,
+   "h": 315,
+   "ridgeX": 183
+  },
+  "standY": 21,
+  "bottomY": 315,
+  "displayScale": 0.5,
+  "split": {
+   "P": 163,
+   "a0": 77,
+   "r0": 750,
+   "midSeam": 1.51
+  },
+  "source": "house.try1.png",
+  "use": "屋頂平台底下的民家（屋脊＝站得上去的那條線）。拼法：左端＋中段×n＋右端，三塊都頂端對齊、緊貼著排；left.ridgeX～right.ridgeX 是屋脊（能站的範圍），屋簷會多伸出去一點。檔案是 2 倍大，顯示時 ×0.5（屋脊到圖底約 146 像素＝屋脊比地面高 140、圖底埋進地面 6）。平台寬 w：n＝round((w/0.5 − (屋脊在左端與右端各占的寬)) ÷ 中段寬)，再把整棟水平縮放到屋脊剛好＝w（誤差在正負 20% 內看不出來）。"
+ },
+ "rail": {
+  "bamboo": {
+   "left": {
+    "path": "terrain/rail_bamboo_left.webp",
+    "w": 122,
+    "h": 62
+   },
+   "mid": {
+    "path": "terrain/rail_bamboo_mid.webp",
+    "w": 111,
+    "h": 62,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/rail_bamboo_right.webp",
+    "w": 187,
+    "h": 62
+   },
+   "standY": 10,
+   "displayScale": 0.5,
+   "split": {
+    "P": 111,
+    "a0": 100,
+    "r0": 652,
+    "midSeam": 0.68
+   },
+   "source": "rail_bamboo.try1.png",
+   "post": "bamboo",
+   "use": "竹架（第一關竹林）平台面：左端＋中段×n＋右端，頂端第 standY 列＝腳踩的線；檔案 2 倍大、顯示 ×0.5；寬度不剛好就整條水平縮放（正負 20% 內）。支柱用 posts 裡對應的那根，從平台面往下重複到地面。"
+  },
+  "plank": {
+   "left": {
+    "path": "terrain/rail_plank_left.webp",
+    "w": 132,
+    "h": 57
+   },
+   "mid": {
+    "path": "terrain/rail_plank_mid.webp",
+    "w": 126,
+    "h": 57,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/rail_plank_right.webp",
+    "w": 128,
+    "h": 57
+   },
+   "standY": 7,
+   "displayScale": 0.5,
+   "split": {
+    "P": 126,
+    "a0": 107,
+    "r0": 764,
+    "midSeam": 1.31
+   },
+   "source": "rail_plank.try1.png",
+   "post": "square",
+   "use": "木架（第一關寨內）平台面：左端＋中段×n＋右端，頂端第 standY 列＝腳踩的線；檔案 2 倍大、顯示 ×0.5；寬度不剛好就整條水平縮放（正負 20% 內）。支柱用 posts 裡對應的那根，從平台面往下重複到地面。"
+  }
+ },
+ "post": {
+  "bamboo": {
+   "path": "terrain/post_bamboo.webp",
+   "w": 34,
+   "h": 416,
+   "tileY": true,
+   "seam": 0.71,
+   "displayScale": 0.5
+  },
+  "bamboo_thin": {
+   "path": "terrain/post_bamboo_thin.webp",
+   "w": 19,
+   "h": 416,
+   "tileY": true,
+   "seam": 0.57,
+   "displayScale": 0.5
+  },
+  "square": {
+   "path": "terrain/post_square.webp",
+   "w": 40,
+   "h": 416,
+   "tileY": true,
+   "seam": 0.46,
+   "displayScale": 0.5
+  },
+  "log": {
+   "path": "terrain/post_log.webp",
+   "w": 46,
+   "h": 416,
+   "tileY": true,
+   "seam": 1.05,
+   "displayScale": 0.5
+  },
+  "_use": "平台支柱：中心對齊柱子的 x，從平台面往下垂直重複到地面（坑裡就到畫面底）；檔案 2 倍大、顯示 ×0.5。",
+  "_source": "posts.try1.png"
+ },
+ "props": {
+  "crate": {
+   "path": "props2/crate.webp",
+   "w": 178,
+   "h": 142,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "木箱：底部中間貼地",
+   "source": "props_barrels.try1.png",
+   "displayH": 70
+  },
+  "crate_broken": {
+   "path": "props2/crate_broken.webp",
+   "w": 196,
+   "h": 109,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "木箱打爛後的殘骸（跟完好版同縮放、同錨點）",
+   "source": "props_barrels.try1.png"
+  },
+  "barrel": {
+   "path": "props2/barrel.webp",
+   "w": 163,
+   "h": 180,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "酒桶：底部中間貼地",
+   "source": "props_barrels.try1.png",
+   "displayH": 90
+  },
+  "barrel_broken": {
+   "path": "props2/barrel_broken.webp",
+   "w": 219,
+   "h": 127,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "酒桶打爛後的殘骸（跟完好版同縮放、同錨點）",
+   "source": "props_barrels.try1.png"
+  },
+  "powder": {
+   "path": "props2/powder.webp",
+   "w": 150,
+   "h": 201,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "火藥桶（含引信）：底部中間貼地",
+   "source": "props_barrels.try1.png",
+   "displayH": 100
+  },
+  "powder_broken": {
+   "path": "props2/powder_broken.webp",
+   "w": 216,
+   "h": 128,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "火藥桶（含引信）打爛後的殘骸（跟完好版同縮放、同錨點）",
+   "source": "props_barrels.try1.png"
+  },
+  "cage": {
+   "path": "props2/cage.webp",
+   "w": 339,
+   "h": 339,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "竹籠（關村貓；籠內透明，村貓畫在籠子後面）",
+   "source": "props_cage_stall.try1.png",
+   "displayH": 170
+  },
+  "cage_broken": {
+   "path": "props2/cage_broken.webp",
+   "w": 431,
+   "h": 208,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "竹籠打爛後的殘骸（同縮放、同錨點）",
+   "source": "props_cage_stall.try1.png"
+  },
+  "stall": {
+   "path": "props2/stall.webp",
+   "w": 428,
+   "h": 330,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "攤位",
+   "source": "props_cage_stall.try1.png",
+   "displayH": 165
+  },
+  "stall_broken": {
+   "path": "props2/stall_broken.webp",
+   "w": 480,
+   "h": 221,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "攤位打爛後的殘骸（同縮放、同錨點）",
+   "source": "props_cage_stall.try1.png"
+  },
+  "tower": {
+   "path": "props2/tower.webp",
+   "w": 563,
+   "h": 842,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瞭望台：底部中間貼地",
+   "source": "tower.try1.png",
+   "displayH": 420
+  },
+  "tower_broken": {
+   "path": "props2/tower_broken.webp",
+   "w": 563,
+   "h": 842,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瞭望台打爛後（跟完好版同一個裁切框：直接換圖就對齊）",
+   "source": "tower_broken.try2.png"
+  },
+  "gate": {
+   "path": "props2/gate.webp",
+   "w": 612,
+   "h": 888,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "寨門：底部中間貼地",
+   "source": "gate.try1.png",
+   "displayH": 430
+  },
+  "gate_broken": {
+   "path": "props2/gate_broken.webp",
+   "w": 612,
+   "h": 888,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "寨門打爛後（跟完好版同一個裁切框：直接換圖就對齊）",
+   "source": "gate_broken.try2.png"
+  },
+  "onigiri": {
+   "path": "props2/onigiri.webp",
+   "w": 114,
+   "h": 105,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "飯糰（掉落物，中心對齊）",
+   "source": "items_small.try1.png",
+   "displaySize": 56
+  },
+  "fish": {
+   "path": "props2/fish.webp",
+   "w": 154,
+   "h": 64,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "魚乾（掉落物，頭朝左）",
+   "source": "items_small.try1.png",
+   "displaySize": 76
+  },
+  "fish_bone": {
+   "path": "props2/fish_bone.webp",
+   "w": 142,
+   "h": 62,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "魚骨頭（橘皮大王丟的，頭朝左，旋轉用）",
+   "source": "items_small.try1.png",
+   "displaySize": 70
+  },
+  "maple_red": {
+   "path": "props2/maple_red.webp",
+   "w": 64,
+   "h": 60,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "紅楓葉（飄落粒子）",
+   "source": "items_small.try1.png",
+   "displaySize": 30
+  },
+  "maple_orange": {
+   "path": "props2/maple_orange.webp",
+   "w": 64,
+   "h": 64,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "橘楓葉（飄落粒子）",
+   "source": "items_small.try1.png",
+   "displaySize": 30
+  },
+  "king_pack": {
+   "path": "props2/king_pack.webp",
+   "w": 341,
+   "h": 291,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "橘皮大王背上的魚乾竹簍（背帶在左邊；大王朝右時請水平翻轉）",
+   "source": "king_pack.try1.png",
+   "displayW": 170
+  },
+  "king_pack_broken": {
+   "path": "props2/king_pack_broken.webp",
+   "w": 428,
+   "h": 241,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "竹簍炸爛掉在地上（同縮放、底部貼地）",
+   "source": "king_pack.try1.png"
+  },
+  "burrow": {
+   "path": "props2/burrow.webp",
+   "w": 262,
+   "h": 95,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "地洞（鼠兵冒出來的洞）：底部中間貼地、洞口在地面線上",
+   "source": "burrow.try1.png",
+   "displayW": 130
+  },
+  "burrow_burst": {
+   "path": "props2/burrow_burst.webp",
+   "w": 326,
+   "h": 152,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "地洞剛被衝開（土塊飛起）：底部中間貼地、洞口在地面線上",
+   "source": "burrow.try1.png",
+   "displayW": 130
+  },
+  "debris_plank": {
+   "path": "props2/debris_plank.webp",
+   "w": 66,
+   "h": 66,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：木板碎片（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_splinter": {
+   "path": "props2/debris_splinter.webp",
+   "w": 57,
+   "h": 66,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：木刺（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_stave": {
+   "path": "props2/debris_stave.webp",
+   "w": 42,
+   "h": 68,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：桶板（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_hoop": {
+   "path": "props2/debris_hoop.webp",
+   "w": 67,
+   "h": 68,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：竹箍（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_bamboo": {
+   "path": "props2/debris_bamboo.webp",
+   "w": 64,
+   "h": 62,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：竹筒碎片（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_stone": {
+   "path": "props2/debris_stone.webp",
+   "w": 63,
+   "h": 52,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：石塊（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_straw": {
+   "path": "props2/debris_straw.webp",
+   "w": 66,
+   "h": 59,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：稻草（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_char": {
+   "path": "props2/debris_char.webp",
+   "w": 61,
+   "h": 57,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：燒焦木塊（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "weapon_H": {
+   "path": "props2/weapon_H.webp",
+   "w": 350,
+   "h": 336,
+   "use": "掉落道具圖示：H 棒手裏劍連射（取代 icons/weapon_H 的苦無圖；大小跟其他 weapon_* 圖示一樣）",
+   "center": [
+    175,
+    168
+   ],
+   "source": "icon_H.try1.png"
+  }
+ }
+}

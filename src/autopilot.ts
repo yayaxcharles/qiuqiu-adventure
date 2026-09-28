@@ -1,0 +1,239 @@
+/**
+ * 自動玩（網址加 ?bot 就接上；tools/stage1_play.mjs 用它把第一關從頭玩到過關）。
+ * 不是作弊：只看畫面上看得到的東西、按跟玩家一樣的鍵——
+ *   一直往右；前面有敵人就停下來丟（貼近了自動揮爪）；看到預兆就躲：震波、野豬、滾過來的大王跳過去，
+ *   苦無蹲下或跳，魚骨頭、泰山壓頂的影子就跑開；坑、高台跳過去；打魔王保持距離、跳起來丟打背包、丟爆裂符。
+ */
+import { ENEMY_DEFS, enemyBox } from './enemies';
+import { RAM_DIST } from './enemies3';
+import { isGate } from './entities';
+import type { Game } from './game';
+import { NO_INPUT, type Frame } from './input';
+import { STEP_UP } from './physics';
+import { WEAPONS } from './weapons';
+
+export function createBot(): (g: Game, dt: number) => Frame {
+  const s = { backT: 0, atkT: 0, jumpHold: 0, jumpCd: 0, subT: 3, startT: 0, progX: 0, stuckT: 0, turnT: 0, crouchT: 0, bossJumpT: 0 };
+  return (g: Game, dt: number): Frame => {
+    const f: Frame = { ...NO_INPUT };
+    s.atkT -= dt; s.jumpCd -= dt; s.subT -= dt; s.turnT -= dt; s.bossJumpT -= dt;
+    if (g.screen === 'title' || g.screen === 'continue') {
+      if ((s.startT += dt) > 0.6) { s.startT = 0; f.startPressed = true; }
+      return f;
+    }
+    if (g.screen !== 'play' || !g.world) return f;
+    const w = g.world, p = w.player, b = p.body;
+    if (w.state !== 'play' || !p.alive) return f;
+    const px = b.x, py = b.y;
+
+    let jump = false, crouch = false, flee = 0;
+    // ── 躲 ──
+    for (const bl of w.bullets) {
+      const dx = bl.x - px, closing = -Math.sign(dx) * bl.vx;
+      if (bl.kind === 'wave') { if (closing > 0 && Math.abs(dx) / closing < 0.3 && Math.abs(dx) > 10) jump = true; }
+      // 橫飛的東西（苦無、火球、水彈、葉子、扇子）：低的就蹲、高的就跳
+      else if (bl.kind === 'kunai' || bl.kind === 'fireball' || bl.kind === 'water' || bl.kind === 'leaf' || bl.kind === 'fan' || bl.kind === 'pellet') {
+        const t = Math.abs(dx) / Math.max(1, Math.abs(bl.vx) + Math.abs(bl.vy));
+        // 斜著往下打來的（燈籠鬼瞄準的火球）：往反方向跑開
+        if ((bl.kind === 'fireball' || bl.kind === 'pellet') && bl.vy > 60 && t < 0.6 && Math.abs(dx) < 380) { flee = dx > 0 ? -1 : 1; continue; }
+        if (t < 0.4 && Math.abs(bl.y + bl.vy * t - (py - 90)) < 90) {
+          if (Math.abs(bl.vy) < 60 && bl.y < py - 100 && p.anim.has('crouch') && b.onGround) crouch = true; else jump = true;
+        }
+      } else if (bl.kind === 'bone' || bl.kind === 'garbage') {
+        const t = Math.max(0, (py - 80 - bl.y) / Math.max(200, bl.vy));
+        const lx = bl.x + bl.vx * t;
+        if (Math.abs(lx - px) < (bl.kind === 'garbage' ? 140 : 110)) flee = lx > px ? -1 : 1;
+      } else if (bl.kind === 'missile' && bl.vy > 0) {
+        if (Math.abs(bl.x - px) < 130) flee = bl.x > px ? -1 : 1;
+      } else if (bl.kind === 'blast' && Math.abs(dx) < 260) flee = dx > 0 ? -1 : 1;
+      else if (bl.kind === 'splash' && Math.abs(dx) < 120 && bl.vy > 0) flee = dx > 0 ? -1 : 1;
+    }
+    const alive = w.enemies.filter((e) => e.dying <= 0 && !e.dead);
+    for (const e of alive) {
+      const dx = e.x - px, adx = Math.abs(dx);
+      const toward = (dir: number): boolean => dir * dx < 0;
+      if (e.state === 'charge' && toward(e.facing) && adx < 330) jump = true;
+      if (e.kind === 'orange_king') {
+        const spd = e.p2 ? 800 : 540;
+        if (e.state === 'roll' && toward(e.mem.dir ?? -1) && adx < spd * 0.32 + 130) jump = true;
+        if (e.state === 'rollWind' && adx < 200) flee = dx > 0 ? -1 : 1;
+        if ((e.state === 'crushShadow' || e.state === 'belly') && Math.abs((e.mem.tx ?? e.x) - px) < 230) flee = (e.mem.tx ?? e.x) > px ? -1 : 1;
+      }
+      if (e.kind === 'drum_tanuki' && e.state === 'blastWind' && adx < 330) flee = dx > 0 ? -1 : 1;
+      if (e.kind === 'crow_small' && e.state === 'swoop' && adx < 200 && e.y > py - 260) crouch = crouch || false;
+      if (e.kind === 'wild_boar' && e.state === 'windup' && adx < 260) flee = dx > 0 ? -1 : 1;
+      // 蛙大名的舌頭：張嘴就蹲下（舌頭在頭的高度）
+      if (e.kind === 'frog_daimyo' && (e.state === 'tongueWind' || e.state === 'tongue') && adx < 560 && b.onGround) crouch = true;
+      if (e.kind === 'frog_daimyo' && e.state === 'jumpAir' && Math.abs((e.mem.tx ?? e.x) - px) < 200) flee = (e.mem.tx ?? e.x) > px ? -1 : 1;
+      // ── 第三關 ──
+      const inFront = (e.x - px) * e.facing < 0;   // 球球在牠面前
+      if (e.kind === 'broom_centipede' && e.state === 'rear' && adx < 420) flee = dx > 0 ? -1 : 1;
+      if (e.kind === 'iron_arhat' && (e.state === 'windup' || e.state === 'punch') && inFront && adx < 290 && b.onGround) crouch = true;
+      if (e.kind === 'armor_ghost' && ((e.state === 'windup' && e.t > 0.25) || e.state === 'thrust') && inFront && adx < 340 && b.onGround) crouch = true;
+      if (e.kind === 'wraith_samurai' && (e.state === 'appear' || e.state === 'slash') && adx < 300) flee = dx > 0 ? -1 : 1;
+      if (e.kind === 'guardian_statue' && (e.state === 'windup' || e.state === 'swipe') && adx < 330) flee = dx > 0 ? -1 : 1;
+      if (e.kind === 'roomba_king') {
+        if (e.state === 'suck' || e.state === 'suckWind') flee = dx > 0 ? -1 : 1;
+        if ((e.state === 'ramWind' || e.state === 'ram') && inFront && adx < ENEMY_DEFS[e.kind].w / 2 + RAM_DIST + 110) flee = dx > 0 ? -1 : 1;
+      }
+      if (e.kind === 'iron_claw') {
+        const wind = e.p2 ? 0.5 : 0.7;
+        if (((e.state === 'swipeWind' && e.t > wind - 0.22) || (e.state === 'swipe' && e.t < 0.15)) && inFront && adx < 470) jump = true;
+      }
+    }
+    // 飛彈的落點：離開瞄準圈
+    for (const k of w.marks) if (Math.abs(k.x - px) < 140) flee = k.x > px ? -1 : 1;
+    // 鐵爪二階：低的雷射、暴走衝撞 → 躲上屋脊；高的雷射 → 蹲下（站在屋脊上就先跳下來）
+    let seekRidge = false, leaveRidge = false;
+    const claw = w.boss && w.boss.kind === 'iron_claw' && w.boss.dying <= 0 ? w.boss : null;
+    if (claw && ((claw.state === 'laserWind' || claw.state === 'laser') && claw.mem.low || claw.state === 'rampageWind' || claw.state === 'rampage')) seekRidge = true;
+    // 掃地機王要衝撞、自己在衝撞範圍裡：躲上鐵走道（範圍外就不用）
+    const rb = w.boss && w.boss.kind === 'roomba_king' && w.boss.dying <= 0 ? w.boss : null;
+    if (rb && (rb.state === 'ramWind' || rb.state === 'ram') && (rb.x - px) * rb.facing < 0 && Math.abs(rb.x - px) < ENEMY_DEFS.roomba_king.w / 2 + RAM_DIST + 110) { seekRidge = true; flee = 0; }
+    if (claw && (claw.state === 'laserWind' || claw.state === 'laser') && !claw.mem.low) { if (p.onPlatform(w)) leaveRidge = true; else if (b.onGround) crouch = true; }
+
+    // ── 挑目標：前面的優先；背後的只有貼近（350 以內）才轉身打；前面的在高處（屋頂、瞭望台）就跳起來丟 ──
+    const boss = w.boss && !w.boss.dead && w.boss.state !== 'die' && w.boss.state !== 'start' ? w.boss : null;
+    const onScreen = alive.filter((e) => w.onScreen(e.x, -20) && e.kind !== 'dummy' && !(e.invuln > 5 && !e.boss));
+    const handY = py - 112;
+    const reachable = (e: typeof alive[number]): boolean => { const bx = enemyBox(e); return bx.y0 < handY + 20 && bx.y1 > handY - 20; };
+    const ahead = onScreen.filter((e) => e.x - px > -40).sort((a, c) => (a.x - px) - (c.x - px));
+    const behind = onScreen.filter((e) => e.x - px <= -40 && px - e.x < 350 && e.aware).sort((a, c) => (c.x - a.x));
+    // 打得掉的子彈（狐火、泡泡）靠近了也當目標
+    const shootable = w.bullets.find((bl) => bl.hp !== undefined && Math.abs(bl.x - px) < 420 && Math.abs(bl.y - handY) < 90);
+    const target = boss ?? behind[0] ?? ahead[0];
+    let move = 1;
+    let jumpThrow = false, dropDown = false, aimDown = false;
+    if (boss) {
+      const want = 430, side = boss.x > px ? 1 : -1, d = Math.abs(boss.x - px);
+      const ar = w.arena();
+      if (d < want - 90) move = -side; else if (d > want + 120) move = side; else move = 0;
+      if (b.facing !== side && move !== side) { move = side; }   // 先轉身面對魔王
+      // 被逼到角落：從魔王頭上跳過去換邊（大王太高跳不過：趁剛被打的無敵時間直接穿過去）
+      const cornered = (px < ar.x0 + 160 && side > 0 && d < 330) || (px > ar.x1 - 160 && side < 0 && d < 330);
+      if (cornered) { move = side; if (boss.kind !== 'orange_king') jump = true; }
+      if (d < 260 && p.invincible > 0.35) move = side;
+    } else if (target) {
+      const dx = target.x - px, adx = Math.abs(dx), dir = Math.sign(dx) || 1;
+      const flying = ENEMY_DEFS[target.kind].fly;
+      // 飛的：走到牠底下往上丟；牠要俯衝了就往另一邊跑開
+      // 牆上的甲蟲砲台（不會俯衝）：走到底下往上丟就好
+      if (flying && target.mem.mount) move = adx > 45 ? dir : 0;
+      else if (flying) { move = adx > 45 ? dir : 0; if (target.state === 'windup' || target.state === 'swoop') move = -dir; }
+      // 鐵羅漢護甲關著（正面丟不進去）：貼上去揮爪（牠出拳的時候蹲下）
+      else if (target.kind === 'iron_arhat' && !['windup', 'punch', 'recover'].includes(target.state)) move = adx > 120 ? dir : 0;
+      else if (reachable(target)) { move = adx > 330 ? dir : 0; if (b.facing !== dir) move = dir; }
+      else if (enemyBox(target).y0 > handY + 20) {
+        // 在下面（自己站在屋頂、木架上）：走過去；靠近了就「↓＋跳」跳下平台，空中朝下丟
+        move = adx > 60 ? dir : 0;
+        if (b.onGround && adx < 220 && p.onPlatform(w)) dropDown = true;
+        if (!b.onGround && adx < 90) aimDown = true;
+      } else {
+        // 在高處：靠近到 260 以內，跳起來丟；太近了就退一點
+        move = adx > 260 ? dir : adx < 120 ? -dir : 0;
+        if (b.facing !== dir && move === 0) move = dir;
+        jumpThrow = true;
+      }
+    }
+    // 寨門、瞭望台、木箱：停下來打
+    // 只有寨門一定要打爛；木箱、攤位這些打得到才順手打（站在木架上打不到下面的就走過去）
+    const blocker = w.breakables.find((k) => !k.broken && k.x > px && w.onScreen(k.x, -10) && (isGate(k.kind) ? k.x - px < 520
+      : k.kind !== 'tower' && k.x - px < 200 && k.y - k.h < handY + 20 && k.y > handY - 20));
+    if (blocker && (isGate(blocker.kind) || blocker.x - px < 150)) move = Math.min(move, 0);
+    // 附近沒有敵人時，回頭撿掉在地上的東西（村貓丟過來的忍具常常落在背後）
+    if (!boss && (!target || Math.abs(target.x - px) > 600)) {
+      const item = w.pickups.find((k) => !k.taken && k.age > 0.4 && k.onGround && k.x > w.camX + 60 && w.onScreen(k.x, -30) && Math.abs(k.x - px) < 520 && Math.abs(k.y - py) < 140);
+      if (item && Math.abs(item.x - px) > 16) move = Math.sign(item.x - px);
+    }
+    // 站著打的時候先轉身面向要打的東西（按一下方向鍵就轉過去）
+    const atkDir = boss ? Math.sign(boss.x - px) : target && (!blocker || Math.abs(target.x - px) < Math.abs(blocker.x - px)) ? Math.sign(target.x - px) : blocker ? 1 : 0;
+    if (move === 0 && atkDir && b.facing !== atkDir) move = atkDir;
+    if (flee) move = flee;
+
+    // 躲上屋脊：走到最近的屋脊底下，跳上去；在上面就站著（站中間）
+    if (seekRidge) {
+      const ridges = w.platforms.filter((pl) => pl.y < w.groundAt(pl.x + pl.w / 2) - 100 && w.onScreen(pl.x + pl.w / 2, -40));
+      const on = ridges.find((pl) => b.onGround && Math.abs(b.y - pl.y) < 1 && px >= pl.x && px <= pl.x + pl.w);
+      if (on) { const c = on.x + on.w / 2; move = Math.abs(px - c) > 30 ? Math.sign(c - px) : 0; flee = 0; }
+      else if (ridges.length) {
+        const r = ridges.sort((a, c) => Math.abs(a.x + a.w / 2 - px) - Math.abs(c.x + c.w / 2 - px))[0]!;
+        const c = r.x + r.w / 2;
+        move = Math.abs(px - c) > 20 ? Math.sign(c - px) : 0;
+        if (b.onGround && Math.abs(px - c) < r.w / 2 + 40) jump = true;
+      }
+    }
+    // 升降台：牆太高跳不上去、旁邊有升降台：走到升降台中間等，升到頂再往前走
+    const lift = w.platforms.find((pl) => pl.lift && pl.x < px + 520 && pl.x + pl.w > px - 60);
+    let riding = false;
+    if (lift && lift.lift && b.y > lift.lift.y1 - 5) {
+      const c = lift.x + lift.w / 2, top = lift.lift.y1;
+      const onLift = b.onGround && Math.abs(b.y - lift.y) < 1 && px >= lift.x && px <= lift.x + lift.w;
+      if (b.y > top + 40 || onLift) {
+        riding = true;
+        if (onLift && Math.abs(lift.y - top) < 2) move = 1;
+        else move = Math.abs(px - c) > 24 ? Math.sign(c - px) : 0;
+        jump = false;
+      }
+    }
+    // 蒸氣噴口：前面的在冒煙、在噴就停下來等；站在噴口上就趕快走開（在鐵走道上不用管）
+    for (const v of w.stage.vents ?? []) {
+      const g = w.terrain.groundAt(v.x);
+      if (!Number.isFinite(g) || py < g - 100) continue;
+      const st = w.ventState(v), hot = st.on || st.warn;
+      const d = (v.x - px) * (move || 1);
+      if (!hot) continue;
+      if (Math.abs(v.x - px) < 64) move = px < v.x ? -1 : 1;
+      else if (d > 0 && d < 150) move = 0;
+    }
+
+    // 坑、高台：前面地面不見了或高出一截就跳
+    // 助跑跳一次約 230 像素：坑邊剩 15～55 像素、而且已經跑到快全速才起跳；還沒跑起來就先放慢到坑邊
+    if (b.onGround && move !== 0 && !p.onPlatform(w) && !riding) {
+      const g0 = w.groundAt(px);
+      for (let d = 10; d <= 120; d += 5) {
+        const g1 = w.groundAt(px + move * d);
+        if (!Number.isFinite(g1) || g1 < g0 - STEP_UP) {
+          const pit = !Number.isFinite(g1);
+          if (!pit || (d <= 30 && Math.abs(b.vx) > 300)) jump = true;
+          else if (pit && d <= 30) s.backT = 0.35;   // 還沒跑起來：退回去重新助跑
+          break;
+        }
+      }
+    }
+    if (s.backT > 0) { s.backT -= dt; move = -Math.sign(move || 1); jump = false; }
+    // 卡住太久（沒敵人、沒前進）：跳一下
+    if (px > s.progX + 30) { s.progX = px; s.stuckT = 0; } else if (!boss && !target && !blocker) s.stuckT += dt;
+    if (s.stuckT > 2.5) { jump = true; s.stuckT = 0; }
+
+    // 打大王的背包、屋頂上的敵人：跳起來、在高處丟
+    const kingP1 = boss && boss.kind === 'orange_king' && boss.part && !boss.part.broken;
+    if (kingP1 && s.bossJumpT <= 0 && b.onGround && Math.abs(boss!.x - px) > 250) { jump = true; s.bossJumpT = 1.4; }
+    if (jumpThrow && s.bossJumpT <= 0 && b.onGround) { jump = true; s.bossJumpT = 0.9; }
+
+    if (move > 0) f.right = true; else if (move < 0) f.left = true;
+    if (crouch) { f.down = true; s.crouchT = 0.3; }
+
+    // 跳：按住 0.32 秒跳滿；下平台＝↓＋跳
+    if (leaveRidge) dropDown = true;
+    if (dropDown && !jump && s.jumpCd <= 0) { f.down = true; f.jumpPressed = true; s.jumpCd = 0.45; }
+    else if (jump && s.jumpCd <= 0 && b.onGround) { f.jumpPressed = true; s.jumpHold = 0.32; s.jumpCd = 0.45; }
+    if (s.jumpHold > 0) { f.jumpHeld = true; s.jumpHold -= dt; }
+
+    // ── 打 ──
+    const facingTargets = onScreen.filter((e) => (e.x - px) * b.facing > -30);
+    let inFront = facingTargets.length > 0 || !!blocker || (!!boss && (boss.x - px) * b.facing > 0) || (!!shootable && (shootable.x - px) * b.facing > 0);
+    const above = onScreen.find((e) => (ENEMY_DEFS[e.kind].fly || !reachable(e)) && Math.abs(e.x - (px + b.facing * 28)) < 70 && enemyBox(e).y1 < py - 150);
+    if (above) f.up = true;
+    if (aimDown) { f.down = true; inFront = true; }
+    // 跳起來丟：上升到快最高點才丟（手的高度剛好對到屋頂上的敵人、大王的背包）
+    if ((jumpThrow || kingP1) && !b.onGround && b.vy < -250) inFront = false;
+    if (inFront || above) {
+      if (WEAPONS[p.arsenal.weapon].auto) f.attackHeld = true;
+      if (s.atkT <= 0) { f.attackPressed = true; s.atkT = 0.13; }
+    }
+    // 爆裂符：打魔王、一群敵人
+    const crowd = onScreen.filter((e) => Math.abs(e.x - px) < 520).length;
+    if (s.subT <= 0 && p.arsenal.subs[p.arsenal.sub] > 0 && ((boss && Math.abs(boss.x - px) < 620) || crowd >= 3)) { f.subPressed = true; s.subT = boss ? 2.2 : 4; }
+    return f;
+  };
+}

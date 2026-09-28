@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>球球大冒險</title>
+  <link rel="icon" href="data:," />
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; color: #f3e9d8; font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+    body { display: grid; place-items: center; overflow: hidden; position: fixed; inset: 0; }
+    canvas { display: block; image-rendering: auto; background: #2a2233; }
+  </style>
+</head>
+<body>
+  <!--
+    按鍵（標題畫面與暫停畫面也看得到）：
+      ← → 移動　↑ 按住朝上丟　↓ 蹲（空中按住朝下丟）　空白鍵／K 跳（按久跳高）
+      J 攻擊：貼近敵人自動揮爪、遠一點丟忍具（撿到的忍具按住連丟）　L 丟爆裂符　Q 換副武器　I 衝刺
+      Enter 開始／接關　P 或 Esc 暫停（暫停畫面有按鍵表）　標題按 ← → 或數字鍵選第幾關、R 進動作練習場
+      開發用（網址加 ?dev 才有效）：1～9 換忍具（H R F S L C I D B）、0 手裏劍、F5～F7 補爆裂符／焙烙玉／煙玉、F2 無敵
+    網址參數：?bot 自動玩、?god 無敵、?dev 開發用按鍵、?stage=2 直接開第二關（1～3）、?pick=3 標題先選好第三關、?stage=practice 練習場、?boxes 畫判定框
+  -->
+  <canvas id="game" width="1280" height="720"></canvas>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

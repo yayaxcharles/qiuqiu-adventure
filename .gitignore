@@ -1,0 +1,37 @@
+# 套件與打包產物（dist_rec、dist_rec2… 是錄影用的打包快照，一樣不進）
+node_modules/
+dist/
+dist*/
+
+# 錄影與影片素材（vids/ 約 7.9 GB）
+vids/
+*.mp4
+*.webm
+*.mov
+*.mkv
+
+# 生圖原稿、參考圖、檢查用聯絡表不進版控（提示詞紀錄 prompts.json、picks.json 照樣進）
+art_raw/**/*.png
+art_raw/**/*.jpg
+art_raw/**/*.jpeg
+art_raw/**/*.webp
+art_raw/**/*.pending
+
+# 生圖與錄影過程的流水紀錄、除錯輸出（自動玩的受傷紀錄、多種子掃描結果）
+*.log
+art_raw/**/_*log.txt
+dbg.txt
+sweep.txt
+
+# 工具做到一半的暫存資料夾（例如 public/sprites/qiuqiu/*/_tmp/）
+_tmp/
+
+# Python 快取
+__pycache__/
+*.pyc
+
+# 金鑰與環境變數，一律不進（公開倉庫）
+.env
+.env.*
+*.pem
+*.key
