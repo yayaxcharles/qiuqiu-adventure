@@ -12,6 +12,7 @@ import { Renderer } from './render';
 import * as sfx from './sfx';
 import { PRACTICE, STAGES } from './stages';
 import type { StageDef } from './stages/types';
+import { voice } from './voice';
 import { World } from './world';
 
 export type Screen = 'title' | 'play' | 'pause' | 'continue' | 'gameover' | 'result' | 'ending' | 'loading';
@@ -62,12 +63,13 @@ export class Game {
     this.go('play');
   }
 
-  private go(s: Screen): void { this.screen = s; this.screenT = 0; sfx.onScreen(s); }   // 配樂跟著畫面走（暫停壓低、接關恢復：音效代理 09-26）
+  private go(s: Screen): void { this.screen = s; this.screenT = 0; sfx.onScreen(s); voice.onScreen(s); }   // 配樂跟著畫面走（暫停壓低、接關恢復：音效代理 09-26）
 
   update(dt: number, keys: Frame): void {
     if (!(dt > 0)) return;   // 負的、零、不是數字的時間不推（保險：主迴圈第一格的時間戳可能比開始計時還早）
     const f = this.bot ? this.bot(this, dt) : keys;
     this.screenT += dt;
+    if (this.screen !== 'play') voice.tick();   // 排隊的配音（任務完成、遊戲結束）換了畫面也講完
     switch (this.screen) {
       case 'title': {
         // ← → 選關（數字鍵 1～9 直接選那一關）
@@ -88,6 +90,7 @@ export class Game {
         if (f.pausePressed) { this.go('pause'); break; }
         w.update(dt, f);
         for (const ev of w.events) { sfx.play(ev); this.renderer.onEvent(ev, w); if (this.eventLog.length < 6000) this.eventLog.push(ev); }
+        voice.onFrame(w, w.events);   // 日文配音（事件＋敵人頭上新冒的對話框）
         w.events.length = 0;
         if (w.state === 'continue') { this.continueT = CONTINUE_SECONDS; this.go('continue'); }
         else if (w.state === 'done') { w.banners = []; this.go('result'); }
@@ -102,6 +105,7 @@ export class Game {
         break;
       case 'continue':
         this.continueT -= dt;
+        voice.onCount(Math.max(0, Math.ceil(this.continueT) - 1));   // 跟畫面上的倒數數字一樣
         if (f.startPressed) { this.world!.continueGame(); this.go('play'); }
         else if (this.continueT <= 0) this.go('gameover');
         break;

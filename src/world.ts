@@ -694,7 +694,7 @@ export class World {
     }
     this.hitstop = Math.max(this.hitstop, 0.035);
     for (let i = 0; i < 5; i++) this.fx({ kind: 'star', x: e.x, y: e.y - d.h * 0.6, vx: rnd(-200, 200), vy: rnd(-300, -80), g: 600, life: 0.6, r: 7, color: '#fff3a0' });
-    this.event('kill', { kind: e.kind, how });
+    this.event('kill', { kind: e.kind, how, combo: this.combo });
   }
 
   // ───────────── 球球丟出去的東西 ─────────────
@@ -1079,7 +1079,7 @@ export class World {
     c.state = 'thank'; c.t = 0;
     this.rescued++;
     this.addScore(1000, c.x, c.y - 200);
-    this.event('captiveFreed', { art: c.art, drop: c.drop });
+    this.event('captiveFreed', { id: c.id, art: c.art, drop: c.drop });
   }
 
   private stepCaptives(dt: number): void {
@@ -1091,6 +1091,7 @@ export class World {
         const dir = this.player.body.x < c.x ? -1 : 1;
         this.drop(c.drop, c.x + dir * 20, c.y - 150, dir * 170, -560);
         c.state = 'run'; c.t = 0;
+        this.event('captiveGive', { id: c.id, drop: c.drop });   // 配音：村貓「這個給你！」
       } else if (c.state === 'run') {
         if (c.t < 0.4) continue;
         c.vx = -330;

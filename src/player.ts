@@ -148,7 +148,7 @@ export class Player {
     }
     if (this.act === 'throw' && an.name === 'crouchthrow') this.crouching = true;
     const { jumped, landed } = stepBody(b, ctrl, dt, w.physWorld(), p);
-    if (jumped) { w.dust(b.x, b.y, 5, -1); if (this.act === 'land') this.act = 'move'; }
+    if (jumped) { w.dust(b.x, b.y, 5, -1); if (this.act === 'land') this.act = 'move'; w.event('jump'); }
     if (landed) {
       w.dust(b.x, b.y, 7, 0);
       this.airDashUsed = false;

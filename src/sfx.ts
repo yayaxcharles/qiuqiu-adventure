@@ -325,6 +325,12 @@ export function getMixStream(): MediaStream | null {
   return recDest.stream;
 }
 
+/** 配音（voice.ts）用：共用的音訊環境、要接進去的靜音開關（M 靜音、錄影都跟著）、配樂匯流（講話時壓低）；沒有 Web Audio 就 null */
+export function audioOut(): { ctx: AudioContext; bus: AudioNode; music: GainNode } | null {
+  const c = typeof window !== 'undefined' ? ensureCtx() : null;
+  return c && master ? { ctx: c, bus: master.mute, music: master.music } : null;
+}
+
 /** 使用者按了鍵或點了畫面：建立／喚醒音訊，該放的歌還沒放就補放 */
 function wake(): void {
   const c = ensureCtx();

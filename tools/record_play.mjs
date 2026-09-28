@@ -59,6 +59,9 @@ try {
     rec.onstop = () => { setTimeout(() => { window.__recDone = true; }, 1500); };
     rec.start(2000);
     window.__rec = rec;
+    // 配音檢查：每 0.1 秒記一次配樂匯流的音量與有沒有人在講話（講話時配樂要壓低）
+    window.__duck = [];
+    setInterval(() => { const v = window.__qqVoice?.music?.(); if (v != null) window.__duck.push([+v.toFixed(3), window.__qqVoice.busy() ? 1 : 0]); }, 100);
   });
   const t0 = Date.now();
   let last = 0;
@@ -69,6 +72,10 @@ try {
     if (st.screen === 'result' && st.st > 6) break;
     if (Date.now() - t0 > 10 * 60 * 1000) { console.log('超過 10 分鐘，停止'); break; }
   }
+  // 配音紀錄（每一句：哪個事件、哪個音檔、音訊時間、遊戲時間、播／略過／排隊…）存在影片旁邊
+  const vlog = await page.evaluate(() => ({ log: window.__qqVoice?.log ?? null, duck: window.__duck ?? [] }));
+  writeFileSync(FILE.replace(/\.webm$/, '_voice.json'), JSON.stringify(vlog));
+  console.log(`配音紀錄：${vlog.log ? vlog.log.filter((l) => l.act === 'play').length + ' 句' : '沒有（這份打包沒有配音）'}`);
   console.log(`有沒有錄聲音：${await page.evaluate(() => window.__recAudio) ? '有' : '沒有（這份打包沒有 __qqAudio）'}`);
   await page.evaluate(() => window.__rec.stop());
   await page.waitForFunction(() => window.__recDone === true, null, { timeout: 30000 });
