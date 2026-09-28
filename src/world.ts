@@ -14,7 +14,7 @@ import { animateEnemy } from './enemyAnim';
 import { popAllClones, popClone } from './enemies2';
 import { arhatBlocks, splitCentipede } from './enemies3';
 import type { Frame } from './input';
-import type { Platform, World as PhysWorld } from './physics';
+import { STEP_UP, type Climb, type Platform, type Solid, type World as PhysWorld } from './physics';
 import { CLAW, HAND, Player } from './player';
 import { Animator, type AnimDefs } from './sprite';
 import type { PlatformDef, SpawnDef, StageDef } from './stages/types';
@@ -43,6 +43,8 @@ export const CLAW_DMG = 40, CLAW_DMG_BOSS = 25;
 /** 新動作第一次提示（第二版第 7 節）：這次開網頁每種只出一次；記在程式記憶體裡，不寫本機儲存 */
 const TIPS_SHOWN = new Set<string>();
 export const TIP_TIME = 1.5;
+/** 往上捲的區段裡，鏡頭讓球球的腳停在畫面的這個高度 */
+export const CAM_FEET = 470;
 
 const rnd = (a: number, b: number): number => a + Math.random() * (b - a);
 
@@ -105,6 +107,11 @@ export class World {
   state: WorldState = 'intro';
   stateT = 0;
   camX = 0;
+  /** 鏡頭上下：0＝原本的高度，負的＝往上捲（第二版大攀爬段，只在 stage.vscroll 的區段裡動） */
+  camY = 0;
+  /** 實心方塊、攀爬物（物理用，關卡檔的 solids、climbs） */
+  readonly solids: Solid[];
+  readonly climbs: Climb[];
   time = 0;
   timeLeft: number;
   lives = LIVES;
@@ -146,6 +153,8 @@ export class World {
     this.stage = stage;
     this.monsterDefs = monsterDefs;
     this.terrain = new Terrain(stage.terrain);
+    this.solids = (stage.solids ?? []).map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h }));
+    this.climbs = (stage.climbs ?? []).map((c) => ({ x: c.x, top: c.top, bottom: c.bottom }));
     this.timeLeft = stage.timeLimit;
     this.fired = stage.spawns.map(() => false);
     this.bossFired = stage.bosses.map(() => false);
@@ -189,14 +198,14 @@ export class World {
   };
 
   physWorld(): PhysWorld {
-    return { ground: GROUND, minX: this.camX + 36, maxX: Math.min(this.camX + VIEW_W - 36, this.stage.length - 36), platforms: this.platforms, groundAt: this.groundAt };
+    return { ground: GROUND, minX: this.camX + 36, maxX: Math.min(this.camX + VIEW_W - 36, this.stage.length - 36), platforms: this.platforms, groundAt: this.groundAt, solids: this.solids, climbs: this.climbs };
   }
 
   onScreen(x: number, margin = 0): boolean { return x > this.camX - margin && x < this.camX + VIEW_W + margin; }
   /** 整隻看得到：左右整隻在畫面裡、頭頂在資訊欄下面（會飛的敵人出招前要先這樣） */
   fullyVisible(e: Enemy): boolean {
     const d = ENEMY_DEFS[e.kind];
-    return this.onScreen(e.x, -d.w / 2) && e.y - d.drawH * 0.9 > HUD_BOTTOM && e.y < VIEW_H;
+    return this.onScreen(e.x, -d.w / 2) && e.y - d.drawH * 0.9 > this.camY + HUD_BOTTOM && e.y < this.camY + VIEW_H;
   }
   arena(): { x0: number; x1: number } { return { x0: this.camX + 40, x1: this.camX + VIEW_W - 40 }; }
 
@@ -212,6 +221,10 @@ export class World {
     let best: { y: number; plat: Platform | null } | null = null;
     for (const pl of this.platforms) {
       if (x >= pl.x && x <= pl.x + pl.w && y0 <= pl.y + 0.01 && y1 >= pl.y && (!best || pl.y < best.y)) best = { y: pl.y, plat: pl };
+    }
+    // 實心方塊的頂面（第二版）
+    for (const s of this.solids) {
+      if (x >= s.x && x <= s.x + s.w && y0 <= s.y + 0.01 && y1 >= s.y && (!best || s.y < best.y)) best = { y: s.y, plat: null };
     }
     // 地面：要是從上面掉下來才算落地（在牆裡面、比地面低的不會被瞬移到牆頂上）
     const g = this.groundAt(x);
@@ -230,6 +243,12 @@ export class World {
   }
 
   breakBox(b: Breakable): Box { return boxAt(b.x, b.y, b.w, b.h); }
+
+  /** 這一點在實心方塊裡面嗎（忍具、子彈撞到方塊就停） */
+  inSolid(x: number, y: number): boolean {
+    for (const s of this.solids) if (x > s.x && x < s.x + s.w && y > s.y && y < s.y + s.h) return true;
+    return false;
+  }
 
   // ───────────────────────── 產生東西 ─────────────────────────
 
@@ -473,8 +492,20 @@ export class World {
   private triggerTips(dt: number): void {
     if (this.tip && (this.tip.t += dt) > TIP_TIME) this.tip = null;
     const p = this.player, b = p.body;
-    if (this.tip || this.state !== 'play' || !p.alive || !b.onGround) return;
+    if (this.tip || this.state !== 'play' || !p.alive) return;
     const show = (key: string, text: string): void => { TIPS_SHOWN.add(key); this.tip = { text, t: 0 }; this.event('tip', { key }); };
+    // 第二版階段二：貼牆（第一次滑下來）、攀爬（站在藤蔓梯子底下）、二段跳（面前的牆一次跳不上去、兩次跳得上去）
+    if (!TIPS_SHOWN.has('wall') && b.sliding) { show('wall', '貼牆＋跳'); return; }
+    if (!b.onGround) return;
+    if (!TIPS_SHOWN.has('climb') && this.climbs.some((c) => Math.abs(c.x - b.x) < 90 && Math.abs(c.bottom - b.y) < 40 && c.top < b.y - 100)) { show('climb', '↑ 抓'); return; }
+    if (!TIPS_SHOWN.has('air2')) {
+      for (let d = 30; d <= 150; d += 15) {
+        const x = b.x + b.facing * d, g = this.groundAt(x);
+        const top = Math.min(g, ...this.solids.filter((s) => x > s.x && x < s.x + s.w && s.y + s.h >= b.y - 2).map((s) => s.y));
+        const h = b.y - top;
+        if (h > STEP_UP) { if (h > 185 && h < 300) { show('air2', '跳×2'); return; } break; }
+      }
+    }
     if (!TIPS_SHOWN.has('roll')) {
       // 用得到翻滾：衝過來的敵人、低的橫飛苦無朝你來
       const charge = this.enemies.some((e) => e.dying <= 0 && e.state === 'charge' && (b.x - e.x) * e.facing > 0 && Math.abs(e.x - b.x) < 700);
@@ -518,7 +549,7 @@ export class World {
         break;
       }
       case 'left': x = this.camX - 70 - k * 10; y = this.groundAt(x); break;
-      case 'top': x = this.camX + VIEW_W * rnd(0.5, 0.95); y = -90; break;
+      case 'top': x = this.camX + VIEW_W * rnd(0.5, 0.95); y = this.camY - 90; break;
       case 'hole': x = s.x ?? this.camX + VIEW_W * 0.7; y = this.terrain.groundAt(x) + 20; break;
       case 'water': x = s.x ?? this.camX + VIEW_W * 0.7; y = this.waterSurface(x) + 200; break;
       default: {
@@ -857,11 +888,11 @@ export class World {
           if (s.kind === 'bo' || s.kind === 'dart') s.rot = Math.atan2(s.vy, s.vx);
       }
       // 直線飛的撞到地面就停
-      if ((s.kind === 'shuriken' || s.kind === 'bo' || s.kind === 'dart' || s.kind === 'crane' || s.kind === 'fuma') && s.y > this.terrain.groundAt(s.x) + 6) {
+      if ((s.kind === 'shuriken' || s.kind === 'bo' || s.kind === 'dart' || s.kind === 'crane' || s.kind === 'fuma') && (s.y > this.terrain.groundAt(s.x) + 6 || this.inSolid(s.x, s.y))) {
         if (s.kind !== 'fuma') { s.age = s.life; this.sparks(s.x, s.y - 6, 4, 0); }
       }
       this.shotHits(s);
-      if (s.x < this.camX - 250 || s.x > this.camX + VIEW_W + 250 || s.y < -400 || s.y > VIEW_H + 200) s.age = s.life;
+      if (s.x < this.camX - 250 || s.x > this.camX + VIEW_W + 250 || s.y < this.camY - 400 || s.y > VIEW_H + 200) s.age = s.life;
     }
     this.shots = this.shots.filter((s) => s.age < s.life);
   }
@@ -1033,6 +1064,8 @@ export class World {
         this.sparks(b.x, b.y - 8, 5, 0, col[b.kind] ?? '#ddd');
       }
       if (b.x < this.camX - 300 || b.x > this.camX + VIEW_W + 300 || b.y > VIEW_H + 100) b.age = b.life;
+      // 橫飛、斜飛的子彈撞到實心方塊就沒了（第二版）
+      else if (!b.push && b.kind !== 'wave' && b.kind !== 'blast' && this.solids.length && this.inSolid(b.x, b.y)) { b.age = b.life; this.sparks(b.x, b.y, 3, 0); }
     }
     this.bullets = this.bullets.filter((b) => b.age < b.life);
   }
@@ -1314,8 +1347,34 @@ export class World {
     S.bosses.forEach((bd, i) => { if (!this.bossDone[i]) maxCam = Math.min(maxCam, bd.at); });
     for (const b of this.breakables) if (isGate(b.kind) && !b.broken) maxCam = Math.min(maxCam, b.x - VIEW_W + 300);
     // 鏡頭只往右（越南大戰規則）：跟著球球，但不超過鎖住的位置；永遠不往回捲
-    const want = Math.min(this.player.body.x - VIEW_W * 0.42, maxCam);
+    // 往上捲的區段：鏡頭左緣停在 hold，球球爬到 release 以上才放開往右
+    const pb = this.player.body;
+    const vs = this.vsection();
+    if (vs && pb.y <= (vs.release ?? -Infinity)) this.vsDone.add(vs);
+    if (this.vsHolding()) maxCam = Math.min(maxCam, Math.max(vs!.hold!, this.camX));
+    const want = Math.min(pb.x - VIEW_W * 0.42, maxCam);
     if (want > this.camX) this.camX += Math.max(Math.min(want - this.camX, 1.5), (want - this.camX) * Math.min(1, dt * 7));
+    // 上下：區段裡讓腳在畫面 CAM_FEET 的高度（往上看得到下一層）；區段外回到 0
+    const wantY = vs ? Math.max(vs.top, Math.min(0, pb.y - CAM_FEET)) : 0;
+    const dy = wantY - this.camY;
+    if (Math.abs(dy) < 0.5) this.camY = wantY;
+    // 往下掉要跟得快（腳不能掉出畫面），往上爬慢一點比較穩
+    else this.camY += dy * Math.min(1, dt * (dy > 0 ? 9 : 5));
+    if (pb.y - this.camY > VIEW_H - 60 && this.camY < 0) this.camY = Math.min(0, pb.y - (VIEW_H - 60));
+  }
+
+  /** 已經爬到頂（放開過）的往上捲區段：之後掉下來也不再停住鏡頭 */
+  private vsDone = new Set<object>();
+  /** 鏡頭正停在往上捲區段的 hold（還沒爬到頂） */
+  vsHolding(): boolean {
+    const vs = this.vsection();
+    return !!vs && vs.hold !== undefined && !this.vsDone.has(vs);
+  }
+
+  /** 球球現在在哪一個「畫面往上捲」的區段裡（沒有＝null） */
+  vsection(): NonNullable<StageDef['vscroll']>[number] | null {
+    const x = this.player.body.x;
+    return (this.stage.vscroll ?? []).find((v) => x >= v.x0 && x <= v.x1) ?? null;
   }
 
   private checkZone(): void {
@@ -1365,6 +1424,7 @@ export class World {
   /** 開發、測試用：直接跳到世界 x（之前的出怪表當作已經出過） */
   skipTo(x: number): void {
     this.camX = Math.max(0, x - VIEW_W * 0.42);
+    this.camY = 0;
     this.stage.spawns.forEach((s, i) => { if (s.at < this.camX - 50) this.fired[i] = true; });
     this.stage.bosses.forEach((bd, i) => { if (bd.at < this.camX - 50) { this.bossFired[i] = true; this.bossDone[i] = true; } });
     const b = this.player.body;

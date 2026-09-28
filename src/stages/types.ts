@@ -37,7 +37,9 @@ export interface ZoneDef {
  */
 export interface PlatformDef {
   x: number; y: number; w: number;
-  look: 'roof' | 'plank' | 'bamboo' | 'stall' | 'stage' | 'bridge' | 'rampart' | 'torii' | 'catwalk' | 'conveyor' | 'lift' | 'ridge';
+  look: 'roof' | 'plank' | 'bamboo' | 'stall' | 'stage' | 'bridge' | 'rampart' | 'torii' | 'catwalk' | 'conveyor' | 'lift' | 'ridge' | 'ledge';
+  /** look＝ledge（第二版岩棚、鐵架、屋簷）：v2_terrain.json 的 ledge 套名（s1_rock、s3_iron、s3_eave…） */
+  art?: string;
   /** 輸送帶：站在上面每秒被帶走幾像素（負的＝往左，跟球球前進的方向相反） */
   belt?: number;
   /** 升降台：y 在 y～y1 之間來回（上下各停 stop 秒，走一趟 travel 秒）；phase＝一開始在週期的哪裡（0～1） */
@@ -85,6 +87,22 @@ export interface SpawnDef {
   lock?: boolean;
 }
 
+/**
+ * 第二版（規劃 5.3）實心方塊：上面能站、左右是牆（能蹬）、下面撞頭。x, y＝左上角。
+ * art＝v2_terrain.json 的 block 套名（s1_rock、s1_log、s2_stone、s3_iron、s3_plaster）
+ */
+export interface SolidDef { x: number; y: number; w: number; h: number; art: string }
+/** 第二版（規劃 5.4）攀爬物：中心 x、腳能到的範圍 top～bottom；art＝v2_terrain.json 的 climb 套名（s1_vine、s1_ladder、s3_chain…） */
+export interface ClimbDef { x: number; top: number; bottom: number; art: string }
+/**
+ * 第二版「畫面往上捲」的區段（09-28 使用者同意做大攀爬）：球球在 x0～x1 之間時鏡頭跟著上下，最高捲到 top（負的＝往上）。
+ * hold＝鏡頭左緣停在這裡（整段攀爬在一個畫面寬裡），球球爬到 release 以上（y 更小）才放開往右捲；
+ * bg＝往上捲時中景畫哪一套往上延伸的背景（v2.json 的 climbUp，例如 s1_mid）
+ */
+export interface VScrollDef { x0: number; x1: number; top: number; hold?: number; release?: number; bg?: string }
+/** 給自動玩看的標記：蹬牆夾縫（x0～x1 之間、底在 bottom、要一路蹬到 top 以上） */
+export interface ShaftDef { x0: number; x1: number; top: number; bottom: number }
+
 export interface BreakableDef { x: number; kind: BreakKind; drop?: DropKind }
 /** 被綁的村貓：caged＝關在竹籠裡（先打爛竹籠） */
 export interface CaptiveDef { x: number; art: CaptiveArt; drop: DropKind; caged?: boolean }
@@ -121,6 +139,11 @@ export interface StageDef {
   captives: CaptiveDef[];
   spawns: SpawnDef[];
   bosses: BossDef[];
+  /** 第二版：實心方塊、攀爬物、往上捲的區段、蹬牆夾縫標記 */
+  solids?: SolidDef[];
+  climbs?: ClimbDef[];
+  vscroll?: VScrollDef[];
+  shafts?: ShaftDef[];
   /**
    * 最前景單件（art.json panels 的 fore 第幾張）掠過畫面的位置：世界 x＝這一件正好在畫面中間時球球附近的位置。
    * 前景捲得比地面快（約 1.3 倍），幾秒就過去；避開魔王與鎖畫面的地方，別擋住戰鬥。沒給就不畫前景。

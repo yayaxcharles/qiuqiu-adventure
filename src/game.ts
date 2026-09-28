@@ -184,21 +184,13 @@ export class Game {
       ctx.font = `900 40px ${FONT}`; ctx.lineWidth = 8; ctx.strokeStyle = '#2a0a0a'; ctx.fillStyle = '#fff';
       ctx.strokeText(go, VIEW_W / 2, VIEW_H - 190); ctx.fillText(go, VIEW_W / 2, VIEW_H - 190);
     }
-    this.drawKeys(ctx, VIEW_H - 120);
+    this.drawKeys(ctx, VIEW_H - 128);
   }
 
-  /** 按鍵表（標題、暫停畫面） */
+  /** 按鍵表（標題、暫停畫面）：一行一組「鍵：動作」，不寫教學句子（第二版第 7 節） */
   private drawKeys(ctx: CanvasRenderingContext2D, y: number): void {
     ctx.font = `bold 20px ${FONT}`; ctx.fillStyle = '#ffe9c4'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const help = this.touch ? [
-      '左邊方向盤：◀ ▶ 走　▲ 按住朝上丟　▼ 蹲（空中按住朝下丟）',
-      '右邊：跳（按久跳高）　攻（貼近敵人自動揮爪、遠一點丟忍具）　符（爆裂符）　換（換副武器）',
-      '右上角：❚❚ 暫停　⛶ 全螢幕',
-    ] : [
-      '← → 移動　↑ 朝上丟　↑＋← → 斜上丟　↓ 蹲（空中朝下丟）　空白鍵／K 跳',
-      'J 攻擊（貼近自動揮爪）　L 爆裂符　Q 換副武器　I 地上翻滾／空中衝刺',
-      'P 暫停　R 動作練習場' + (this.devKeys ? '　｜開發用：1～9 換忍具、0 手裏劍、F5～F7 補副武器、F2 無敵' : ''),
-    ];
+    const help = this.touch ? KEY_HELP_TOUCH : [...KEY_HELP.slice(0, -1), KEY_HELP[KEY_HELP.length - 1] + (this.devKeys ? '　｜開發用：1～9 換忍具、0 手裏劍、F5～F7 補副武器、F2 無敵' : '')];
     help.forEach((h, i) => ctx.fillText(h, VIEW_W / 2, y + i * 32));
   }
   /** 開發用按鍵（網址帶 ?dev 才開） */
@@ -339,3 +331,17 @@ export class Game {
 }
 
 export { NO_INPUT };
+
+/** 按鍵一覽（電腦）：第二版加了二段跳、蹬牆、攀爬、翻滾、斜丟 */
+export const KEY_HELP = [
+  '← → 移動　↑ 朝上丟　↑＋← → 斜上丟　↓ 蹲（空中朝下丟）　空白鍵／K 跳（空中再按＝二段跳）',
+  'J 攻擊（貼近自動揮爪）　L 爆裂符　Q 換副武器　I 地上翻滾／空中衝刺',
+  '貼牆按跳＝蹬牆跳　↑ 抓藤蔓、梯子（↑↓ 爬、跳＝跳開）',
+  'P 暫停　R 動作練習場',
+];
+/** 按鍵一覽（手機） */
+export const KEY_HELP_TOUCH = [
+  '左邊方向盤：◀ ▶ 走　▲ 朝上丟、抓藤蔓梯子　▼ 蹲（空中按住朝下丟）',
+  '右邊：跳（按久跳高、空中再按二段跳、貼牆按蹬牆跳）　攻（貼近自動揮爪）　符（爆裂符）　換（換副武器）',
+  '右上角：❚❚ 暫停　⛶ 全螢幕',
+];

@@ -9,14 +9,15 @@ import { RAM_DIST } from './enemies3';
 import { isGate } from './entities';
 import type { Game } from './game';
 import { NO_INPUT, type Frame } from './input';
-import { STEP_UP } from './physics';
+import { BODY_HW, STEP_UP } from './physics';
+import type { World } from './world';
 import { WEAPONS } from './weapons';
 
 export function createBot(): (g: Game, dt: number) => Frame {
-  const s = { backT: 0, atkT: 0, jumpHold: 0, jumpCd: 0, subT: 3, startT: 0, progX: 0, stuckT: 0, turnT: 0, crouchT: 0, bossJumpT: 0 };
+  const s = { airGoal: NaN, wantAir: false, kickCd: 0, kickDir: 1, v2Jump: 0, backT: 0, atkT: 0, jumpHold: 0, jumpCd: 0, subT: 3, startT: 0, progX: 0, stuckT: 0, turnT: 0, crouchT: 0, bossJumpT: 0 };
   return (g: Game, dt: number): Frame => {
     const f: Frame = { ...NO_INPUT };
-    s.atkT -= dt; s.jumpCd -= dt; s.subT -= dt; s.turnT -= dt; s.bossJumpT -= dt;
+    s.atkT -= dt; s.jumpCd -= dt; s.kickCd -= dt; s.v2Jump -= dt; s.subT -= dt; s.turnT -= dt; s.bossJumpT -= dt;
     if (g.screen === 'title' || g.screen === 'continue') {
       if ((s.startT += dt) > 0.6) { s.startT = 0; f.startPressed = true; }
       return f;
@@ -25,6 +26,8 @@ export function createBot(): (g: Game, dt: number) => Frame {
     const w = g.world, p = w.player, b = p.body;
     if (w.state !== 'play' || !p.alive) return f;
     const px = b.x, py = b.y;
+    // 攀爬中：一路往上爬到頂（第二版練習場）
+    if (p.act === 'climb') { f.up = true; return f; }
 
     let jump = false, crouch = false, flee = 0;
     /** 這個威脅可以用翻滾穿過去（衝過來的、低的橫飛子彈）：地上、能滾、前面 280 內沒坑就滾，不然照舊跳 */
@@ -213,7 +216,22 @@ export function createBot(): (g: Game, dt: number) => Frame {
     if (kingP1 && s.bossJumpT <= 0 && b.onGround && Math.abs(boss!.x - px) > 250) { jump = true; s.bossJumpT = 1.4; }
     if (jumpThrow && s.bossJumpT <= 0 && b.onGround) { jump = true; s.bossJumpT = 0.9; }
 
+    // 第二版地形（實心方塊、攀爬物、夾縫、往上捲的區段）：沒有要打的東西時照地形決定怎麼走（二段跳、蹬牆、攀爬、踩岩棚往上）
+    let v2up = false;
+    if (!boss && (!target || Math.abs(target.x - px) > 700) && !flee && isV2(w)) {
+      const nav = v2Nav(w, s);
+      if (nav) {
+        move = nav.move; jump = false; riding = false;
+        if (nav.jump && s.v2Jump <= 0 && b.onGround) { f.jumpPressed = true; s.jumpHold = 0.34; s.v2Jump = 0.4; s.wantAir = nav.air; }
+        if (nav.kick) { f.jumpPressed = true; s.jumpHold = 0.34; }
+        v2up = nav.up;
+      }
+    }
+    if (s.wantAir && !b.onGround && b.vy > -140) { f.jumpPressed = true; s.jumpHold = 0.3; s.wantAir = false; }
+    if (b.onGround && s.v2Jump <= 0) s.wantAir = false;
+
     if (move > 0) f.right = true; else if (move < 0) f.left = true;
+    if (v2up) f.up = true;
     if (crouch) { f.down = true; s.crouchT = 0.3; }
 
     // 翻滾：躲的是衝過來的東西、而且面向滾的方向前面 280 沒坑（也不是高台）→ 滾過去，不跳
@@ -264,4 +282,121 @@ export function createBot(): (g: Game, dt: number) => Frame {
     if (s.subT <= 0 && p.arsenal.subs[p.arsenal.sub] > 0 && ((boss && Math.abs(boss.x - px) < 620) || crowd >= 3)) { f.subPressed = true; s.subT = boss ? 2.2 : 4; }
     return f;
   };
+}
+
+// ───────────── 第二版地形 ─────────────
+
+/** 這一關有第二版的地形物件 */
+function isV2(w: World): boolean {
+  const S = w.stage;
+  return !!(S.solids?.length || S.climbs?.length || S.shafts?.length || S.vscroll?.length);
+}
+
+/** 一次跳（按住）穩穩上得去的高度、二段跳穩穩上得去的高度（物理算出來 177／306，留餘裕） */
+const ONE = 165, TWO = 270;
+
+interface Nav { move: number; jump: boolean; air: boolean; kick: boolean; up: boolean }
+
+/**
+ * 第二版地形怎麼走：
+ *   夾縫（stage.shafts）裡：朝一面牆跳、碰到牆就蹬、一路左右蹬到頂，快到頂時貼著出口那面二段跳翻上去
+ *   前面的牆 ONE～TWO 高：離牆 130～190 起跳、最高點二段跳；更高、或在「往上捲」的區段裡還沒爬到頂：找往上的路
+ *   （頭上的岩棚、方塊頂、腳下這一層搆得到的藤蔓梯子、夾縫），挑最高的那個走過去
+ */
+function v2Nav(w: World, s: { kickCd: number; kickDir: number; wantAir: boolean; airGoal: number }): Nav | null {
+  const p = w.player, b = p.body, px = b.x, feet = b.y;
+  const nav = (move: number, o: Partial<Nav> = {}): Nav => ({ move, jump: false, air: false, kick: false, up: false, ...o });
+  // ── 夾縫裡 ──
+  const sh = (w.stage.shafts ?? []).find((z) => px > z.x0 - 4 && px < z.x1 + 4 && feet > z.top - (b.onGround ? 4 : 200) && feet <= z.bottom + 2);
+  if (sh) {
+    // 快到頂（腳離出口 40 以內）、沒貼著牆：二段跳翻上出口（右邊）那面的頂
+    if (!b.onGround && feet - sh.top < 40 && b.wall === 0) {
+      if (b.airJumps > 0 && b.vy > -200 && s.kickCd <= 0) { s.kickCd = 0.2; s.wantAir = true; }
+      return nav(1);
+    }
+    if (b.onGround) { s.kickDir = 1; return nav(1, { jump: true }); }
+    if (b.wall !== 0) {
+      if (s.kickCd <= 0) { s.kickCd = 0.14; s.kickDir = -b.wall; return nav(-b.wall, { kick: true }); }
+    }
+    return nav(s.kickDir);
+  }
+  // 跳向某一層岩棚、方塊頂的途中：一路朝那裡飄，落地才換下一個目標
+  if (b.onGround) s.airGoal = NaN;
+  else if (Number.isFinite(s.airGoal)) return nav(Math.abs(px - s.airGoal) > 8 ? Math.sign(s.airGoal - px) : 0);
+  const vs = w.vsection();
+  const mustClimb = w.vsHolding() && feet > (vs?.release ?? -Infinity);
+  // ── 前面的牆多高（地形、方塊側面） ──
+  const dir = 1;
+  let wallH = 0, wallD = Infinity;
+  for (let d = 10; d <= 200; d += 5) {
+    const x = px + dir * d;
+    let top = w.groundAt(x);
+    for (const q of w.solids) if (x + BODY_HW > q.x && x - BODY_HW < q.x + q.w && q.y + q.h > feet - 150 && q.y < feet - 2) top = Math.min(top, q.y);
+    if (Number.isFinite(top) && top < feet - STEP_UP) { wallH = feet - top; wallD = d; break; }
+  }
+  if (!mustClimb && wallH > 0 && wallH <= ONE) return nav(1, { jump: wallD <= 90 });
+  if (!mustClimb && wallH > ONE && wallH <= TWO) {
+    if (wallD < 120 && b.onGround) return nav(-1);   // 太近了：退一點助跑
+    return nav(1, { jump: wallD <= 190, air: true });
+  }
+  if (!mustClimb && wallH <= TWO) return null;
+  // ── 找往上的路 ──
+  type Step = { y: number; go: () => Nav };
+  const steps: Step[] = [];
+  // 找得到的範圍：前後 520；不是「往上捲的區段」時不回頭找（已經走過的夾縫、岩棚不算）；在區段裡只找區段裡的
+  const near = (x0: number, x1: number): boolean => x1 > px - (mustClimb ? 520 : 60) && x0 < px + 520 && (!mustClimb || (x1 > vs!.x0 && x0 < vs!.x1));
+  // 腳下這一塊（平台、方塊頂）的左右範圍；站在地面上＝無限
+  let sx0 = -Infinity, sx1 = Infinity;
+  if (b.onGround && Math.abs(w.groundAt(px) - feet) > 1) {
+    for (const pl of w.platforms) if (Math.abs(pl.y - feet) < 1 && px >= pl.x && px <= pl.x + pl.w) { sx0 = pl.x; sx1 = pl.x + pl.w; }
+    for (const q of w.solids) if (Math.abs(q.y - feet) < 1 && px + BODY_HW > q.x && px - BODY_HW < q.x + q.w) { sx0 = q.x - BODY_HW; sx1 = q.x + q.w + BODY_HW; }
+  }
+  const toward = (tx: number, jumpNow: boolean, need: number): Nav => {
+    // 目標不在腳下這一塊上：走到邊上起跳，一路飄過去（走下去會掉回地面）
+    if (tx > sx1 - 10 || tx < sx0 + 10) {
+      const edge = tx > sx1 - 10 ? sx1 - 14 : sx0 + 14;
+      if (Math.abs(px - edge) > 16) return nav(Math.sign(edge - px));
+      s.airGoal = tx;
+      return nav(Math.sign(tx - px), { jump: true, air: need > 110 || Math.abs(tx - px) > 110 });
+    }
+    if (Math.abs(px - tx) > 22) return nav(Math.sign(tx - px));
+    if (jumpNow) s.airGoal = tx;
+    return nav(0, { jump: jumpNow, air: need > ONE });
+  };
+  for (const pl of w.platforms) {
+    const need = feet - pl.y;
+    if (need < 20 || need > TWO || !near(pl.x, pl.x + pl.w)) continue;
+    const tx = Math.max(pl.x + 40, Math.min(pl.x + pl.w - 40, px));
+    steps.push({ y: pl.y, go: () => (b.onGround ? toward(tx, true, need) : nav(Math.abs(px - tx) > 10 ? Math.sign(tx - px) : 0)) });
+  }
+  for (const q of w.solids) {
+    const need = feet - q.y;
+    if (need < 20 || need > TWO || !near(q.x, q.x + q.w)) continue;
+    const side = px < q.x ? -1 : 1, ex = side < 0 ? q.x - 40 : q.x + q.w + 40;
+    steps.push({ y: q.y, go: () => (b.onGround ? (Math.abs(px - ex) > 26 ? nav(Math.sign(ex - px)) : (s.airGoal = side < 0 ? q.x + 30 : q.x + q.w - 30, nav(-side, { jump: true, air: need > ONE }))) : nav(-side)) });
+  }
+  (w.stage.climbs ?? []).forEach((c, i) => {
+    if (feet < c.top + 4 || feet > c.bottom + 2 || !near(c.x, c.x) || c.top > feet - 60) return;
+    // 走得過去：藤蔓底下這一層有地（腳的高度一樣）
+    if (Math.abs(floorUnder(w, c.x) - feet) > 4 && !(feet >= c.bottom - 2)) return;
+    void i;
+    steps.push({ y: c.top, go: () => (Math.abs(px - c.x) > 16 ? nav(Math.sign(c.x - px)) : nav(0, { up: true })) });
+  });
+  for (const z of w.stage.shafts ?? []) {
+    if (feet < z.top || !near(z.x0, z.x1)) continue;
+    if (Math.abs(z.bottom - feet) > 4) continue;
+    steps.push({ y: z.top, go: () => nav(Math.sign((z.x0 + z.x1) / 2 - px) || 1) });
+  }
+  if (!steps.length) return mustClimb ? nav(1) : null;
+  steps.sort((a, c) => a.y - c.y);
+  return steps[0]!.go();
+}
+
+/** x 處腳底下最高的站立面：地面、平台、方塊頂 */
+function floorUnder(w: World, x: number): number {
+  let f = w.groundAt(x);
+  const feet = w.player.body.y;
+  for (const pl of w.platforms) if (x >= pl.x && x <= pl.x + pl.w && pl.y >= feet - 1 && pl.y < f) f = pl.y;
+  for (const q of w.solids) if (x > q.x && x < q.x + q.w && q.y >= feet - 1 && q.y < f) f = q.y;
+  return f;
 }

@@ -286,7 +286,53 @@ function playName(name: string, pitch = 1): void {
   }
 }
 
+/**
+ * 第二版新動作的聲音：用真的錄音檔（使用者 09-28：候選包先一律用 A；public/sfx/v2/licenses.csv 全是 CC0），其他聲音照舊程式合成。
+ * 事件 → 檔名、音量、音高（二段跳用同一個跳躍聲拉高一點）
+ */
+export const SAMPLE_SFX: Record<string, { file: string; gain: number; pitch?: number }> = {
+  jump: { file: 'jump_A', gain: 0.55 },
+  airJump: { file: 'jump_A', gain: 0.55, pitch: 1.18 },
+  wallKick: { file: 'dash_A', gain: 0.7, pitch: 1.1 },
+  roll: { file: 'dash_A', gain: 0.6 },
+  land: { file: 'land_light_A', gain: 0.45 },
+  landHeavy: { file: 'land_heavy_A', gain: 0.7 },
+  climbGrab: { file: 'step_wood_A', gain: 0.6 },
+  climbStep: { file: 'step_wood_A', gain: 0.4, pitch: 1.1 },
+  climbTop: { file: 'land_light_A', gain: 0.5 },
+};
+const sampleBuf = new Map<string, AudioBuffer | null>();
+function playSample(name: string): void {
+  const d = SAMPLE_SFX[name];
+  if (!d || !ctx || !master) return;
+  const buf = sampleBuf.get(d.file);
+  if (buf === undefined) {
+    // 第一次用到才載（很小，幾 KB），載好之前這一下先不響
+    sampleBuf.set(d.file, null);
+    fetch(`sfx/v2/${d.file}.mp3`).then((r) => r.arrayBuffer()).then((a) => ctx!.decodeAudioData(a)).then((b) => { sampleBuf.set(d.file, b); }).catch(() => {});
+    return;
+  }
+  if (!buf || !running()) return;
+  const now = ctx.currentTime + 0.005;
+  if (!throttle.allow('v2:' + d.file, now, now + buf.duration, 2, 0.05, false)) { sfxStats.throttled++; return; }
+  sfxStats.played++;
+  try {
+    const src = ctx.createBufferSource(), g = ctx.createGain();
+    src.buffer = buf; src.playbackRate.value = (d.pitch ?? 1) * (0.96 + rng() * 0.08);
+    g.gain.value = d.gain;
+    src.connect(g).connect(master.sfx);
+    src.start(now);
+  } catch { /* 出不了聲就算了 */ }
+}
+
 export function play(ev: GameEvent): void {
+  if (SAMPLE_SFX[ev.type]) {
+    if (typeof window !== 'undefined') ensureCtx();
+    sfxLog.push('v2:' + ev.type);
+    if (sfxLog.length > 80) sfxLog.shift();
+    playSample(ev.type);
+    return;
+  }
   const name = resolveSfx(ev);
   if (typeof window !== 'undefined') ensureCtx();
   try { onMusicEvent(ev); } catch { /* 配樂出錯不影響遊戲 */ }

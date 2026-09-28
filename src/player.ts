@@ -7,7 +7,7 @@
  */
 import type { Aim, Box } from './entities';
 import type { Frame } from './input';
-import { PARAMS, newBody, stepBody, type Body, type Ctrl, type Params } from './physics';
+import { findClimb, grabClimb, PARAMS, newBody, releaseClimb, stepBody, stepClimb, type Body, type Ctrl, type Params } from './physics';
 import { Animator, type AnimDefs } from './sprite';
 import { Arsenal, WEAPONS } from './weapons';
 import type { World } from './world';
@@ -59,7 +59,18 @@ const HURT_RATE = 2.2, HURT_MAX = 0.55;
 const DOWN_RATE = 1.3;
 const STILL: Ctrl = { left: false, right: false, jumpHeld: false, jumpPressed: false };
 
-type Act = 'move' | 'land' | 'claw' | 'throw' | 'dash' | 'roll' | 'hurt' | 'down';
+type Act = 'move' | 'land' | 'claw' | 'throw' | 'dash' | 'roll' | 'hurt' | 'down' | 'climb';
+
+/**
+ * 第二版階段二的新動作，動作圖還沒生（docs/2026-09-28_待生Vids片段.md），先借現有的動作暫代：
+ *   二段跳、蹬牆跳：跳躍（jump）從離地那格重播上升段
+ *   貼牆下滑：跳躍的下落段停在 WALL_FRAME 那一格
+ *   攀爬：朝上丟（throwup）手舉直的那幾格（出手後 CLIMB_FRAMES），爬的時候來回播、停著就停在第一格
+ */
+const WALL_FRAME = 40;
+const CLIMB_FRAMES = [4, 11] as const;
+/** 落下速度超過這個算重落地（音效用） */
+const HEAVY_LAND = 1150;
 
 export class Player {
   body: Body;
@@ -86,6 +97,8 @@ export class Player {
   /** 跑步中丟：還要播「跑丟」幾秒（之後回到一般的跑步） */
   runThrowT = 0;
   subCd = 0;
+  /** 二段跳、蹬牆跳剛發生：下一次挑空中動作時從起跳重播 */
+  relaunch = false;
   /** 上一次站在安全地面的位置（掉坑後從這裡重來） */
   safeX: number;
   /** 最後一次朝哪個方向丟（畫面用） */
@@ -140,6 +153,9 @@ export class Player {
       return;
     }
 
+    // 攀爬中：只管上下爬、跳開（不能出招）；被打由 hurt() 放手
+    if (this.act === 'climb') { this.climbStep(dt, f, w); return; }
+
     // 2. 按鍵：攻擊（近身揮爪／丟忍具）、副武器、衝刺；收招可以取消的時候，按方向或跳就回到移動
     const canAct = this.act === 'move' || this.act === 'land' || this.cancellable();
     if (f.attackPressed || (f.attackHeld && this.arsenal.def.auto)) this.attack(f, w, f.attackPressed, canAct);
@@ -148,6 +164,11 @@ export class Player {
     if (f.dashPressed) this.queued = { kind: 'dash', t: BUFFER };
     else if (this.queued && (this.queued.t -= dt) <= 0) this.queued = null;
     const free = this.act === 'move' || this.act === 'land' || this.cancellable();
+    // 抓藤蔓、梯子：在範圍裡按 ↑（空中按著 ↑ 碰到也抓得住）；站在頂端按 ↓ 往下爬
+    if (free && !this.dropping && (f.up || f.down) && this.act !== 'roll') {
+      const pw = w.physWorld(), i = findClimb(b, pw, { up: f.up, down: f.down, left: f.left, right: f.right, jumpPressed: false });
+      if (i >= 0) { grabClimb(b, i, pw); this.act = 'climb'; this.queued = null; this.climbAnim(false); w.event('climbGrab', {}); return; }
+    }
     if (free && this.queued && this.tryStart(this.queued.kind, w)) this.queued = null;
     else if ((this.act === 'land' || this.cancellable()) && (dir !== 0 || f.jumpPressed || (this.act === 'land' && f.down))) this.act = 'move';
 
@@ -172,7 +193,13 @@ export class Player {
     }
     if (this.act === 'throw' && an.name === 'crouchthrow') this.crouching = true;
     const x0 = b.x;
-    const { jumped, landed } = stepBody(b, ctrl, dt, w.physWorld(), p);
+    const { jumped, landed, airJumped, wallJumped, fallSpeed } = stepBody(b, ctrl, dt, w.physWorld(), p);
+    if (airJumped || wallJumped) {
+      if (this.act === 'land' || (this.act === 'throw' && this.cancellable())) this.act = 'move';
+      w.dust(b.x + (wallJumped ? -b.facing * 24 : 0), b.y - (wallJumped ? 60 : 0), 5, wallJumped ? b.facing : 0);
+      w.event(wallJumped ? 'wallKick' : 'airJump', {});
+      this.relaunch = true;
+    }
     if (this.act === 'roll') {
       // 滾出平台邊緣：照速度飛出去、變成往下掉；撞到牆：停在牆前、提早結束
       if (!b.onGround || Math.abs(b.x - x0) < ROLL.speed * dt * 0.3) this.endRoll();
@@ -180,6 +207,7 @@ export class Player {
     if (jumped) { w.dust(b.x, b.y, 5, -1); if (this.act === 'land') this.act = 'move'; w.event('jump'); }
     if (landed) {
       w.dust(b.x, b.y, 7, 0);
+      w.event(fallSpeed > HEAVY_LAND ? 'landHeavy' : 'land', {});
       this.airDashUsed = false;
       if (this.act === 'throw' && this.airThrow) this.act = 'move';
       else if (this.act === 'move' && dir === 0 && an.has('jump')) this.startLand();
@@ -346,6 +374,31 @@ export class Player {
     if (b.onGround) b.vx = Math.sign(b.vx) * Math.min(Math.abs(b.vx), PARAMS.runSpeed);
   }
 
+  /** 攀爬中的一步：上下爬、跳開、翻上頂、爬到底 */
+  private climbStep(dt: number, f: Frame, w: World): void {
+    const b = this.body;
+    const r = stepClimb(b, { up: f.up, down: f.down, left: f.left, right: f.right, jumpPressed: f.jumpPressed }, dt, w.physWorld());
+    if (r.jumped) { this.act = 'move'; this.relaunch = true; w.event('jump', { from: 'climb' }); w.dust(b.x, b.y - 40, 4, -b.facing); this.pickMove(0, f); return; }
+    if (r.topped) { this.act = 'move'; w.event('climbTop', {}); this.pickMove(0, f); return; }
+    if (b.climb < 0) { this.act = 'move'; this.pickMove(0, f); return; }
+    this.climbAnim(r.moving);
+    if (r.moving && Math.floor((b.y) / 70) !== Math.floor((b.y - (f.up ? -1 : 1) * 230 * dt) / 70)) w.event('climbStep', {});
+  }
+
+  /** 攀爬暫代動作：朝上丟手舉直那幾格（沒有朝上丟就用跳躍最高點那格） */
+  private climbAnim(moving: boolean): void {
+    const an = this.anim;
+    if (an.has('throwup')) {
+      const rel = an.defs.throwup!.markers.release ?? 15, a = rel + CLIMB_FRAMES[0], z = rel + CLIMB_FRAMES[1];
+      if (an.name !== 'throwup' || an.pos < a || an.pos > z) an.play('throwup', { from: a, to: z, restart: true, rate: 0.8 });
+      an.rate = moving ? 0.8 : 0;
+      if (an.pos >= z - 0.05 && moving) an.play('throwup', { from: a, to: z, restart: true, rate: 0.8 });
+      return;
+    }
+    const k = this.jumpMarks().apex;
+    an.play('jump', { from: k, to: k });
+  }
+
   private startLand(): void {
     this.act = 'land';
     this.anim.play('jump', { from: this.jumpMarks().land, rate: LAND_RATE, restart: true, onEnd: () => { if (this.act === 'land') this.act = 'move'; } });
@@ -370,6 +423,10 @@ export class Player {
     const b = this.body, an = this.anim;
     if (!an.has('jump')) { an.play(AIR_FALLBACK.anim, { from: AIR_FALLBACK.frame, to: AIR_FALLBACK.frame }); return; }
     const { takeoff, apex, land } = this.jumpMarks();
+    // 二段跳、蹬牆跳：上升段從頭再播一次（暫代，見檔頭 WALL_FRAME 那段）
+    if (this.relaunch) { this.relaunch = false; an.play('jump', { from: takeoff, to: apex - 1, restart: true }); }
+    // 貼牆下滑：停在下落段的一格
+    if (b.sliding) { const k = Math.min(land - 1, Math.max(apex, WALL_FRAME)); an.play('jump', { from: k, to: k, rate: 1 }); return; }
     if (b.vy < 0) {
       // 上升段剛好在最高點播完：剩幾格 ÷ 還要升幾秒
       an.play('jump', { from: takeoff, to: apex - 1 });
@@ -400,6 +457,7 @@ export class Player {
   /** 被打：往 pushDir 彈開、小跳一下；有 hurt 動作就播（加速），沒有就定格 */
   hurt(pushDir: 1 | -1): void {
     const an = this.anim;
+    if (this.body.climb >= 0) releaseClimb(this.body, 0.6);
     this.act = 'hurt'; this.queued = null;
     this.actT = an.has('hurt') ? Math.min(HURT_MAX, an.duration('hurt', HURT_RATE)) : 0.4;
     this.invincible = HURT_IFRAMES;

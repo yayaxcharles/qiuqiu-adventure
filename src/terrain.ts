@@ -134,6 +134,11 @@ export class TerrainBuilder {
   flat(len: number): this { this.x += len; this.pts.push([this.x, this.y]); return this; }
   /** 斜坡：往右 len、高度變 dy（負＝上坡） */
   slope(len: number, dy: number): this { this.x += len; this.y += dy; this.pts.push([this.x, this.y]); return this; }
+  /**
+   * 照角度拉坡（第二版陡坡）：往右 len、上坡 deg>0／下坡 deg<0。美術的坡帶實際畫的角度記在 v2_terrain.json 的 slope.drawnDeg，
+   * 關卡照那個角度拉，碰撞線就跟畫出來的坡面一致（例：山村上坡 30.2、下坡 32.1）
+   */
+  slopeDeg(len: number, deg: number): this { return this.slope(len, -Math.round(len * Math.tan(deg * Math.PI / 180))); }
   /** 垂直落差：原地高度變 dy（正＝往下跳的斷崖，負＝要跳上去的高台） */
   cliff(dy: number): this { this.y += dy; this.pts.push([this.x, this.y]); return this; }
   /** 樓梯：n 階、每階寬 w、每階高度變 dh（每階不超過物理的 STEP_UP 才走得上去） */

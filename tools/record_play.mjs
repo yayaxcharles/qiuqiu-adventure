@@ -11,13 +11,14 @@ import { fileURLToPath } from 'node:url';
 import { assertLocal, loadPlaywright, newContext } from 'file:///F:/ClaudeWork/qiuqiu-coop/tools/visual-gate/lib/browser.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const STAGE = Number(process.argv.find((a) => /^\d+$/.test(a)) ?? 1);
+const PRACTICE = process.argv.includes('practice');   // 動作練習場（第二版階段二）：自動玩走到最右邊就停
+const STAGE = PRACTICE ? 0 : Number(process.argv.find((a) => /^\d+$/.test(a)) ?? 1);
 const GOD = process.argv.includes('--god');
 const PORT = 4399;
-const URL = `http://127.0.0.1:${PORT}/?bot${STAGE > 1 ? `&stage=${STAGE}` : ''}${GOD ? '&god' : ''}`;
-const OUT = join(ROOT, 'vids', '_record');
+const URL = `http://127.0.0.1:${PORT}/?bot${PRACTICE ? '&stage=practice' : STAGE > 1 ? `&stage=${STAGE}` : ''}${GOD ? '&god' : ''}`;
+const OUT = process.env.REC_OUT ? resolve(process.env.REC_OUT) : join(ROOT, 'vids', '_record');
 const stamp = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '');
-const FILE = join(OUT, `stage${STAGE}_${stamp}.webm`);
+const FILE = join(OUT, `${PRACTICE ? 'practice' : 'stage' + STAGE}_${stamp}.webm`);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 mkdirSync(OUT, { recursive: true });
 writeFileSync(FILE, Buffer.alloc(0));
@@ -70,10 +71,11 @@ try {
   let last = 0;
   for (;;) {
     await sleep(1000);
-    const st = await page.evaluate(() => { const g = window.__qq.game, w = g.world; return { screen: g.screen, st: g.screenT, t: w ? +w.time.toFixed(0) : 0, tf: w ? +w.time.toFixed(2) : 0, x: w ? Math.round(w.player.body.x) : 0 }; });
+    const st = await page.evaluate(() => { const g = window.__qq.game, w = g.world; return { screen: g.screen, st: g.screenT, t: w ? +w.time.toFixed(0) : 0, tf: w ? +w.time.toFixed(2) : 0, x: w ? Math.round(w.player.body.x) : 0, len: w ? w.stage.length : 1e9 }; });
     timeline.push([+((Date.now() - t0) / 1000).toFixed(2), st.screen, st.tf]);
     if (Date.now() - last > 20000) { last = Date.now(); console.log(`  ${((Date.now() - t0) / 1000).toFixed(0)} 秒｜${st.screen}｜遊戲 ${st.t} 秒｜x=${st.x}｜已錄 ${(bytes / 1e6).toFixed(1)} MB`); }
     if (st.screen === 'result' && st.st > 6) break;
+    if (PRACTICE && st.x > st.len - 300) { await sleep(1500); break; }
     if (Date.now() - t0 > 10 * 60 * 1000) { console.log('超過 10 分鐘，停止'); break; }
   }
   // 配音紀錄（每一句：哪個事件、哪個音檔、音訊時間、遊戲時間、播／略過／排隊…）存在影片旁邊
@@ -81,7 +83,7 @@ try {
   writeFileSync(FILE.replace(/\.webm$/, '_voice.json'), JSON.stringify(vlog));
   console.log(`配音紀錄：${vlog.log ? vlog.log.filter((l) => l.act === 'play').length + ' 句' : '沒有（這份打包沒有配音）'}`);
   console.log(`有沒有錄聲音：${await page.evaluate(() => window.__recAudio) ? '有' : '沒有（這份打包沒有 __qqAudio）'}`);
-  const keyEv = await page.evaluate(() => window.__qq.game.eventLog.filter((e) => ['bossEnter', 'bossDown', 'roll', 'playerHurt'].includes(e.type) || (e.type === 'fire' && e.aim === 'diag')));
+  const keyEv = await page.evaluate(() => window.__qq.game.eventLog.filter((e) => ['bossEnter', 'bossDown', 'roll', 'playerHurt', 'airJump', 'wallKick', 'climbGrab', 'climbTop'].includes(e.type) || (e.type === 'fire' && e.aim === 'diag')));
   writeFileSync(FILE.replace(/\.webm$/, '_timeline.json'), JSON.stringify({ timeline, events: keyEv }));
   await page.evaluate(() => window.__rec.stop());
   await page.waitForFunction(() => window.__recDone === true, null, { timeout: 30000 });

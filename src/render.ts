@@ -8,6 +8,7 @@
  * 地形：地面帶當材質沿著折線鋪，斜坡用錯切（shear）讓材質跟著斜，底下用地面帶最下緣的顏色填到畫面底；坑畫成深淵。
  */
 import { tintOf, type ArtImg, type Assets, type LayerName, type Panel, type TerrainArt, type TImg } from './assets';
+import { drawBlock, drawClimb, drawClimbBg, drawLedge, slopeArt, v2Ground, v2Wall } from './v2art';
 import { Ambience } from './ambience';
 import { ENEMY_DEFS, enemyBox, kingPackBox } from './enemies';
 import { fxDraw, loopFrame, type FxSet } from './fx2';
@@ -130,8 +131,9 @@ export class Renderer {
     if (sil > 0) { ctx.fillStyle = `rgba(236,240,255,${0.85 * sil})`; ctx.fillRect(-40, -40, VIEW_W + 80, VIEW_H + 80); ctx.filter = SIL_FILTER; }
 
     // ── 世界座標 ──
+    const camY = w.camY;
     ctx.save();
-    ctx.translate(-cam, 0);
+    ctx.translate(-cam, -camY);
     // 木柵先畫（最後面），營火、竹叢這些道具畫在木柵前面
     for (const d of w.stage.decks ?? []) if (d.x + d.w > cam - 100 && d.x < cam + VIEW_W + 100) this.drawBackDeck(ctx, w, d);
     this.drawProps(ctx, w, false, cam);
@@ -142,6 +144,7 @@ export class Renderer {
     if (artHouse) for (const p of w.stage.platforms) if (p.look === 'roof') this.drawHouse(ctx, w, p, now);
     for (const p of w.stage.platforms) if (p.look === 'stall' && p.x + p.w > cam - 200 && p.x < cam + VIEW_W + 200) this.drawStallArt(ctx, w, p);
     for (const p of w.stage.platforms) this.drawPlatform(ctx, w, p);
+    this.drawV2(ctx, w, cam);
     for (const h of w.holes) this.drawHole(ctx, h.x, h.y, Math.min(1, h.age * 4) * Math.min(1, (h.life - h.age) * 2), h.age < 0.7);
     for (const b of w.breakables) if (b.kind === 'tower' || isGate(b.kind)) this.drawBreakable(ctx, b, now);
     for (const v of w.stage.vents ?? []) if (w.onScreen(v.x, 200)) this.drawVentBase(ctx, w, v);
@@ -158,10 +161,12 @@ export class Renderer {
     ctx.restore();
 
     // 球球（照動作圖基準點畫，跟其他東西用同一個鏡頭小數座標）
+    ctx.save(); ctx.translate(0, -camY);
     this.drawPlayer(ctx, w.player, cam);
+    ctx.restore();
 
     ctx.save();
-    ctx.translate(-cam, 0);
+    ctx.translate(-cam, -camY);
     this.clawArc(w.player);
     this.drawTip(ctx, w);
     for (const o of this.oneShots) if (o.key !== 'respawn_pillar') this.drawOneShot(ctx, o);
@@ -180,7 +185,7 @@ export class Renderer {
     ctx.restore();
     if (sil > 0) ctx.filter = 'none';
 
-    this.drawFore(ctx, w, cam);
+    if (camY > -5) this.drawFore(ctx, w, cam);
     this.drawLeaves(ctx, zone, dt, cam);
     this.amb.drawOverlay(ctx, w, cam);   // 雨幕、光束、飄的東西、閃電閃白
     ctx.restore();
@@ -211,8 +216,14 @@ export class Renderer {
     const sp = this.a.panels.get(w.stage.panels);
     const camMax = this.camEnd(w);
     const has = (l: LayerName): boolean => !!sp && sp.layers[l].length > 0;
-    if (has('far')) this.drawLayer(ctx, sp!.layers.far, cam * this.fitRate('far', sp!.layers.far, camMax, sp!.rates.far));
+    // 往上捲（第二版大攀爬段）：每層往下移（越遠移越少），長卷頂上接往上延伸的背景
+    const up = -w.camY, vs = up > 0 ? w.vsection() : null;
+    const farOff = has('far') ? cam * this.fitRate('far', sp!.layers.far, camMax, sp!.rates.far) : 0;
+    ctx.save(); ctx.translate(0, up * V_RATE.far);
+    if (has('far')) this.drawLayer(ctx, sp!.layers.far, farOff);
     else this.drawZoneFar(ctx, w, cam);
+    ctx.restore();
+    if (up > 0) drawClimbBg(ctx, w.stage.panels + '_far', 'far', farOff, up * V_RATE.far, VIEW_W);
     // 畫好的遠景自己有雲；只有退回舊背景（或美術另外給了雲的圖）時才用程式畫飄雲
     if (!has('far') || this.art('ambient_cloud')) this.drawClouds(ctx, cam, now, zone);
     if (!this.amb.hasFlocks()) this.drawBirds(ctx, cam, now);
@@ -220,9 +231,10 @@ export class Renderer {
     const rMidfar = has('midfar') ? this.fitRate('midfar', sp!.layers.midfar, camMax, sp!.rates.midfar) : 0.3;
     const rMid = has('mid') ? this.fitRate('mid', sp!.layers.mid, camMax, sp!.rates.mid) : 0.55;
     this.amb.drawSky(ctx, w, cam);   // 流星、大隕石、鳥群、雁群（遠山那一層）
-    if (has('midfar')) this.drawLayer(ctx, sp!.layers.midfar, cam * rMidfar);
+    if (has('midfar')) { ctx.save(); ctx.translate(0, up * V_RATE.midfar); this.drawLayer(ctx, sp!.layers.midfar, cam * rMidfar); ctx.restore(); }
     this.amb.drawMidfar(ctx, w, cam, rMidfar);   // 遠層霧、風箏、飛艇、閃電劈屋脊、百鬼夜行、遠方鐵爪黑影
-    if (has('mid')) this.drawLayer(ctx, sp!.layers.mid, cam * rMid);
+    if (has('mid')) { ctx.save(); ctx.translate(0, up * V_RATE.mid); this.drawLayer(ctx, sp!.layers.mid, cam * rMid); ctx.restore(); }
+    if (up > 0 && vs?.bg) drawClimbBg(ctx, vs.bg, 'mid', cam * rMid, up * V_RATE.mid, VIEW_W);
     this.amb.drawMid(ctx, w, cam, rMid);   // 近層霧、背景小動物、火箭、鍛爐爆炸、碎鐵（都在角色後面、不扣血）
   }
 
@@ -577,6 +589,14 @@ export class Renderer {
     for (const d of w.decals) if (d.x > x0 - 300 && d.x < x1 + 300) this.drawTProp(ctx, d.key, d.x, d.y, { flip: d.flip });
   }
 
+  /** 第二版：實心方塊、攀爬物、岩棚（look＝ledge 的平台） */
+  private drawV2(ctx: CanvasRenderingContext2D, w: World, cam: number): void {
+    const S = w.stage, vis = (x0: number, x1: number): boolean => x1 > cam - 80 && x0 < cam + VIEW_W + 80;
+    for (const c of S.climbs ?? []) if (vis(c.x - 50, c.x + 50)) drawClimb(ctx, c.art, c.x, c.top, c.bottom);
+    for (const b of S.solids ?? []) if (vis(b.x, b.x + b.w)) drawBlock(ctx, b.art, b.x, b.y, b.w, b.h);
+    for (const p of S.platforms) if (p.look === 'ledge' && vis(p.x, p.x + p.w)) drawLedge(ctx, p.art ?? 's1_rock', p.x, p.y, p.w);
+  }
+
   /**
    * 石階的一階（terrain.json stair）：立面 x 對齊落差、頂塊的站立線對齊這一階高的那邊的踏面，壁身往下接到畫面底。
    * 圖是立面朝左（左低右高）；下樓梯（左邊高）整組水平翻。踏面比關卡的階寬，高的那階畫在後面蓋住低的那階多出來的部分。
@@ -633,7 +653,7 @@ export class Renderer {
     w.stage.zones.forEach((z, k) => { if (x >= z.from) zi = k; });
     const z = w.stage.zones[zi]!;
     const set = z.wall ?? { village: 'stone', bamboo: 'earth', bandit: 'log' }[T.zones[z.ground] ?? z.ground] ?? 'stone';
-    return T.wall[set] ?? T.wall.stone;
+    return T.wall[set] ?? v2Wall(set) ?? T.wall.stone;
   }
 
   /** 崖壁：壁面對齊落差的 x、頂塊的站立線對齊高處地面，壁身往下接到底；圖是壁面朝左（左低右高），左邊高就整組左右翻 */
@@ -732,23 +752,39 @@ export class Renderer {
 
   /** 一段斜（或平）的地面：錯切讓地面帶跟著斜，底下填土色 */
   /** 新地面帶（terrain.json）：關卡檔寫的舊鍵名 s1_1_ground 照 _zones 對到 village／bamboo／bandit */
-  private newGround(key: string): (TImg & { bottomColor: string }) | undefined {
+  private newGround(key: string): (Pick<TImg, 'img' | 'w' | 'h' | 'standY'> & { bottomColor: string }) | undefined {
     const T = this.a.terrain;
-    if (!T) return undefined;
-    return T.ground[T.zones[key] ?? key];
+    return T?.ground[T.zones[key] ?? key] ?? v2Ground(key) ?? undefined;
   }
 
   private drawGroundSpan(ctx: CanvasRenderingContext2D, key: string, x0: number, y0: number, x1: number, y1: number): void {
     const a = this.art(key), G = this.newGround(key);
     const k = (y1 - y0) / (x1 - x0);
     ctx.save();
-    ctx.beginPath(); ctx.rect(x0 - 0.6, -50, x1 - x0 + 1.2, VIEW_H + 100); ctx.clip();
+    ctx.beginPath(); ctx.rect(x0 - 0.6, -3000, x1 - x0 + 1.2, VIEW_H + 3050); ctx.clip();
     ctx.transform(1, k, 0, 1, 0, y0 - k * x0);
     if (G) {
       // 地面帶第 standY 列＝腳踩的線；圖底以下用 bottomColor 補滿到畫面底；每 976 像素重複一次（接縫美術量過看不出來）
       ctx.fillStyle = G.bottomColor;
       ctx.fillRect(x0 - 2, G.h - G.standY - 2, x1 - x0 + 4, VIEW_H + 400);
       for (let u = Math.floor(x0 / G.w) * G.w; u < x1; u += G.w) ctx.drawImage(G.img, u, -G.standY, G.w + 1, G.h);
+      // 第二版陡坡：照這段坡實際的角度挑坡帶疊上去（坡頂坡底 40 像素跟平地帶交叉淡化）
+      const T = this.a.terrain, S = slopeArt(T?.zones[key] ?? key, k);
+      if (S && x1 - x0 > 60) {
+        const F = 40, n = 8;
+        for (let i = 0; i < n + 2; i++) {
+          // 中間一大段不透明，兩頭各切 n/2 片慢慢淡
+          const edge = i < n / 2 ? [x0 + i * F / (n / 2), x0 + (i + 1) * F / (n / 2)] : i < n ? [x1 - F + (i - n / 2) * F / (n / 2), x1 - F + (i - n / 2 + 1) * F / (n / 2)] : i === n ? [x0 + F, x1 - F] : null;
+          if (!edge || edge[1]! <= edge[0]!) continue;
+          const a0 = edge[0]!, a1 = edge[1]!;
+          ctx.save();
+          ctx.globalAlpha *= i < n / 2 ? (i + 1) / (n / 2 + 1) : i < n ? 1 - (i - n / 2) / (n / 2 + 1) : 1;
+          ctx.beginPath(); ctx.rect(a0 - 0.5, -3000, a1 - a0 + 1, VIEW_H + 3050); ctx.clip();
+          ctx.fillStyle = S.bottomColor; ctx.fillRect(a0 - 1, S.h - S.standY - 2, a1 - a0 + 2, VIEW_H + 400);
+          for (let u = Math.floor(a0 / S.w) * S.w; u < a1; u += S.w) ctx.drawImage(S.img, u, -S.standY, S.w + 1, S.h);
+          ctx.restore();
+        }
+      }
     } else if (a && typeof a.meta.surfaceY === 'number') {
       const img = a.img, bw = img.naturalWidth, bh = img.naturalHeight, sY = a.meta.surfaceY;
       ctx.fillStyle = this.a.dirt.get(key) ?? '#4a2e1c';
@@ -1154,7 +1190,7 @@ export class Renderer {
 
   /** 竹架、木架（屋頂平台的屋子另外畫）：柱子一路插到地面（坑裡就插到畫面底） */
   private drawPlatform(ctx: CanvasRenderingContext2D, w: World, p: PlatformDef): void {
-    if (p.look === 'roof' || p.look === 'stall') return;
+    if (p.look === 'roof' || p.look === 'stall' || p.look === 'ledge') return;
     if (p.look === 'lift' && this.drawLiftArt(ctx, w, p)) return;
     if (p.look === 'ridge' && this.drawDeckArt(ctx, w, 's3_ridge', p.x, p.w, p.y)) return;
     if (p.look === 'torii' && this.drawToriiArt(ctx, w, p)) return;
@@ -2319,6 +2355,8 @@ export function darkOf(img: HTMLImageElement, k: number): HTMLCanvasElement {
 
 /** 落差比這小的是樓梯的一階（用縮小的石塊補），這個以上畫整面崖壁 */
 const STEP_WALL = 60;
+/** 往上捲的時候各層背景往下移的比例（近的移得多；美術模擬 tools/sim_v2.py 用的值） */
+const V_RATE = { far: 0.2, midfar: 0.4, mid: 0.8 } as const;
 
 /** 當場染色：把圖畫進一張共用的暫存畫布、整張蓋上顏色（只蓋在不透明的地方）；回傳的畫布下一次呼叫就會被蓋掉，要馬上畫 */
 let tintScratch: HTMLCanvasElement | null = null;
