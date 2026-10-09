@@ -173,7 +173,7 @@ export function createBot(): (g: Game, dt: number) => Frame {
     // 升降台：牆太高跳不上去、旁邊有升降台：走到升降台中間等，升到頂再往前走
     const lift = w.platforms.find((pl) => pl.lift && pl.x < px + 520 && pl.x + pl.w > px - 60);
     let riding = false;
-    if (lift && lift.lift && b.y > lift.lift.y1 - 5) {
+    if (!boss && lift && lift.lift && b.y > lift.lift.y1 - 5) {   // 打魔王的時候不管（場地外的升降台會把人拉到牆邊，10-10）
       const c = lift.x + lift.w / 2, top = lift.lift.y1;
       const onLift = b.onGround && Math.abs(b.y - lift.y) < 1 && px >= lift.x && px <= lift.x + lift.w;
       if (b.y > top + 40 || onLift) {
