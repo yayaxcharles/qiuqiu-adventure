@@ -429,6 +429,8 @@ export class World {
     const p = this.player;
     const frozen = { ...f, left: false, right: false, up: false, down: false, attackPressed: false, attackHeld: false, specialPressed: false, specialHeld: false, subPressed: false, jumpPressed: false, dashPressed: false };
     if (p.held > 0) p.held = Math.max(0, p.held - dt);
+    // 被黏液黏到：身上一直滴綠色黏液（看得出為什麼跑不快）
+    if (p.slowT > 0 && p.alive && Math.random() < dt * 14) this.fx({ kind: 'drop', x: p.body.x + (Math.random() - 0.5) * 60, y: p.body.y - 40 - Math.random() * 100, vx: 0, vy: 60, g: 500, life: 0.5, r: 6, color: '#9be36a' });
     if (p.dropping && p.body.onGround) p.dropping = false;
     const input = (this.state === 'play' || this.state === 'dying') && p.held <= 0 && !p.dropping ? f : frozen;
     p.update(dt, input, this);

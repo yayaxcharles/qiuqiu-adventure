@@ -111,7 +111,7 @@ function kasa(e: Enemy, w: World, dt: number): void {
     if (fallStep(e, w, dt)) {
       // 落地震一下：兩邊各一道短短的小震波
       w.shakeIt(0.08); w.dust(e.x, e.y, 5);
-      for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 50, e.y, s * 360, 0, { w: 46, h: 36, life: 0.4 });
+      for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 50, e.y, s * 360, 0, { w: 46, h: 36, life: 0.4, src: 'kasa_obake:wave' });
       w.event('enemyAttack', { kind: e.kind, move: '落地小震' });
       setState(e, 'wait');
     }
@@ -154,11 +154,18 @@ function crane(e: Enemy, w: World, dt: number): void {
       if (e.t > 0.45) setState(e, 'glide');
       break;
     }
-    case 'glide':
+    case 'glide': {
+      const p = w.player.body;
+      if (!m.dropped && Math.abs(p.x - e.x) < 180 && e.y < p.y - 120 && w.onScreen(e.x, 0)) {
+        m.dropped = 1;
+        w.addBullet('leaf', e.x, e.y + 20, m.dir! * 140, 260, { g: 500, life: 2, src: 'paper_crane:paper' });
+        w.event('enemyAttack', { kind: e.kind, move: '丟摺紙' });
+      }
       e.x += m.dir! * 280 * dt;
       e.y = m.baseY! + Math.sin(e.life * 4 + (m.phase ?? 0)) * 48;
       if (e.x < w.camX - 160 || e.x > w.camX + VIEW_W + 160) e.dead = true;
       break;
+    }
     default: setState(e, 'start');
   }
 }
@@ -368,6 +375,12 @@ function tadpole(e: Enemy, w: World, dt: number): void {
   if (tgt) { faceTo(e, tgt.x); flyTo(e, tgt.x, ty, dt, 0.9); } else e.x += e.facing * 100 * dt;
   const sp = Math.hypot(e.vx, e.vy);
   if (sp > 170) { e.vx *= 170 / sp; e.vy *= 170 / sp; }
+  m.spit = (m.spit ?? rnd(1.0, 1.8)) - dt;
+  if (m.spit <= 0 && tgt && w.onScreen(e.x, 0)) {
+    m.spit = rnd(1.6, 2.4);
+    const dx = tgt.x - e.x, dy = (tgt.y - 80) - e.y, L = Math.hypot(dx, dy) || 1;
+    w.addBullet('splash', e.x + e.facing * 20, e.y, dx / L * 380, dy / L * 380, { w: 26, h: 26, life: 2, src: 'tadpole:spit' });
+  }
 }
 
 // ───────────────────────── 中魔王：蛙大名 ─────────────────────────
@@ -404,26 +417,20 @@ function frog(e: Enemy, w: World, dt: number): void {
       else { setState(e, 'jumpWind'); e.warn = 0.4; }
       break;
     }
-    // 舌頭抓人：張嘴（預兆）→ 舌頭伸出去（頭的高度，蹲下躲得過）→ 抓到就拉過來咬一口、吐出去
+    // 黏液彈（10-10 改：原本舌頭抓人咬一口）：張嘴（預兆）→ 舌頭一甩，一團黏液沿頭的高度飛出去（蹲下躲得過）；
+    // 打中扣血、跑步變慢 2 秒。第二階段一次兩團（一高一低，要跳或蹲）
     case 'tongueWind':
       if (tgt) faceTo(e, tgt.x);
-      if (e.t > (P2 ? 0.45 : 0.6)) { setState(e, 'tongue'); m.grab = 0; w.event('enemyAttack', { kind: e.kind, move: '舌頭抓人' }); }
+      if (e.t > (P2 ? 0.45 : 0.6)) {
+        setState(e, 'tongue'); w.event('enemyAttack', { kind: e.kind, move: '黏液彈' });
+        const my = tongueBox(e, 0).y0 + 22;
+        w.addBullet('water', e.x + e.facing * 120, my, e.facing * 620, 0, { w: 60, h: 36, life: 1.6, src: 'frog_daimyo:slime', slow: 2 });
+        if (P2) w.addBullet('water', e.x + e.facing * 120, e.y - 40, e.facing * 520, 0, { w: 60, h: 36, life: 1.8, src: 'frog_daimyo:slime', slow: 2 });
+      }
       break;
-    case 'tongue': {
-      const len = e.t < 0.15 ? 420 * e.t / 0.15 : e.t < 0.6 ? 420 : Math.max(0, 420 * (1 - (e.t - 0.6) / 0.15));
-      const box = tongueBox(e, len);
-      const p = w.player;
-      if (!m.grab && e.t < 0.6 && overlap(box, p.box()) && w.canGrab()) { m.grab = 1; p.held = 0.9; w.event('grabbed', { kind: e.kind }); }
-      if (m.grab) {
-        // 拉到嘴巴前面
-        const mx = e.x + e.facing * 130;
-        p.body.x += (mx - p.body.x) * Math.min(1, dt * 9);
-        p.body.vx = 0;
-        if (e.t > 0.55 && m.grab === 1) { m.grab = 2; p.held = 0; w.hurtPlayer(e.facing, 'frog:tongue'); }
-      } else if (e.t < 0.6) e.harm = box;
+    case 'tongue':
       if (e.t > 0.75) { setState(e, 'recover'); m.rec = 0.5; }
       break;
-    }
     // 跳起來砸水花：蹲低（預兆）→ 跳到你那裡 → 落地濺起水花（往兩邊的拋物線水滴＋地面震波）
     case 'jumpWind':
       e.squash = Math.min(1, e.t / 0.55) * 0.14;
@@ -444,7 +451,7 @@ function frog(e: Enemy, w: World, dt: number): void {
           const s = i % 2 ? 1 : -1, sp = rnd(200, 420);
           w.addBullet('splash', e.x + s * 80, e.y - 40, s * sp, -rnd(520, 760), { g: 1500 });
         }
-        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 110, e.y, s * 400, 0);
+        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 110, e.y, s * 400, 0, { src: 'frog_daimyo:wave' });
         setState(e, 'splash');
       }
       break;
@@ -607,7 +614,7 @@ function tanukiLord(e: Enemy, w: World, dt: number): void {
       const beats = [0.3, 1.61];   // 對上 tanuki2_stomp 片段兩腳落地那兩格
       while ((m.beat ?? 0) < beats.length && e.t >= beats[m.beat!]!) {
         w.shakeIt(0.45); w.dust(e.x - 60, e.y, 10); w.dust(e.x + 60, e.y, 10);
-        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 150, e.y, s * 460, 0, { w: 80, h: 76 });
+        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 150, e.y, s * 460, 0, { w: 80, h: 76, src: 'tanuki_lord:giantwave' });
         m.beat = (m.beat ?? 0) + 1;
       }
       if (e.t > 2.4) { setState(e, 'recover'); m.rec = 0.6; }

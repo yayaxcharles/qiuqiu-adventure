@@ -17,6 +17,7 @@ const BY_SRC: Record<string, number> = {
   'frog:tongue': 20,
   // 魔王的招（同一種子彈，魔王丟的比較痛）
   'orange_king:bone': 15, 'orange_king:wave': 20, 'drum_tanuki:wave': 15,
+  'frog_daimyo:slime': 18, 'frog_daimyo:wave': 20, 'tanuki_lord:giantwave': 25,
 };
 
 /** 敵人自己出招（判定框打到）：照敵人種類 */

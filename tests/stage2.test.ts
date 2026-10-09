@@ -82,14 +82,25 @@ describe('第二關的敵人', () => {
 });
 
 describe('第二關的魔王', () => {
-  it('蛙大名：舌頭伸出來蹲下躲得過；站著會被抓住拉過去咬一口', () => {
+  it('蛙大名：舌頭甩出黏液彈（頭的高度）蹲下躲得過；站著被打中扣血、跑步變慢 2 秒，不會被抓住', () => {
     for (const duck of [true, false]) {
       const w = world({}, false);
       const fg = w.spawn('frog_daimyo', w.player.body.x + 380, 596);
       fg.facing = -1; fg.state = 'tongueWind'; fg.t = 0; fg.group = 1000;
       run(w, 1.6, F({ down: duck }));
       expect(w.player.hp < MAX_HP).toBe(!duck);
-      if (!duck) expect(w.events.some((e) => e.type === 'grabbed')).toBe(true);
+      expect(w.events.some((e) => e.type === 'grabbed')).toBe(false);
+      if (!duck) {
+        expect(w.player.hp).toBe(MAX_HP - damageFor('frog_daimyo:slime'));
+        expect(w.player.slowT).toBeGreaterThan(0);
+        // 變慢：同樣跑 0.5 秒，黏到的跑得比較短
+        const b = w.player.body;
+        w.player.slowT = 2; w.player.invincible = 9;
+        const x0 = b.x; run(w, 0.5, F({ right: true })); const slow = b.x - x0;
+        w.player.slowT = 0;
+        const x1 = b.x; run(w, 0.5, F({ right: true })); const fast = b.x - x1;
+        expect(slow).toBeLessThan(fast * 0.75);
+      }
     }
   });
   it('蛙大名、狸大人：第一階段血打完先演換階段（無敵），再換第二階段的血；第二階段打完才倒', () => {
