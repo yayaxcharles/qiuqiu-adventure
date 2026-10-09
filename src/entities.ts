@@ -143,6 +143,10 @@ export interface Bullet {
   hp?: number;
   /** 風：不傷人，每秒把球球往 vx 的方向推這麼多 */
   push?: number;
+  /** 誰丟的、什麼招（'rat:bone'）：扣血照這個查 damage.ts；沒給就照子彈種類 */
+  src?: string;
+  /** 打中之後球球變慢幾秒（蛙大名的黏液） */
+  slow?: number;
 }
 
 /** 副武器（爆裂符、焙烙玉、煙玉）飛行中 */

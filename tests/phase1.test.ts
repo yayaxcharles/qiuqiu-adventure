@@ -113,25 +113,32 @@ describe('揮爪修正', () => {
     const hit = DEFS.claw!.markers.hit!;
     expect((hit - CLAW.from) / DEFS.claw!.fps / CLAW.rate).toBeCloseTo(0.17, 2);
   });
-  it('鼠兵全速衝過來：一看到就按攻擊，爪子在牠咬到之前打中、球球不扣血', () => {
+  it('鼠兵全速衝過來：在 260 內停下吐魚骨（10-10 改成丟東西才傷人），站著不動扣鼠兵的 8 點；衝過來那一下身體碰到不扣', () => {
     for (const spd of [230, 290]) {
       const w = started();
       const b = w.player.body;
       const e = w.spawn('rat', b.x + 520, b.y);
       e.aware = true; e.state = 'run'; e.mem.spd = spd; e.facing = -1;
-      let pressed = -1, hitAt = -1;
+      let thrownAt = -1;
       for (let i = 0; i < 240; i++) {
-        const want = pressed < 0 && w.meleeTarget(b.x, b.y, b.facing);
-        if (want) pressed = i;
-        w.update(DT, F({ attackPressed: want }));
-        if (hitAt < 0 && w.events.some((ev) => ev.type === 'claw')) hitAt = i;
-        if (hitAt >= 0 && i > hitAt + 30) break;
+        w.update(DT, F());
+        if (thrownAt < 0 && w.bullets.some((bl) => bl.src === 'rat:bone')) { thrownAt = i; expect(Math.abs(e.x - b.x), `速度 ${spd}`).toBeGreaterThan(150); }
       }
-      expect(pressed).toBeGreaterThanOrEqual(0);
-      expect(hitAt, `速度 ${spd}`).toBeGreaterThan(pressed);
-      expect(w.player.hp).toBe(MAX_HP);
-      expect(w.events.some((ev) => ev.type === 'playerHurt')).toBe(false);
+      expect(thrownAt).toBeGreaterThanOrEqual(0);
+      const hurts = w.events.filter((ev) => ev.type === 'playerHurt');
+      expect(hurts.length).toBeGreaterThan(0);
+      expect(hurts.every((ev) => ev.src === 'rat:bone')).toBe(true);
+      expect(hurts[0]!.dmg).toBe(damageFor('rat:bone'));
     }
+  });
+  it('貼著鼠兵按 J：照樣自動揮爪', () => {
+    const w = started();
+    const b = w.player.body;
+    const e = w.spawn('rat', b.x + 90, b.y);
+    e.aware = true; e.state = 'recover'; e.facing = -1; b.facing = 1;
+    run(w, 0.05, F({ attackPressed: true }));
+    run(w, 0.4);
+    expect(w.events.some((ev) => ev.type === 'claw')).toBe(true);
   });
   it('打中小兵往後推約 80 像素、僵住 0.25 秒；重的（鐵羅漢）不推', () => {
     for (const [kind, pushed] of [['orange_bandit', true], ['iron_arhat', false]] as const) {

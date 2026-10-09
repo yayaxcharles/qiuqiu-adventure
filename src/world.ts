@@ -286,7 +286,7 @@ export class World {
   }
 
   addBullet(kind: BulletKind, x: number, y: number, vx: number, vy: number,
-    o: { g?: number; w?: number; h?: number; life?: number; owner?: Enemy; homing?: number; hp?: number; push?: number } = {}): Bullet {
+    o: { g?: number; w?: number; h?: number; life?: number; owner?: Enemy; homing?: number; hp?: number; push?: number; src?: string; slow?: number } = {}): Bullet {
     const size: Record<BulletKind, [number, number]> = {
       kunai: [44, 14], bone: [40, 40], wave: [64, 58], blast: [200, 220], spark: [30, 30], pellet: [26, 26], garbage: [44, 40], missile: [26, 60],
       fireball: [40, 34], water: [52, 30], fan: [50, 40], foxfire: [34, 34], leaf: [36, 20], splash: [22, 22], bubble: [56, 56], gust: [500, 200],
@@ -298,6 +298,7 @@ export class World {
       rot: kind === 'kunai' || kind === 'water' || kind === 'fireball' ? Math.atan2(vy, vx) : 0, spin: (spin[kind] ?? 0) * Math.sign(vx || 1),
       age: 0, life: o.life ?? (kind === 'wave' ? 3.2 : 4), ground: kind === 'wave',
       ...(o.owner ? { owner: o.owner } : {}), ...(o.homing ? { homing: o.homing } : {}), ...(o.hp ? { hp: o.hp } : {}), ...(o.push ? { push: o.push } : {}),
+      ...(o.src ? { src: o.src } : {}), ...(o.slow ? { slow: o.slow } : {}),
     };
     if (bl.ground) bl.y = this.groundAt(x);
     this.bullets.push(bl);
@@ -1273,7 +1274,10 @@ export class World {
         if (Math.random() < dt * 36) this.fx({ kind: 'puff', x: p.body.x - dir * 30, y: p.body.y - 20, vx: dir * 200, vy: -30, life: 0.3, r: 6, color: '#e8f4ff' });
         continue;
       }
-      if (this.hurtPlayer(b.x < p.body.x ? 1 : -1, b.kind)) { if (b.kind !== 'wave' && b.kind !== 'blast') b.age = b.life; }
+      if (this.hurtPlayer(b.x < p.body.x ? 1 : -1, b.src ?? b.kind)) {
+        if (b.slow) p.slowT = Math.max(p.slowT, b.slow);
+        if (b.kind !== 'wave' && b.kind !== 'blast') b.age = b.life;
+      }
     }
     for (const e of this.enemies) {
       if (e.dying > 0 || e.dead) continue;

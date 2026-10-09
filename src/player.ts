@@ -30,6 +30,8 @@ export const RESPAWN_IFRAMES = 2.4;
 const TREAD_PX: Record<string, number> = { run: 22, runthrow: 22 };   // 跑丟是同一個跑姿，先照跑步的步幅
 const WALK: Params = { ...PARAMS, runSpeed: 150 };
 const CROUCH: Params = { ...PARAMS, runSpeed: 110 };
+/** 被蛙大名的黏液黏到：跑步變慢 */
+const SLOWED: Params = { ...PARAMS, runSpeed: PARAMS.runSpeed * 0.55 };
 /** 衝刺：固定速度往前衝，時間夾在 0.22～0.4 秒，前 0.25 秒無敵 */
 const DASH_SPEED = 760, DASH_MIN = 0.22, DASH_MAX = 0.4, DASH_IFRAMES = 0.25, DASH_COOLDOWN = 0.3;
 const DASH: Params = { ...PARAMS, runSpeed: DASH_SPEED, accelGround: 1e6, accelAir: 1e6 };
@@ -92,6 +94,8 @@ export class Player {
   hidden = 0;
   /** 被抓住（蛙大名的舌頭）還剩幾秒：這段時間按什麼都沒用 */
   held = 0;
+  /** 被黏液黏到，還要慢幾秒 */
+  slowT = 0;
   /** 重生從天上掉下來中：落地前不能左右移動（不然一路按著方向會飄進坑裡） */
   dropping = false;
   airThrow = false;
@@ -206,6 +210,7 @@ export class Player {
       this.crouching = false;
     }
     if (this.act === 'throw' && an.name === 'crouchthrow') this.crouching = true;
+    if (this.slowT > 0) { this.slowT = Math.max(0, this.slowT - dt); if (p === PARAMS) p = SLOWED; }
     const x0 = b.x;
     const { jumped, landed, airJumped, wallJumped, fallSpeed } = stepBody(b, ctrl, dt, w.physWorld(), p);
     if (airJumped || wallJumped) {
@@ -535,7 +540,7 @@ export class Player {
   respawn(x: number, y: number): void {
     this.body = newBody(x, y);
     this.body.onGround = false;
-    this.hp = MAX_HP;
+    this.hp = MAX_HP; this.slowT = 0;
     this.act = 'move'; this.queued = null; this.downT = 0;
     this.invincible = RESPAWN_IFRAMES;
     this.dropping = true;

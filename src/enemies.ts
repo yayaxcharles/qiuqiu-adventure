@@ -269,18 +269,20 @@ function rat(e: Enemy, w: World, dt: number): void {
       if (!tgt) { e.vx = 0; break; }
       if (e.t > 0.25) faceTo(e, tgt.x);
       const dx = tgt.x - e.x;
-      if (Math.abs(dx) < 120 && Math.abs(tgt.y - e.y) < 70) { setState(e, 'windup'); e.warn = 0.3; break; }
+      if (Math.abs(dx) < 260 && Math.abs(tgt.y - e.y) < 70) { setState(e, 'windup'); e.warn = 0.3; break; }
       if (!walkOn(e, w, e.facing * m.spd * dt)) { if (Math.abs(tgt.y - e.y) > 60 && e.t > 0.4) { e.vy = -620; e.vx = e.facing * 200; e.onGround = false; } }
       break;
     }
     case 'windup':
       e.pose = 'block'; e.lean = -0.15;
-      if (e.t > 0.3) { setState(e, 'bite'); w.event('enemyAttack', { kind: e.kind, move: '咬' }); }
+      if (e.t > 0.3) {
+        setState(e, 'bite'); w.event('enemyAttack', { kind: e.kind, move: '吐魚骨' });
+        w.addBullet('bone', e.x + e.facing * 50, e.y - 60, e.facing * 560, -200, { g: 1100, w: 26, h: 26, life: 1.0, src: 'rat:bone' });
+      }
       break;
     case 'bite':
       e.pose = 'attack'; e.lean = 0.12; e.bodyHarm = true;
-      walkOn(e, w, e.facing * (e.animOn ? 220 : 540) * dt);   // 有逐格動畫時影片自己會往前跳，程式少衝一點
-      e.harm = boxAt(e.x + e.facing * 28, e.y, 90, 90);
+      walkOn(e, w, e.facing * (e.animOn ? 80 : 160) * dt);   // 咬的動作往前撲一點；傷人的是吐出去的魚骨
       if (e.t > 0.22) setState(e, 'recover');
       break;
     case 'recover':
@@ -302,18 +304,20 @@ function bandit(e: Enemy, w: World, dt: number): void {
       if (!tgt) break;
       faceTo(e, tgt.x);
       const dx = Math.abs(tgt.x - e.x);
-      if (dx < 175 && Math.abs(tgt.y - e.y) < 90 && m.cd <= 0) { setState(e, 'windup'); e.warn = 0.5; w.say(e, pick(['看棍！', '喝啊！', '別跑！']), 0.8); break; }
+      if (dx < 240 && Math.abs(tgt.y - e.y) < 90 && m.cd <= 0) { setState(e, 'windup'); e.warn = 0.5; w.say(e, pick(['看棍！', '喝啊！', '別跑！']), 0.8); break; }
       if (dx > 120) walkOn(e, w, e.facing * 115 * dt);
       break;
     }
     case 'windup':
       e.pose = 'block'; e.lean = -0.2;
-      if (e.t > 0.5) { setState(e, 'swing'); w.event('enemyAttack', { kind: e.kind, move: '揮木棒' }); }
+      if (e.t > 0.5) {
+        setState(e, 'swing'); w.event('enemyAttack', { kind: e.kind, move: '木棒砸地' });
+        w.addBullet('wave', e.x + e.facing * 110, e.y, e.facing * 420, 0, { w: 50, h: 42, life: 0.8, src: 'orange_bandit:wave' });
+      }
       break;
     case 'swing':
       e.pose = 'attack'; e.lean = 0.16;
       if (e.t < 0.12) walkOn(e, w, e.facing * 260 * dt);
-      e.harm = { x0: Math.min(e.x, e.x + e.facing * 160), x1: Math.max(e.x, e.x + e.facing * 160), y0: e.y - 170, y1: e.y - 20 };
       if (e.t > 0.22) setState(e, 'recover');
       break;
     case 'recover':
@@ -415,6 +419,7 @@ function crow(e: Enemy, w: World, dt: number): void {
       if (e.t > 0.45 && tgt) {
         const dx = tgt.x - e.x, dy = (tgt.y - 70) - e.y, L = Math.hypot(dx, dy) || 1;
         e.vx = dx / L * 600; e.vy = dy / L * 600;
+        w.addBullet('leaf', e.x + e.facing * 20, e.y - 10, dx / L * 560, dy / L * 560, { life: 2, src: 'crow_small:feather' });
         setState(e, 'swoop');
         w.event('enemyAttack', { kind: e.kind, move: '俯衝' });
       } else if (!tgt) setState(e, 'hover');
@@ -454,7 +459,10 @@ function boar(e: Enemy, w: World, dt: number): void {
       // 跺腳冒煙＝預兆
       e.pose = 'idle'; e.lean = Math.sin(e.t * 30) * 0.05 - 0.08;
       if (Math.random() < dt * 14) w.dust(e.x - e.facing * 50, e.y, 1, -e.facing);
-      if (e.t > 0.9) { setState(e, 'charge'); w.event('enemyAttack', { kind: e.kind, move: '衝鋒' }); w.shakeIt(0.12); }
+      if (e.t > 0.9) {
+        setState(e, 'charge'); w.event('enemyAttack', { kind: e.kind, move: '衝鋒' }); w.shakeIt(0.12);
+        w.addBullet('wave', e.x + e.facing * 90, e.y, e.facing * 820, 0, { w: 60, h: 50, life: 0.85, src: 'wild_boar:wave' });
+      }
       break;
     case 'charge': {
       e.pose = 'attack'; e.bodyHarm = true; e.lean = 0.05;
@@ -484,7 +492,10 @@ function kid(e: Enemy, w: World, dt: number): void {
   const tgt = w.target(), m = e.mem;
   if (!e.onGround) {
     e.pose = 'attack'; e.bodyHarm = e.vy > -200;
-    if (fallStep(e, w, dt)) { w.dust(e.x, e.y, 3); setState(e, 'wait'); }
+    if (fallStep(e, w, dt)) {
+      w.dust(e.x, e.y, 3); setState(e, 'wait');
+      if (w.onScreen(e.x, 0)) for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 40, e.y, s * 300, 0, { w: 40, h: 32, life: 0.4, src: 'tanuki_kid:wave' });
+    }
     return;
   }
   e.pose = 'idle';
@@ -598,7 +609,7 @@ function drumTanuki(e: Enemy, w: World, dt: number): void {
       e.pose = 'idle';
       if (fallStep(e, w, dt)) {
         w.shakeIt(0.25); w.dust(e.x, e.y, 10);
-        if (low) for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 100, e.y, s * 380, 0);
+        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 100, e.y, s * (low ? 380 : 320), 0, { src: 'drum_tanuki:wave' });
         setState(e, 'recover');
       }
       break;
@@ -613,7 +624,7 @@ function drumTanuki(e: Enemy, w: World, dt: number): void {
 
 function drumWave(e: Enemy, w: World): void {
   w.shakeIt(0.28);
-  w.addBullet('wave', e.x + e.facing * 110, e.y, e.facing * 470, 0);
+  w.addBullet('wave', e.x + e.facing * 110, e.y, e.facing * 470, 0, { src: 'drum_tanuki:wave' });
   w.event('enemyAttack', { kind: e.kind, move: '地面震波' });
 }
 
@@ -677,7 +688,7 @@ function orangeKing(e: Enemy, w: World, dt: number): void {
       e.pose = 'attack'; e.rot = Math.sin(e.t * 3) * 0.1;
       if (fallStep(e, w, dt, 2600)) {
         e.rot = 0; w.shakeIt(0.35); w.dust(e.x, e.y, 14);
-        if (P2) for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 120, e.y, s * 400, 0);
+        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 120, e.y, s * (P2 ? 400 : 330), 0, { src: 'orange_king:wave' });
         setState(e, 'recover'); m.rec = P2 ? 0.6 : 0.9;
       }
       break;
@@ -689,7 +700,7 @@ function orangeKing(e: Enemy, w: World, dt: number): void {
         for (const o of offs) {
           const hx = e.x + e.facing * 60, hy = e.y - 300, tx = tgt.x + o, T = rnd(0.9, 1.2);
           const j = ballistic(hx, hy, tx, w.terrain.groundAt(tx) - 20, T, 1300);
-          w.addBullet('bone', hx, hy, j.vx, j.vy, { g: 1300 });
+          w.addBullet('bone', hx, hy, j.vx, j.vy, { g: 1300, src: 'orange_king:bone' });
         }
         setState(e, 'fishThrow'); w.event('enemyAttack', { kind: e.kind, move: '丟魚骨頭' });
       }
@@ -714,6 +725,7 @@ function orangeKing(e: Enemy, w: World, dt: number): void {
       if (Math.random() < dt * 25) w.dust(e.x - m.dir! * 60, e.y, 1, -m.dir!);
       if ((m.dir! < 0 && e.x < ar.x0 + 90) || (m.dir! > 0 && e.x > ar.x1 - 90)) {
         m.dir = -m.dir!; m.bounces! += 1; w.shakeIt(0.18);
+        w.addBullet('wave', e.x + m.dir! * 90, e.y, m.dir! * (P2 ? 520 : 420), 0, { src: 'orange_king:wave' });
         if (m.bounces! >= (P2 ? 2 : 1)) { e.rot = 0; e.facing = m.dir! > 0 ? 1 : -1; setState(e, 'recover'); m.rec = 0.8; }
       }
       break;
@@ -737,7 +749,7 @@ function orangeKing(e: Enemy, w: World, dt: number): void {
       e.pose = 'attack';
       if (fallStep(e, w, dt, 3000)) {
         w.shakeIt(0.55); w.dust(e.x, e.y, 18);
-        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 130, e.y, s * 430, 0);
+        for (const s of [-1, 1]) w.addBullet('wave', e.x + s * 130, e.y, s * 430, 0, { src: 'orange_king:wave' });
         w.explode(e.x, e.y - 30, 90, 0, 'enemy', true);
         setState(e, 'recover'); m.rec = 1.0;
       }

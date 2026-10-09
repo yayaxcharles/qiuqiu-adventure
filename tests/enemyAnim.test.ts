@@ -42,13 +42,14 @@ function world(extra: Partial<StageDef> = {}): World {
 }
 
 describe('怪物的逐格動畫', () => {
-  it('鼠兵：咬下去那一刻（開始會傷人）畫面剛好是出手格', () => {
+  it('鼠兵：魚骨吐出去那一刻畫面剛好是出手格', () => {
     const w = world();
-    const e = w.spawn('rat', w.player.body.x + 300, 596);
+    const e = w.spawn('rat', w.player.body.x + 400, 596);
     let seen = false;
     for (let i = 0; i < 600 && !seen; i++) {
+      const before = w.bullets.length;
       w.update(DT, NO_INPUT);
-      if (e.harm) { seen = true; expect(e.anim!.name).toBe('attack'); expect(e.anim!.frame).toBe(20); }
+      if (w.bullets.length > before) { seen = true; expect(e.anim!.name).toBe('attack'); expect(e.anim!.frame).toBe(20); }
     }
     expect(seen).toBe(true);
   });

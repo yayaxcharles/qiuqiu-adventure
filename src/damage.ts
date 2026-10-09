@@ -15,11 +15,13 @@ const BY_SRC: Record<string, number> = {
   pellet: 8, garbage: 12, missile: 20, spark: 0,
   steam: 10, pit: 20, explosion: 25,
   'frog:tongue': 20,
+  // 魔王的招（同一種子彈，魔王丟的比較痛）
+  'orange_king:bone': 15, 'orange_king:wave': 20, 'drum_tanuki:wave': 15,
 };
 
 /** 敵人自己出招（判定框打到）：照敵人種類 */
 const BY_ENEMY: Record<string, number> = {
-  rat: 8, orange_bandit: 12, black_ninja: 12, crow_small: 10, wild_boar: 18, drum_tanuki: 15,
+  rat: 8, orange_bandit: 12, black_ninja: 12, crow_small: 10, wild_boar: 18, drum_tanuki: 15, tanuki_kid: 8,
   paper_crane: 8, kasa_obake: 10, lantern_ghost: 10, kappa: 12, mask_dancer: 12, fox_miko: 12, tengu: 12, tadpole: 8,
   vacuum: 12, mini_broom: 8, broom_centipede: 15, iron_arhat: 20, armor_ghost: 15, wraith_samurai: 18, guardian_statue: 20, plated_beetle: 12,
   orange_king: 30, tanuki_lord: 25, frog_daimyo: 25, roomba_king: 30, iron_claw: 30, frog: 25,
