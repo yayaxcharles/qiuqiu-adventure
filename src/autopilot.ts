@@ -281,8 +281,10 @@ export function createBot(): (g: Game, dt: number) => Frame {
     // 跳起來丟：上升到快最高點才丟（手的高度剛好對到屋頂上的敵人、大王的背包）
     if ((jumpThrow || kingP1) && !b.onGround && b.vy < -250) inFront = false;
     if (inFront || above || diagT) {
-      if (WEAPONS[p.arsenal.weapon].auto) f.attackHeld = true;
-      if (s.atkT <= 0) { f.attackPressed = true; s.atkT = 0.13; }
+      // 有特殊忍具就用 K 丟（連發的按住），沒有就 J 丟手裏劍
+      const sp = p.arsenal.hasSpecial;
+      if (sp && WEAPONS[p.arsenal.weapon].auto) f.specialHeld = true;
+      if (s.atkT <= 0) { if (sp) f.specialPressed = true; else f.attackPressed = true; s.atkT = 0.13; }
     }
     // 爆裂符：打魔王、一群敵人
     const crowd = onScreen.filter((e) => Math.abs(e.x - px) < 520).length;

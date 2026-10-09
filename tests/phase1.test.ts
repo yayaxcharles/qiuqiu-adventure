@@ -90,9 +90,9 @@ describe('斜上 45 度丟', () => {
 });
 
 describe('手裏劍削弱', () => {
-  it('數字：速度 760、飛 1 秒、連丟間隔 0.22、同時最多 3 枚、傷害 10 不動', () => {
+  it('數字：速度 760、飛 1 秒、連丟間隔 0.38（10-10 放慢）、同時最多 3 枚、傷害 10 不動', () => {
     expect(SHURIKEN_SPEED * SHURIKEN_LIFE).toBe(760);
-    expect(WEAPONS.shuriken.cooldown).toBe(0.22);
+    expect(WEAPONS.shuriken.cooldown).toBe(0.38);
     expect(SHURIKEN_MAX).toBe(3);
     expect(WEAPONS.shuriken.dmg).toBe(10);
   });

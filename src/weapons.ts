@@ -25,7 +25,7 @@ export interface WeaponDef {
 }
 
 export const WEAPONS: Record<WeaponId, WeaponDef> = {
-  shuriken: { id: 'shuriken', name: '手裏劍', like: '手槍', ammo: Infinity, auto: false, cooldown: 0.22, dmg: 10, icon: 'shuriken' },
+  shuriken: { id: 'shuriken', name: '手裏劍', like: '手槍', ammo: Infinity, auto: false, cooldown: 0.38, dmg: 10, icon: 'shuriken' },   // 0.22 → 0.38（10-10 使用者：「遠程攻擊速度太快」）
   H: { id: 'H', name: '棒手裏劍連射！', like: '重機槍', ammo: 200, auto: true, cooldown: 1 / 13, dmg: 7, icon: 'weapon_H' },
   R: { id: 'R', name: '風魔大手裏劍！', like: '火箭', ammo: 20, auto: false, cooldown: 0.45, dmg: 24, icon: 'weapon_R' },
   F: { id: 'F', name: '火藥竹筒！', like: '火焰槍', ammo: 30, auto: true, cooldown: 0.42, dmg: 7, icon: 'weapon_F' },
@@ -48,7 +48,10 @@ export const SUB_ORDER: readonly SubId[] = ['bomb', 'bigbomb', 'smoke'];
 /** 開發用數字鍵：1～9 換主武器，0 退回手裏劍 */
 export const DEV_WEAPON_KEYS: readonly WeaponId[] = ['shuriken', 'H', 'R', 'F', 'S', 'L', 'C', 'I', 'D', 'B'];
 
-/** 身上的忍具與彈數（越南大戰規則：撿到的武器限量，用完退回手裏劍；副武器各自算數量） */
+/**
+ * 身上的忍具與彈數。weapon＝K 特殊攻擊那一格（撿到的忍具限量，用完就空了；'shuriken'＝空著），
+ * J 普通攻擊永遠是手裏劍、不佔這一格；副武器（L 大招）各自算數量
+ */
 export class Arsenal {
   weapon: WeaponId = 'shuriken';
   ammo = Infinity;
@@ -56,6 +59,8 @@ export class Arsenal {
   sub: SubId = 'bomb';
 
   get def(): WeaponDef { return WEAPONS[this.weapon]; }
+  /** K 那一格有沒有東西 */
+  get hasSpecial(): boolean { return this.weapon !== 'shuriken' && this.ammo > 0; }
 
   /** 撿到主武器：同一種就加彈數，不同種就換過去（越南大戰也是換掉） */
   pick(id: WeaponId): void {

@@ -86,6 +86,8 @@ export class Player {
   arsenal = new Arsenal();
   hp = MAX_HP;
   invincible = 0;
+  /** 上一次冒「救村貓才有特殊忍具」的時間 */
+  private noSpecialT = -9;
   /** 煙玉隱身還剩幾秒（敵人看不到你） */
   hidden = 0;
   /** 被抓住（蛙大名的舌頭）還剩幾秒：這段時間按什麼都沒用 */
@@ -168,7 +170,9 @@ export class Player {
 
     // 2. 按鍵：攻擊（近身揮爪／丟忍具）、副武器、衝刺；收招可以取消的時候，按方向或跳就回到移動
     const canAct = this.act === 'move' || this.act === 'land' || this.cancellable();
-    if (f.attackPressed || (f.attackHeld && this.arsenal.def.auto)) this.attack(f, w, f.attackPressed, canAct);
+    // J 普通攻擊（手裏劍、近身揮爪）；K 特殊攻擊（撿到的忍具，連發的按住一直丟）
+    if (f.attackPressed) this.attack(f, w, true, canAct, false);
+    else if (f.specialPressed || (f.specialHeld && this.arsenal.hasSpecial && this.arsenal.def.auto)) this.attack(f, w, f.specialPressed, canAct, true);
     if (f.subPressed && canAct && this.act !== 'hurt') this.throwSub(f, w);
     if (f.subSwitchPressed) this.arsenal.cycleSub();
     if (f.dashPressed) this.queued = { kind: 'dash', t: BUFFER };
@@ -251,25 +255,30 @@ export class Player {
 
   // ───────────── 攻擊 ─────────────
 
-  private attack(f: Frame, w: World, pressed: boolean, canAct: boolean): void {
+  private attack(f: Frame, w: World, pressed: boolean, canAct: boolean, special: boolean): void {
     const b = this.body, an = this.anim;
     if (this.act === 'hurt' || this.act === 'dash' || this.act === 'claw' || (this.act === 'roll' && !this.cancellable())) {
       if (pressed && this.act === 'claw') this.queued = { kind: 'claw', t: BUFFER };
       return;
     }
     // 近身自動揮爪（地上、前面貼著東西）
-    if (pressed && b.onGround && an.has('claw') && !f.up && w.meleeTarget(b.x, b.y, b.facing)) {
+    if (special && !this.arsenal.hasSpecial) {
+      // K 那格空著：頭上冒一句提示（一秒內只冒一次）
+      if (pressed && w.time - this.noSpecialT > 1) { this.noSpecialT = w.time; w.event('noSpecial', {}); w.pop(b.x, b.y - 220, '救村貓才有特殊忍具', '#c8e6ff', 22); }
+      return;
+    }
+    if (!special && pressed && b.onGround && an.has('claw') && !f.up && w.meleeTarget(b.x, b.y, b.facing)) {
       if (canAct) this.startClaw(); else this.queued = { kind: 'claw', t: BUFFER };
       return;
     }
     if (this.fireCd > 0 || (!canAct && this.act !== 'throw')) return;
-    if (this.arsenal.weapon === 'shuriken' && w.shots.filter((s) => s.kind === 'shuriken').length >= SHURIKEN_MAX) return;
+    if (!special && w.shots.filter((s) => s.kind === 'shuriken').length >= SHURIKEN_MAX) return;
     if (this.act === 'roll') this.endRoll();
     const dirNow = (f.right ? 1 : 0) - (f.left ? 1 : 0);
     // 斜上：按著的方向跟面向不同就先轉過去（↑＋← 一定朝左上丟）
     if (f.up && dirNow !== 0 && dirNow !== b.facing) b.facing = dirNow > 0 ? 1 : -1;
     const aim: Aim = f.up && dirNow !== 0 ? 'diag' : f.up ? 'up' : (!b.onGround && f.down) ? 'down' : this.crouching || (b.onGround && f.down && an.has('crouch')) ? 'low' : 'fwd';
-    const weapon = this.arsenal.use();
+    const weapon = special ? this.arsenal.use() : 'shuriken';
     this.fireCd = WEAPONS[weapon].cooldown;
     this.lastAim = aim;
     const h = HAND[aim];

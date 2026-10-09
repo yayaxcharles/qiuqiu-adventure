@@ -426,7 +426,7 @@ export class World {
     this.triggerTips(dt);
     this.stepPlatforms(dt);
     const p = this.player;
-    const frozen = { ...f, left: false, right: false, up: false, down: false, attackPressed: false, attackHeld: false, subPressed: false, jumpPressed: false, dashPressed: false };
+    const frozen = { ...f, left: false, right: false, up: false, down: false, attackPressed: false, attackHeld: false, specialPressed: false, specialHeld: false, subPressed: false, jumpPressed: false, dashPressed: false };
     if (p.held > 0) p.held = Math.max(0, p.held - dt);
     if (p.dropping && p.body.onGround) p.dropping = false;
     const input = (this.state === 'play' || this.state === 'dying') && p.held <= 0 && !p.dropping ? f : frozen;

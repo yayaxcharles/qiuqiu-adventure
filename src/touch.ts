@@ -51,6 +51,7 @@ export function attachTouch(canvas: HTMLCanvasElement, screen: () => string): vo
     place(dpad, pad, null, null, pad, u * 2.3, u * 2.3);
     place(jump, null, pad, null, pad, u * 1.25, u * 1.25);
     place(attack, null, pad + u * 1.45, null, pad + u * 0.35, u * 1.1, u * 1.1);
+    place(special, null, pad + u * 1.55, null, pad + u * 1.6, u * 0.95, u * 0.95);
     place(bomb, null, pad + u * 0.1, null, pad + u * 1.45, u * 0.9, u * 0.9);
     place(swap, null, pad + u * 2.65, null, pad + u * 0.2, u * 0.72, u * 0.72);
     // 暫停、全螢幕疊在右上角（畫面左右有黑邊時剛好在黑邊裡，不擋資訊欄）
@@ -115,8 +116,9 @@ export function attachTouch(canvas: HTMLCanvasElement, screen: () => string): vo
   dpad.addEventListener('lostpointercapture', dpadUp);
 
   const jump = button('跳', 'Space');
-  const attack = button('攻<small>揮爪／丟</small>', 'KeyJ');
-  const bomb = button('符<small>爆裂符</small>', 'KeyL');
+  const attack = button('攻<small>手裏劍</small>', 'KeyJ');
+  const special = button('特<small>特殊</small>', 'KeyK');
+  const bomb = button('大<small>大招</small>', 'KeyL');
   const swap = button('換', 'KeyQ');
   const pause = button('❚❚', 'KeyP', 'sq');
   const full = document.createElement('div');
@@ -135,12 +137,12 @@ export function attachTouch(canvas: HTMLCanvasElement, screen: () => string): vo
   });
 
   // 戰鬥中的按鈕只在 play、pause 顯示；其他畫面點畫面＝Enter
-  const fightOnly = [dpad, jump, attack, bomb, swap];
+  const fightOnly = [dpad, jump, attack, special, bomb, swap];
   const sync = (): void => {
     const s = screen();
     const fight = s === 'play' || s === 'pause';
     for (const el of fightOnly) el.style.display = fight || s === 'title' ? '' : 'none';   // 標題也留方向盤：← → 選關
-    for (const el of [jump, attack, bomb, swap]) if (s === 'title') el.style.display = 'none';
+    for (const el of [jump, attack, special, bomb, swap]) if (s === 'title') el.style.display = 'none';
     pause.style.display = fight ? '' : 'none';
   };
   setInterval(sync, 150);

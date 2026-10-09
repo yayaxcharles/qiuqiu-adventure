@@ -97,10 +97,27 @@ describe('忍具彈數', () => {
     for (let i = 0; i < 9; i++) expect(a.useSub()).toBe('bomb');
     expect(a.useSub()).toBe(null);
   });
-  it('遊戲裡：按住攻擊鍵照冷卻時間連丟，彈數照丟出去的數量扣', () => {
+  it('J／K 分開：J 永遠丟手裏劍、不吃特殊忍具的彈數；K 丟特殊忍具；K 那格空著按 K 不會出手', () => {
+    const w = started(testStage());
+    const a = w.player.arsenal;
+    run(w, 0.05, F({ specialPressed: true }));
+    run(w, 0.5);
+    expect(w.events.some((e) => e.type === 'fire')).toBe(false);
+    expect(w.events.some((e) => e.type === 'noSpecial')).toBe(true);
+    a.pick('R');
+    run(w, 0.05, F({ attackPressed: true }));
+    run(w, 0.6);
+    expect(w.events.filter((e) => e.type === 'fire').map((e) => e.weapon)).toEqual(['shuriken']);
+    expect(a.ammo).toBe(WEAPONS.R.ammo);
+    run(w, 0.05, F({ specialPressed: true }));
+    run(w, 0.6);
+    expect(w.events.filter((e) => e.type === 'fire').map((e) => e.weapon)).toEqual(['shuriken', 'R']);
+    expect(a.ammo).toBe(WEAPONS.R.ammo - 1);
+  });
+  it('遊戲裡：按住 K（特殊攻擊）照冷卻時間連丟，彈數照丟出去的數量扣', () => {
     const w = started(testStage());
     w.player.arsenal.pick('H');
-    run(w, 1.0, F({ attackHeld: true }));
+    run(w, 1.0, F({ specialHeld: true }));
     const thrown = WEAPONS.H.ammo - w.player.arsenal.ammo;
     expect(thrown).toBeGreaterThanOrEqual(12);
     expect(thrown).toBeLessThanOrEqual(14);   // 每秒 13 發

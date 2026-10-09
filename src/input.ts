@@ -1,7 +1,7 @@
 /**
  * 鍵盤：按著的鍵＋這一格剛按下的鍵（`consume` 之後清掉）。
- * 越南大戰的按法：方向鍵移動／瞄準（↑ 朝上丟、空中 ↓ 朝下丟、地上 ↓ 蹲），一顆攻擊鍵（近身自動揮爪、遠一點丟忍具），
- * 一顆跳、一顆丟副武器（爆裂符）。
+ * 方向鍵移動／瞄準（↑ 朝上丟、空中 ↓ 朝下丟、地上 ↓ 蹲）、空白鍵跳。
+ * 2026-10-10 使用者：「變成有普通攻擊 J、特殊攻擊 K、大招 L」——J 手裏劍（近身自動揮爪）、K 救村貓拿到的特殊忍具、L 爆裂符這類大招。
  */
 const held = new Set<string>();
 const pressed = new Set<string>();
@@ -26,8 +26,8 @@ export function virtualKey(code: string, down: boolean): void {
 const any = (set: Set<string>, codes: readonly string[]): boolean => codes.some((c) => set.has(c));
 export const KEYS = {
   left: ['ArrowLeft', 'KeyA'], right: ['ArrowRight', 'KeyD'], up: ['ArrowUp', 'KeyW'], down: ['ArrowDown', 'KeyS'],
-  walk: ['ShiftLeft', 'ShiftRight'], jump: ['Space', 'KeyK'],
-  attack: ['KeyJ'], sub: ['KeyL'], subSwitch: ['KeyQ'], dash: ['KeyI'],
+  walk: ['ShiftLeft', 'ShiftRight'], jump: ['Space'],
+  attack: ['KeyJ'], special: ['KeyK'], sub: ['KeyL'], subSwitch: ['KeyQ'], dash: ['KeyI'],
   start: ['Enter', 'NumpadEnter'], pause: ['KeyP', 'Escape'], reset: ['KeyR'],
 } as const;
 /** 開發用：Digit1～9＝九種撿來的忍具、Digit0＝退回手裏劍；F5/F6/F7＝補爆裂符／焙烙玉／煙玉；F2＝無敵 */
@@ -37,6 +37,8 @@ export interface Frame {
   left: boolean; right: boolean; up: boolean; down: boolean; walk: boolean;
   jumpHeld: boolean; jumpPressed: boolean;
   attackPressed: boolean; attackHeld: boolean;
+  /** K：特殊攻擊（撿到的忍具；連發的按住就一直丟） */
+  specialPressed: boolean; specialHeld: boolean;
   subPressed: boolean; subSwitchPressed: boolean;
   dashPressed: boolean;
   startPressed: boolean; pausePressed: boolean; reset: boolean;
@@ -48,7 +50,7 @@ export interface Frame {
 
 export const NO_INPUT: Frame = {
   left: false, right: false, up: false, down: false, walk: false, jumpHeld: false, jumpPressed: false,
-  attackPressed: false, attackHeld: false, subPressed: false, subSwitchPressed: false, dashPressed: false,
+  attackPressed: false, attackHeld: false, specialPressed: false, specialHeld: false, subPressed: false, subSwitchPressed: false, dashPressed: false,
   startPressed: false, pausePressed: false, reset: false, devWeapon: -1, devSub: -1, devGod: false, digit: -1,
 };
 
@@ -62,6 +64,7 @@ export function consume(): Frame {
     left: any(held, KEYS.left), right: any(held, KEYS.right), up: any(held, KEYS.up), down: any(held, KEYS.down), walk: any(held, KEYS.walk),
     jumpHeld: any(held, KEYS.jump), jumpPressed: any(pressed, KEYS.jump),
     attackPressed: any(pressed, KEYS.attack), attackHeld: any(held, KEYS.attack),
+    specialPressed: any(pressed, KEYS.special), specialHeld: any(held, KEYS.special),
     subPressed: any(pressed, KEYS.sub), subSwitchPressed: any(pressed, KEYS.subSwitch),
     dashPressed: any(pressed, KEYS.dash),
     startPressed: any(pressed, KEYS.start), pausePressed: any(pressed, KEYS.pause), reset: any(pressed, KEYS.reset),

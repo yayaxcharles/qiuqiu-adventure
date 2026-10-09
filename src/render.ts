@@ -2261,19 +2261,25 @@ export class Renderer {
     const sc = String(w.score).padStart(8, '0');
     fitFont(ctx, sc, 25, sp.x1 - sp.x0 - SAFE * 2); ctx.fillStyle = '#fff3a0'; ctx.strokeStyle = '#3a1d0e'; ctx.lineWidth = 4;
     ctx.strokeText(sc, sp.x0 + SAFE, r2); ctx.fillText(sc, sp.x0 + SAFE, r2);
-    // 忍具：左半主武器（圖示＋名字＋彈數），右半副武器（圖示＋名字＋個數）
+    // 忍具：左半 K 特殊攻擊（撿到的忍具＋彈數；沒有就淡淡的空格），右半 L 大招（圖示＋名字＋個數）。J 永遠是手裏劍，不佔格子
     const wp = this.hudInner('hud_weapon', 354, 12, 330, 98);
     const wr1 = wp.y0 + 11, wr2 = wp.y1 - 13, mid = (wp.y0 + wp.y1) / 2, half = (wp.x0 + wp.x1) / 2;
-    const wd = WEAPONS[a.weapon];
-    this.drawIcon(ctx, a.weapon === 'shuriken' ? 'shuriken' : wd.icon, wp.x0 + SAFE + 20, mid, 42);
+    const kKey = this.touch ? '特' : 'K', lKey = this.touch ? '大' : 'L';
     const tx = wp.x0 + SAFE + 46;
-    fitFont(ctx, wd.name.replace('！', ''), 17, half - tx - 6); ctx.fillStyle = '#ffe9c4'; ctx.fillText(wd.name.replace('！', ''), tx, wr1);
-    const ammo = a.weapon === 'shuriken' ? '∞' : String(a.ammo);
-    fitFont(ctx, ammo, 23, half - tx - 6); ctx.fillStyle = a.ammo < 20 && a.weapon !== 'shuriken' ? '#ff8a6a' : '#fff3a0';
-    ctx.fillText(ammo, tx, wr2);
+    if (a.hasSpecial) {
+      const wd = WEAPONS[a.weapon], nm = `${kKey} ${wd.name.replace('！', '')}`, ammo = String(a.ammo);
+      this.drawIcon(ctx, wd.icon, wp.x0 + SAFE + 20, mid, 42);
+      fitFont(ctx, nm, 17, half - tx - 6); ctx.fillStyle = '#ffe9c4'; ctx.fillText(nm, tx, wr1);
+      fitFont(ctx, ammo, 23, half - tx - 6); ctx.fillStyle = a.ammo < 10 ? '#ff8a6a' : '#fff3a0'; ctx.fillText(ammo, tx, wr2);
+    } else {
+      ctx.save(); ctx.globalAlpha *= 0.35; this.drawIcon(ctx, 'weapon_R', wp.x0 + SAFE + 20, mid, 40); ctx.restore();
+      const nm = `${kKey} 特殊`;
+      fitFont(ctx, nm, 17, half - tx - 6); ctx.fillStyle = '#c8b49a'; ctx.fillText(nm, tx, wr1);
+      fitFont(ctx, '救村貓拿', 15, half - tx - 6); ctx.fillStyle = '#a8957c'; ctx.fillText('救村貓拿', tx, wr2);
+    }
     const sd = SUBS[a.sub];
     this.drawIcon(ctx, a.sub === 'bomb' ? 'bomb_tag' : a.sub === 'bigbomb' ? 'horoku' : 'smoke_ball', half + 16, mid, 36);
-    const sx = half + 38, subName = sd.name.replace('！', ''), subN = `×${a.subs[a.sub]}`;
+    const sx = half + 38, subName = `${lKey} ${sd.name.replace('！', '')}`, subN = `×${a.subs[a.sub]}`;
     fitFont(ctx, subName, 16, wp.x1 - SAFE - sx); ctx.fillStyle = '#ffe9c4'; ctx.fillText(subName, sx, wr1);
     fitFont(ctx, subN, 23, wp.x1 - SAFE - sx); ctx.fillStyle = '#fff3a0'; ctx.fillText(subN, sx, wr2);
     const others = SUB_ORDER.filter((s) => s !== a.sub && a.subs[s] > 0);
@@ -2442,8 +2448,8 @@ const easeOut = (k: number): number => 1 - (1 - k) * (1 - k);
 /** 手機：關卡提示字裡的鍵盤按鍵 → 觸控按鈕（照 stages/*.ts 的 hints 寫法對） */
 const TOUCH_WORDS: [string, string][] = [
   ['← → 移動　空白鍵 跳（按久跳高）', '左邊方向盤 ◀ ▶ 移動　按「跳」跳（按久跳高）'],
-  ['J 攻擊：', '「攻」：'], ['　L 丟爆裂符', '　「符」丟爆裂符'],
-  ['按住 ↑ 往上丟', '按住方向盤 ▲ 再按「攻」往上丟'], ['↓＋跳', '方向盤 ▼＋「跳」'], ['爆裂符（L）', '爆裂符（「符」）'],
+  ['J 攻擊：', '「攻」：'], ['J 普通攻擊：', '「攻」：'], ['K 特殊攻擊', '「特」特殊攻擊'], ['　L 丟爆裂符', '　「大」丟爆裂符'],
+  ['按住 ↑ 往上丟', '按住方向盤 ▲ 再按「攻」往上丟'], ['↓＋跳', '方向盤 ▼＋「跳」'], ['爆裂符（L）', '爆裂符（「大」）'],
 ];
 /** 升降台圖上兩條鋼索在圖寬的幾成（量 platform_s3_lift.webp 的頂端） */
 const LIFT_CABLES = [0.087, 0.912];
