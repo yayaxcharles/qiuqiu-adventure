@@ -215,6 +215,39 @@ export function climbAligned(bg: string, holdOff: number, viewW: number): boolea
   return x <= 1 && x >= viewW - C.w - 1;
 }
 
+/**
+ * 往上延伸那一欄的「墊底」（2026-10-09 撕裂感）：中景長卷頂端本身有透明缺口，平常露出遠景天空很自然；
+ * 鏡頭往上抬時，缺口正上方接著這一欄平直的底邊，看起來就是一塊方方正正的天空破洞。
+ * 在中景長卷「後面」先把這一欄最底下幾排像素往下拉長墊一層（越往下越淡），只有透過缺口才看得到，中景有畫的地方完全不受影響。
+ * 要在畫中景之前叫；左右範圍與 drawClimbBg 的 mid 同一套算法。
+ */
+export function drawClimbBacking(ctx: CanvasRenderingContext2D, bg: string, off: number, topY: number, viewW: number, free = false): void {
+  ask();
+  const C = v2J?.climbUp?.[bg];
+  if (!C || !C.pieces || topY <= 0) return;
+  const pieces = C.pieces as { path: string; y: number; h: number }[];
+  const bottom = pieces.reduce((a, p) => (p.y + p.h > a.y + a.h ? p : a), pieces[0]!);
+  const im = img(bottom.path);
+  if (!im || !im.naturalHeight) return;
+  const x = free ? C.x - off : Math.min(0, Math.max(viewW - C.w, C.x - off));
+  const sh = Math.max(2, Math.round(im.naturalHeight * 0.012));   // 取最底下約 1% 的高度往下拉
+  ctx.save();
+  for (const [y0, h, a] of [[0, 150, 1], [150, 40, 0.6], [190, 40, 0.3]] as const) {   // 缺口最深約 130 像素（第一關瀑布量的），前 150 整條不透明
+    ctx.globalAlpha = a;
+    ctx.drawImage(im, 0, im.naturalHeight - sh, im.naturalWidth, sh, x, topY + y0 - 1, C.w, h + 1);
+  }
+  ctx.restore();
+}
+
+/** 中景往上延伸的那一欄現在畫在畫面哪個左右範圍（跟 drawClimbBg 的 mid 同一套算法）；沒有這一欄回 null */
+export function climbColumnX(bg: string, off: number, viewW: number, free: boolean): { x0: number; x1: number } | null {
+  ask();
+  const C = v2J?.climbUp?.[bg];
+  if (!C || !C.pieces) return null;
+  const x = free ? C.x - off : Math.min(0, Math.max(viewW - C.w, C.x - off));
+  return { x0: x, x1: x + C.w };
+}
+
 /** 先把往上捲背景的圖叫來載（進關就叫，爬到那裡才不會空一下） */
 export function warmClimbBg(keys: string[]): void {
   ask();

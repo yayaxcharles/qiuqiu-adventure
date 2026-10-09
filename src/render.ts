@@ -8,7 +8,7 @@
  * 地形：地面帶當材質沿著折線鋪，斜坡用錯切（shear）讓材質跟著斜，底下用地面帶最下緣的顏色填到畫面底；坑畫成深淵。
  */
 import { tintOf, type ArtImg, type Assets, type LayerName, type Panel, type TerrainArt, type TImg } from './assets';
-import { climbAligned, drawBlock, drawClimb, drawClimbBg, drawLedge, drawWaterfall, poolArt, slopeArt, v2Ground, v2Wall, warmClimbBg } from './v2art';
+import { climbAligned, climbColumnX, drawBlock, drawClimbBacking, drawClimb, drawClimbBg, drawLedge, drawWaterfall, poolArt, slopeArt, v2Ground, v2Wall, warmClimbBg } from './v2art';
 import { Ambience } from './ambience';
 import { ENEMY_DEFS, enemyBox, kingPackBox } from './enemies';
 import { fxDraw, loopFrame, type FxSet } from './fx2';
@@ -236,10 +236,22 @@ export class Renderer {
     if (zone.fireworks) this.drawFireworks(ctx, Math.min(0.05, this.frameDt));
     const rMidfar = has('midfar') ? this.fitRate('midfar', sp!.layers.midfar, camMax, sp!.rates.midfar) : 0.3;
     const rMid = has('mid') ? this.fitRate('mid', sp!.layers.mid, camMax, sp!.rates.mid) : 0.55;
+    // 往上延伸的那一欄（下面 drawClimbBg 畫的）蓋住的左右範圍：那裡長卷頂端本來就接著那一欄，不淡出（淡了反而露一條天空）
+    const keep = up > 0 && vs?.bg ? climbColumnX(vs.bg, cam * rMid, VIEW_W, vs.hold !== undefined && climbAligned(vs.bg, vs.hold * rMid, VIEW_W)) : null;
     this.amb.drawSky(ctx, w, cam);   // 流星、大隕石、鳥群、雁群（遠山那一層）
-    if (has('midfar')) { ctx.save(); ctx.translate(0, up * V_RATE.midfar); this.drawLayer(ctx, sp!.layers.midfar, cam * rMidfar); ctx.restore(); }
+    // 鏡頭往上抬（攀爬段）時，長卷整張往下移，頂端在天空裡變成一條筆直的切邊（2026-10-09 使用者：「背景圖片有撕裂感」；
+    // 實機錄影第一關 164 秒爬完瀑布那段：岩石樹木被橫著切斷）。抬起來的時候改畫「頂端往上淡出」的版本（drawLayerFaded）
+    if (has('midfar')) {
+      if (up > 0) this.drawLayerFaded(ctx, sp!.layers.midfar, cam * rMidfar, up * V_RATE.midfar, keep);
+      else { ctx.save(); ctx.translate(0, up * V_RATE.midfar); this.drawLayer(ctx, sp!.layers.midfar, cam * rMidfar); ctx.restore(); }
+    }
     this.amb.drawMidfar(ctx, w, cam, rMidfar);   // 遠層霧、風箏、飛艇、閃電劈屋脊、百鬼夜行、遠方鐵爪黑影
-    if (has('mid')) { ctx.save(); ctx.translate(0, up * V_RATE.mid); this.drawLayer(ctx, sp!.layers.mid, cam * rMid); ctx.restore(); }
+    if (has('mid')) {
+      // 墊底：中景頂端的透明缺口後面先墊上方那一欄的底色（見 drawClimbBacking），破洞就不會是一塊方形天空
+      if (up > 0 && vs?.bg) drawClimbBacking(ctx, vs.bg, cam * rMid, up * V_RATE.mid, VIEW_W, vs.hold !== undefined && climbAligned(vs.bg, vs.hold * rMid, VIEW_W));
+      if (up > 0) this.drawLayerFaded(ctx, sp!.layers.mid, cam * rMid, up * V_RATE.mid, keep);
+      else { ctx.save(); ctx.translate(0, up * V_RATE.mid); this.drawLayer(ctx, sp!.layers.mid, cam * rMid); ctx.restore(); }
+    }
     if (w.stage.vscroll?.length && this.warmedClimb !== w.stage) { this.warmedClimb = w.stage; warmClimbBg([w.stage.panels + '_far', ...w.stage.vscroll.map((v) => v.bg ?? '')]); }
     // 關卡的攀爬段：鏡頭停住時中景那一欄剛好對上長卷（第一關瀑布）→ 跟著長卷捲；對不上的（練習場）夾在畫面裡
     if (up > 0 && vs?.bg) drawClimbBg(ctx, vs.bg, 'mid', cam * rMid, up * V_RATE.mid, VIEW_W, vs.hold !== undefined && climbAligned(vs.bg, vs.hold * rMid, VIEW_W));
@@ -257,6 +269,33 @@ export class Renderer {
    * 遠景一格只捲 0.7 像素左右，取整數後變成「這格不動、下格跳 1 像素」，1080p 螢幕再放大 1.5 倍，跑起來就一頓一頓。
    * 改成照小數位置畫（瀏覽器本來就在縮放這些圖，不會更糊）；接縫照舊靠每張多畫 1 像素蓋住。
    */
+  /** 頂端淡出用的暫存畫布與遮罩（只有鏡頭往上抬的攀爬段才用） */
+  private fadeCanvas: HTMLCanvasElement | null = null;
+  private fadeMask: HTMLCanvasElement | null = null;
+
+  /**
+   * 長卷往下移 topY 像素畫，頂端 FADE_TOP 像素由全透明漸到不透明，露出後面的遠景天空（10-09 撕裂感）。
+   * 先畫在暫存畫布上再用 destination-in 罩一條漸層，最後整張貼回主畫面。
+   */
+  private drawLayerFaded(ctx: CanvasRenderingContext2D, panels: Panel[], off: number, topY: number, keep: { x0: number; x1: number } | null): void {
+    const mk = (): HTMLCanvasElement => { const n = document.createElement('canvas'); n.width = VIEW_W; n.height = VIEW_H; return n; };
+    const c = this.fadeCanvas ?? (this.fadeCanvas = mk()), m = this.fadeMask ?? (this.fadeMask = mk());
+    const g = c.getContext('2d'), mg = m.getContext('2d');
+    if (!g || !mg) { ctx.save(); ctx.translate(0, topY); this.drawLayer(ctx, panels, off); ctx.restore(); return; }
+    g.clearRect(0, 0, VIEW_W, VIEW_H);
+    g.save(); g.translate(0, topY); this.drawLayer(g, panels, off); g.restore();
+    // 遮罩：頂端 FADE_TOP 由透明漸到不透明；往上延伸那一欄蓋住的範圍整條不透明（保持原本的接法）
+    mg.clearRect(0, 0, VIEW_W, VIEW_H);
+    const gr = mg.createLinearGradient(0, topY, 0, topY + FADE_TOP);
+    gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,1)');
+    mg.fillStyle = gr; mg.fillRect(0, topY, VIEW_W, VIEW_H - topY);
+    if (keep && keep.x1 > 0 && keep.x0 < VIEW_W) { mg.fillStyle = '#000'; mg.fillRect(keep.x0, 0, keep.x1 - keep.x0, VIEW_H); }
+    g.globalCompositeOperation = 'destination-in';
+    g.drawImage(m, 0, 0);
+    g.globalCompositeOperation = 'source-over';
+    ctx.drawImage(c, 0, 0);
+  }
+
   private drawLayer(ctx: CanvasRenderingContext2D, panels: Panel[], off: number): void {
     let x = 0;
     for (const p of panels) {
@@ -2440,6 +2479,9 @@ function tintNow(img: CanvasImageSource, color: string): HTMLCanvasElement {
   g.globalCompositeOperation = 'source-over';
   return c;
 }
+
+/** 攀爬段鏡頭往上抬時，長卷頂端淡出多高（像素） */
+const FADE_TOP = 150;
 
 /** 攀爬時球球往背後挪幾像素（量 climb 動作：手在身體中線前方約 45 像素） */
 const CLIMB_DX = 44;
