@@ -418,18 +418,18 @@ function frog(e: Enemy, w: World, dt: number): void {
       break;
     }
     // 黏液彈（10-10 改：原本舌頭抓人咬一口）：張嘴（預兆）→ 舌頭一甩，一團黏液沿頭的高度飛出去（蹲下躲得過）；
-    // 打中扣血、跑步變慢 2 秒。第二階段一次兩團（一高一低，要跳或蹲）
+    // 打中扣血、跑步變慢 2 秒。第二階段再補一團低的（晚 0.35 秒：先蹲過高的、再跳過低的；同時到就只能翻滾）
     case 'tongueWind':
       if (tgt) faceTo(e, tgt.x);
       if (e.t > (P2 ? 0.45 : 0.6)) {
         setState(e, 'tongue'); w.event('enemyAttack', { kind: e.kind, move: '黏液彈' });
         const my = tongueBox(e, 0).y0 + 22;
         w.addBullet('water', e.x + e.facing * 120, my, e.facing * 620, 0, { w: 60, h: 36, life: 1.6, src: 'frog_daimyo:slime', slow: 2 });
-        if (P2) w.addBullet('water', e.x + e.facing * 120, e.y - 40, e.facing * 520, 0, { w: 60, h: 36, life: 1.8, src: 'frog_daimyo:slime', slow: 2 });
       }
       break;
     case 'tongue':
-      if (e.t > 0.75) { setState(e, 'recover'); m.rec = 0.5; }
+      if (P2 && e.t > 0.35 && !m.low2) { m.low2 = 1; w.addBullet('water', e.x + e.facing * 120, e.y - 40, e.facing * 560, 0, { w: 60, h: 36, life: 1.8, src: 'frog_daimyo:slime', slow: 2 }); }
+      if (e.t > 0.75) { setState(e, 'recover'); m.rec = 0.5; m.low2 = 0; }
       break;
     // 跳起來砸水花：蹲低（預兆）→ 跳到你那裡 → 落地濺起水花（往兩邊的拋物線水滴＋地面震波）
     case 'jumpWind':

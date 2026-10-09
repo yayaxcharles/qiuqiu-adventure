@@ -62,6 +62,63 @@ const notes = [];
   await s.close();
 }
 
+// ── 第二、三關的新招：開該關（標題按數字選關），生怪、等子彈飛出去、暫停截圖
+async function stageShots(n, list) {
+  const s = await newContext('side', `combat_s${n}`, { viewport: { width: 1280, height: 720 } });
+  const { page } = s;
+  await page.goto(url);
+  for (let i = 0; i < 60; i++) {
+    if ((await page.evaluate(() => window.__game?.screen ?? '')) === 'play') break;
+    await page.keyboard.press(`Digit${n}`); await sleep(150);
+    await page.keyboard.press('Enter'); await sleep(500);
+  }
+  await sleep(3000);
+  notes.push(`第 ${n} 關：` + await page.evaluate(() => window.__game.world.stage.name ?? ''));
+  for (const [name, kind, setup, src] of list) {
+    await page.evaluate(([kind, setup]) => {
+      const w = window.__game.world, b = w.player.body;
+      w.player.invincible = 99; b.facing = 1;
+      w.bullets.length = 0;
+      for (const e of w.enemies) if (e.boss || e.kind === kind) e.dead = true;
+      const e = w.spawn(kind, b.x + setup.dx, b.y);
+      e.aware = true; e.facing = -1; e.state = setup.state; e.t = setup.t; e.mem.cd = 99; e.invuln = 99;
+      if (setup.boss) w.boss = e;
+    }, [kind, setup]);
+    let ok = false;
+    for (let i = 0; i < 100 && !ok; i++) { await sleep(30); ok = await page.evaluate((src) => window.__game.world.bullets.some((q) => q.src === src && q.age > 0.12), src); }
+    await page.evaluate(() => { window.__qq.paused = true; });
+    await sleep(120); await shot(page, name);
+    notes.push(`${name}：${ok}`);
+    await page.evaluate(() => { window.__qq.paused = false; });
+  }
+  if (n === 2) {
+    // 黏液打中：身上滴綠黏液、跑不快
+    await page.evaluate(() => {
+      const w = window.__game.world, b = w.player.body;
+      w.bullets.length = 0; w.player.invincible = 0;
+      for (const e of w.enemies) if (e.boss || e.kind === 'frog_daimyo') e.dead = true;
+      const e = w.spawn('frog_daimyo', b.x + 380, b.y); e.aware = true; e.facing = -1; e.state = 'tongueWind'; e.t = 0.5; e.mem.cd = 99; e.invuln = 99;
+    });
+    let ok = false;
+    for (let i = 0; i < 100 && !ok; i++) { await sleep(30); ok = await page.evaluate(() => window.__game.world.player.slowT > 1.3); }
+    await page.evaluate(() => { window.__qq.paused = true; });
+    await sleep(120); await shot(page, '2-黏到黏液.png');
+    notes.push('黏液打中變慢：' + ok + ' 血 ' + await page.evaluate(() => window.__game.world.player.hp));
+  }
+  await s.close();
+}
+await stageShots(2, [
+  ['2-蛙大名黏液彈.png', 'frog_daimyo', { dx: 420, state: 'tongueWind', t: 0.5, boss: true }, 'frog_daimyo:slime'],
+  ['2-紙鶴丟摺紙.png', 'paper_crane', { dx: -200, state: 'start', t: 0 }, 'paper_crane:paper'],
+]);
+await stageShots(3, [
+  ['3-鐵羅漢拳風.png', 'iron_arhat', { dx: 300, state: 'windup', t: 0.55 }, 'iron_arhat:fist'],
+  ['3-空鎧武者槍尖.png', 'armor_ghost', { dx: 360, state: 'windup', t: 0.55 }, 'armor_ghost:spear'],
+  ['3-怨靈武士劍氣.png', 'wraith_samurai', { dx: 260, state: 'appear', t: 0.4 }, 'wraith_samurai:slash'],
+  ['3-石獅石屑波.png', 'guardian_statue', { dx: 330, state: 'windup', t: 0.75 }, 'guardian_statue:swipe'],
+  ['3-鐵爪火焰刃.png', 'iron_claw', { dx: 520, state: 'swipeWind', t: 0.65, boss: true }, 'iron_claw:fireblade'],
+]);
+
 // ── 手機版（假裝是觸控螢幕）
 {
   const s = await newContext('side', 'combat_touch', { viewport: { width: 844, height: 390 } });

@@ -1890,7 +1890,23 @@ export class Renderer {
     }
   }
 
+  /**
+   * 子彈圖照判定框放大縮小（2026-10-10）：近身招改成丟東西後，同一種子彈有大有小（鐵爪的火焰刃 90 寬、鼠兵的小魚骨 26 寬），
+   * 圖是照原本的大小畫的；不縮放的話判定框比畫面上的東西大，會被看不到的地方打到。
+   * 震波、泡泡、鼓爆、風本來就照 b.w／b.h 畫，不用管。蛙大名的黏液（打中會變慢）染成綠色
+   */
   private drawBullet(ctx: CanvasRenderingContext2D, b: Bullet, now: number): void {
+    const base = BULLET_BASE_W[b.kind];
+    const k = base ? b.w / base : 1;
+    if (Math.abs(k - 1) < 0.05 && !b.slow) { this.drawBullet0(ctx, b, now); return; }
+    ctx.save();
+    if (b.slow) ctx.filter = 'hue-rotate(-95deg) saturate(1.6)';
+    ctx.translate(b.x, b.y); ctx.scale(k, k); ctx.translate(-b.x, -b.y);
+    this.drawBullet0(ctx, b, now);
+    ctx.restore();
+  }
+
+  private drawBullet0(ctx: CanvasRenderingContext2D, b: Bullet, now: number): void {
     // 敵人子彈一律加紅色光暈，看得清楚
     const halo = (r: number): void => {
       const g = ctx.createRadialGradient(b.x, b.y - (b.ground ? b.h / 2 : 0), 2, b.x, b.y - (b.ground ? b.h / 2 : 0), r);
@@ -2524,6 +2540,9 @@ function panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h
   ctx.fillStyle = 'rgba(24,12,26,.62)'; ctx.strokeStyle = 'rgba(255,220,170,.35)'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.roundRect(x, y, w, h, 12); ctx.fill(); ctx.stroke();
 }
+
+/** 子彈圖原本是照這個寬度畫的（world.addBullet 的預設判定寬）；判定框改大改小時圖跟著縮放 */
+const BULLET_BASE_W: Partial<Record<Bullet['kind'], number>> = { kunai: 44, bone: 40, fireball: 40, water: 52, pellet: 26, leaf: 36, splash: 22, garbage: 44 };
 
 /** 狀態列 K 格只放得下四個字：名字太長的用短名 */
 const HUD_SHORT: Partial<Record<string, string>> = { H: '棒手裏劍', R: '風魔', C: '式神紙鶴' };
