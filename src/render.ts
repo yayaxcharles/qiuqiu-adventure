@@ -2266,20 +2266,22 @@ export class Renderer {
     const wr1 = wp.y0 + 11, wr2 = wp.y1 - 13, mid = (wp.y0 + wp.y1) / 2, half = (wp.x0 + wp.x1) / 2;
     const kKey = this.touch ? '特' : 'K', lKey = this.touch ? '大' : 'L';
     const tx = wp.x0 + SAFE + 46;
+    // 按鍵字母畫成圖示左上角的小圓章（名字才有地方放大；10-10 截圖：「K 風魔大手裏劍」被縮到看不清）
     if (a.hasSpecial) {
-      const wd = WEAPONS[a.weapon], nm = `${kKey} ${wd.name.replace('！', '')}`, ammo = String(a.ammo);
+      const wd = WEAPONS[a.weapon], nm = HUD_SHORT[a.weapon] ?? wd.name.replace('！', ''), ammo = String(a.ammo);
       this.drawIcon(ctx, wd.icon, wp.x0 + SAFE + 20, mid, 42);
-      fitFont(ctx, nm, 17, half - tx - 6); ctx.fillStyle = '#ffe9c4'; ctx.fillText(nm, tx, wr1);
+      fitFont(ctx, nm, 17, half - tx - 4); ctx.fillStyle = '#ffe9c4'; ctx.fillText(nm, tx, wr1);
       fitFont(ctx, ammo, 23, half - tx - 6); ctx.fillStyle = a.ammo < 10 ? '#ff8a6a' : '#fff3a0'; ctx.fillText(ammo, tx, wr2);
     } else {
       ctx.save(); ctx.globalAlpha *= 0.35; this.drawIcon(ctx, 'weapon_R', wp.x0 + SAFE + 20, mid, 40); ctx.restore();
-      const nm = `${kKey} 特殊`;
-      fitFont(ctx, nm, 17, half - tx - 6); ctx.fillStyle = '#c8b49a'; ctx.fillText(nm, tx, wr1);
+      fitFont(ctx, '特殊忍具', 16, half - tx - 4); ctx.fillStyle = '#c8b49a'; ctx.fillText('特殊忍具', tx, wr1);
       fitFont(ctx, '救村貓拿', 15, half - tx - 6); ctx.fillStyle = '#a8957c'; ctx.fillText('救村貓拿', tx, wr2);
     }
+    keyBadge(ctx, wp.x0 + SAFE + 2, mid - 17, kKey, a.hasSpecial);
     const sd = SUBS[a.sub];
     this.drawIcon(ctx, a.sub === 'bomb' ? 'bomb_tag' : a.sub === 'bigbomb' ? 'horoku' : 'smoke_ball', half + 16, mid, 36);
-    const sx = half + 38, subName = `${lKey} ${sd.name.replace('！', '')}`, subN = `×${a.subs[a.sub]}`;
+    keyBadge(ctx, half + 2, mid - 15, lKey, a.subs[a.sub] > 0);
+    const sx = half + 38, subName = sd.name.replace('！', ''), subN = `×${a.subs[a.sub]}`;
     fitFont(ctx, subName, 16, wp.x1 - SAFE - sx); ctx.fillStyle = '#ffe9c4'; ctx.fillText(subName, sx, wr1);
     fitFont(ctx, subN, 23, wp.x1 - SAFE - sx); ctx.fillStyle = '#fff3a0'; ctx.fillText(subN, sx, wr2);
     const others = SUB_ORDER.filter((s) => s !== a.sub && a.subs[s] > 0);
@@ -2521,6 +2523,20 @@ export function fitFont(ctx: CanvasRenderingContext2D, text: string, px: number,
 function panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void {
   ctx.fillStyle = 'rgba(24,12,26,.62)'; ctx.strokeStyle = 'rgba(255,220,170,.35)'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.roundRect(x, y, w, h, 12); ctx.fill(); ctx.stroke();
+}
+
+/** 狀態列 K 格只放得下四個字：名字太長的用短名 */
+const HUD_SHORT: Partial<Record<string, string>> = { H: '棒手裏劍', R: '風魔', C: '式神紙鶴' };
+
+/** 狀態列忍具格的按鍵小圓章（K／L；手機是「特」「大」） */
+function keyBadge(ctx: CanvasRenderingContext2D, x: number, y: number, key: string, on: boolean): void {
+  ctx.save();
+  ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2);
+  ctx.fillStyle = on ? '#ffd23a' : '#6a5a48'; ctx.fill();
+  ctx.lineWidth = 2; ctx.strokeStyle = '#2a140a'; ctx.stroke();
+  ctx.font = `900 13px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#2a140a'; ctx.fillText(key, x, y + 1);
+  ctx.restore();
 }
 
 function heart(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, full: boolean): void {
