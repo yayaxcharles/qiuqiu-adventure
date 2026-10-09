@@ -6,6 +6,7 @@ import { darkOf, HIT_RIM, NINJA_RIM, SIL_FILTER, WARN_RIM } from './render';
 import { attachInput, consume, heldOnly, NO_INPUT, setDevKeys, type Frame } from './input';
 import { attachTouch, isTouchDevice } from './touch';
 import { feelEnabledFromUrl, feelSwitch } from './feel';
+import { fontFromUrl, fontKey, FONT_LABEL, nextFont, useFont } from './fonts';
 import { SCALE } from './player';
 import { bootStats, drawFrame, loadFrameSlow } from './sprite';
 import { PRACTICE, STAGES } from './stages';
@@ -110,6 +111,9 @@ async function main(): Promise<void> {
   attachInput();
   // 角色手感（feel.ts）：網址 ?feel=old 關掉；F8 隨時切換新舊版比較（2026-10-09）
   feelSwitch.on = feelEnabledFromUrl(location.search);
+  // 字型（fonts.ts）：背景下載，好了就換；F9 輪流換粉圓、文楷、原本的字（2026-10-09）
+  void useFont(fontFromUrl(location.search), import.meta.env.BASE_URL);
+  window.addEventListener('keydown', (e) => { if (e.code === 'F9') { e.preventDefault(); const k = nextFont(fontKey); void useFont(k, import.meta.env.BASE_URL).then(() => console.info(`字型：${FONT_LABEL[fontKey]}`)); } });
   window.addEventListener('keydown', (e) => { if (e.code === 'F8') { e.preventDefault(); feelSwitch.on = !feelSwitch.on; console.info(`手感：${feelSwitch.on ? '新版' : '改版前'}`); } });
   attachTouch(canvas, () => game.screen);   // 手機：觸控按鈕（只在觸控裝置出現）
   /*

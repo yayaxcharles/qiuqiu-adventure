@@ -16,7 +16,7 @@ import { voice } from './voice';
 import { World } from './world';
 
 export type Screen = 'title' | 'play' | 'pause' | 'continue' | 'gameover' | 'result' | 'ending' | 'loading';
-const FONT = '"Microsoft JhengHei", "Noto Sans TC", sans-serif';
+import { FONT } from './fonts';   // 同 render.ts（10-09）
 const CONTINUE_SECONDS = 10;
 const RESULT_ROW = 0.55;
 

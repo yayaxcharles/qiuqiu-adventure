@@ -20,14 +20,14 @@ const CSS = `
 #tc { position: fixed; inset: 0; pointer-events: none; z-index: 10; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 #tc .b { position: absolute; pointer-events: auto; touch-action: none; border-radius: 50%; display: grid; place-items: center;
   background: rgba(20,12,28,.38); border: 2px solid rgba(255,235,200,.55); color: rgba(255,244,220,.92);
-  font: 900 calc(var(--u) * .34) "Microsoft JhengHei", "Noto Sans TC", sans-serif; text-shadow: 0 1px 3px #000; box-sizing: border-box; }
+  font: 900 calc(var(--u) * .34) var(--qq-font, "Microsoft JhengHei", "Noto Sans TC", sans-serif); text-shadow: 0 1px 3px #000; box-sizing: border-box; }
 #tc .b.on { background: rgba(255,210,58,.45); border-color: rgba(255,240,180,.95); }
 #tc .b small { display: block; font-size: calc(var(--u) * .16); font-weight: 700; opacity: .85; margin-top: calc(var(--u) * -.06); }
 #tc #dpad { border-radius: 50%; }
 #tc #dpad i { position: absolute; font-style: normal; font-size: calc(var(--u) * .3); opacity: .8; }
 #tc .sq { border-radius: 22%; }
 #rot { position: fixed; inset: 0; z-index: 20; display: none; place-items: center; background: #16121c; color: #f3e9d8; text-align: center;
-  font: 700 22px "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
+  font: 700 22px var(--qq-font, "Microsoft JhengHei", "Noto Sans TC", sans-serif); }
 #rot b { display: block; font-size: 64px; margin-bottom: 12px; }
 `;
 

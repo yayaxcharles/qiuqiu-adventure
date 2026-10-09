@@ -20,7 +20,7 @@ import type { DeckDef, PlatformDef, ZoneDef } from './stages/types';
 import { SUB_ORDER, SUBS, WEAPONS } from './weapons';
 import { TIP_TIME, type World } from './world';
 
-const FONT = '"Microsoft JhengHei", "Noto Sans TC", sans-serif';
+import { FONT } from './fonts';   // 會變的匯出值：F9／?font= 換字型後，下一次組字型字串就是新的（10-09）
 /** 出招預兆：紅色邊光（身體原色不變）＋這麼多的紅色疊色，一閃一閃 */
 export const WARN_RIM = 'drop-shadow(0 0 2px rgba(255,50,40,1)) drop-shadow(0 0 7px rgba(255,40,30,.75))';
 const WARN_A = 0.3;
@@ -250,16 +250,21 @@ export class Renderer {
     return fin ? fin.at : w.stage.length - VIEW_W;
   }
 
+  /**
+   * 2026-10-09 使用者：「角色在移動背景一卡一卡」。原本每張背景的左緣取整數像素（Math.floor）：
+   * 遠景一格只捲 0.7 像素左右，取整數後變成「這格不動、下格跳 1 像素」，1080p 螢幕再放大 1.5 倍，跑起來就一頓一頓。
+   * 改成照小數位置畫（瀏覽器本來就在縮放這些圖，不會更糊）；接縫照舊靠每張多畫 1 像素蓋住。
+   */
   private drawLayer(ctx: CanvasRenderingContext2D, panels: Panel[], off: number): void {
     let x = 0;
     for (const p of panels) {
       const pw = p.w * (VIEW_H / p.h);
-      if (x + pw > off && x < off + VIEW_W) ctx.drawImage(p.img, Math.floor(x - off), 0, Math.ceil(pw) + 1, VIEW_H);
+      if (x + pw > off && x < off + VIEW_W) ctx.drawImage(p.img, x - off, 0, pw + 1, VIEW_H);
       x += pw;
     }
     // 最後一張之後還有畫面（不該發生，長度照 fitRate 算過）：把最後一張接著畫，不要露出空白
     const last = panels[panels.length - 1];
-    if (last && x < off + VIEW_W) { const pw = last.w * (VIEW_H / last.h); ctx.drawImage(last.img, Math.floor(x - off), 0, Math.ceil(pw) + 1, VIEW_H); }
+    if (last && x < off + VIEW_W) { const pw = last.w * (VIEW_H / last.h); ctx.drawImage(last.img, x - off, 0, pw + 1, VIEW_H); }
   }
 
   /**
@@ -286,7 +291,7 @@ export class Renderer {
       if (sx > VIEW_W || sx + p.w < 0) continue;
       const hit = locked || guard.some((gd) => gd.x1 > sx + p.w * 0.12 && gd.x0 < sx + p.w * 0.88);
       ctx.globalAlpha = hit ? 0.35 : 0.93;
-      ctx.drawImage(p.img, Math.round(sx), p.anchor === 'top' ? 0 : VIEW_H - p.h, p.w, p.h);
+      ctx.drawImage(p.img, sx, p.anchor === 'top' ? 0 : VIEW_H - p.h, p.w, p.h);   // 不取整數（同 drawLayer，10-09）
     }
     ctx.globalAlpha = 1;
   }
@@ -301,7 +306,7 @@ export class Renderer {
       const s = VIEW_H / img.naturalHeight, dw = img.naturalWidth * s;
       const off = ((cam * 0.4) % dw + dw) % dw;
       ctx.globalAlpha = alpha;
-      for (let x = -off; x < VIEW_W; x += dw) ctx.drawImage(img, Math.floor(x), 0, Math.ceil(dw) + 1, VIEW_H);
+      for (let x = -off; x < VIEW_W; x += dw) ctx.drawImage(img, x, 0, dw + 1, VIEW_H);   // 不取整數（同 drawLayer，10-09）
       ctx.globalAlpha = 1;
     };
     let i = 0;
@@ -1699,7 +1704,10 @@ export class Renderer {
     if (fl.scaleX !== 1 || fl.scaleY !== 1 || fl.lean !== 0) {
       ctx.translate(b.x - cam, b.y); ctx.rotate(b.facing * fl.lean); ctx.scale(fl.scaleX, fl.scaleY); ctx.translate(-(b.x - cam), -b.y);
     }
-    drawFrame(ctx, img, fr, b.x - cam, b.y, b.facing, SCALE / (this.a.sprites.shrink ?? 1));   // 圖已縮成畫面大小（shrink）
+    // 攀爬（2026-10-09 使用者：「球球在攀爬時穿模了」）：攀爬動作是側身、手往前伸抓，身體中心卻對齊梯子／藤蔓中心，
+    // 身體前半截塞進旁邊的木牆。畫的時候往背後挪 CLIMB_DX，手剛好抓在梯子上、身體留在外側（物理位置不動）
+    const dx = p.act === 'climb' && an.name === 'climb' ? -b.facing * CLIMB_DX : 0;
+    drawFrame(ctx, img, fr, b.x - cam + dx, b.y, b.facing, SCALE / (this.a.sprites.shrink ?? 1));   // 圖已縮成畫面大小（shrink）
     ctx.restore();
   }
 
@@ -2155,7 +2163,11 @@ export class Renderer {
 
   // ───────────────────────── 畫面資訊 ─────────────────────────
 
+  /** drawHud 這一格用的畫布（hudInner 畫木牌用） */
+  private hudCtx: CanvasRenderingContext2D | null = null;
+
   private drawHud(ctx: CanvasRenderingContext2D, w: World, now: number): void {
+    this.hudCtx = ctx;
     const p = w.player, a = p.arsenal;
     const cam = w.camX;
     const under = w.enemies.some((e) => e.dying <= 0 && w.onScreen(e.x, 80) && e.y - ENEMY_DEFS[e.kind].drawH - (e.warn > 0 ? 60 : 0) < HUD_BOTTOM + 6)
@@ -2163,47 +2175,58 @@ export class Renderer {
     this.hudA += ((under ? 0.4 : 1) - this.hudA) * Math.min(1, this.frameDt * 10);
     ctx.save();
     ctx.globalAlpha = this.hudA;
-    // 左上：血、命、分數
-    this.hudPanel(ctx, 'hud_score', 14, 12, 330, 92);
-    ctx.font = `bold 22px ${FONT}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#ffe9c4'; ctx.fillText('球球', 30, 36);
+    // 2026-10-09 使用者：「左上狀態列一堆字超出框」。木牌圖（第三批美術）四邊有厚木框和鐵角，能寫字的只有中間那塊深色內板
+    // （量圖：hud_score／hud_weapon 寬 8.6%～89.8%、高 23.4%～73.4%）。原本的字照舊的程式畫框排，整排壓在木框上。
+    // 改成照內板排：每塊牌子算出內板，字都放在裡面，太長就縮字（fitFont），左右再各讓開鐵角。牌子外框大小、位置沒變（HUD_BOTTOM 不動）。
+    const SAFE = 18;   // 內板左右再讓開鐵角的寬度
+    // 左上：血、命、分數（兩排）
+    const sp = this.hudInner('hud_score', 14, 12, 330, 98);
+    const r1 = sp.y0 + 11, r2 = sp.y1 - 13;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    fitFont(ctx, '球球', 17, 60); ctx.fillStyle = '#ffe9c4'; ctx.fillText('球球', sp.x0 + SAFE, r1);
     for (let i = 0; i < 3; i++) {
       // 血：貓掌圖（第三批美術），沒有就畫愛心
-      const paw = this.fx(i < p.hp ? 'paw_full' : 'paw_empty');
-      if (paw) fxDraw(ctx, paw, 0, 100 + i * 34, 36, 30 / paw.w);
-      else heart(ctx, 100 + i * 34, 36, 13, i < p.hp);
+      const paw = this.fx(i < p.hp ? 'paw_full' : 'paw_empty'), px = sp.x0 + SAFE + 54 + i * 26;
+      if (paw) fxDraw(ctx, paw, 0, px, r1, 22 / paw.w);
+      else heart(ctx, px, r1, 10, i < p.hp);
     }
-    ctx.fillStyle = '#ffe9c4'; ctx.fillText(`命 ×${Math.max(0, w.lives)}`, 212, 36);
-    ctx.font = `bold 30px ${FONT}`; ctx.fillStyle = '#fff3a0'; ctx.strokeStyle = '#3a1d0e'; ctx.lineWidth = 5;
+    const lives = `命 ×${Math.max(0, w.lives)}`;
+    ctx.textAlign = 'right'; fitFont(ctx, lives, 17, 70); ctx.fillStyle = '#ffe9c4'; ctx.fillText(lives, sp.x1 - SAFE, r1);
+    ctx.textAlign = 'left';
     const sc = String(w.score).padStart(8, '0');
-    ctx.strokeText(sc, 28, 76); ctx.fillText(sc, 28, 76);
-    // 忍具
-    this.hudPanel(ctx, 'hud_weapon', 354, 12, 330, 92);
+    fitFont(ctx, sc, 25, sp.x1 - sp.x0 - SAFE * 2); ctx.fillStyle = '#fff3a0'; ctx.strokeStyle = '#3a1d0e'; ctx.lineWidth = 4;
+    ctx.strokeText(sc, sp.x0 + SAFE, r2); ctx.fillText(sc, sp.x0 + SAFE, r2);
+    // 忍具：左半主武器（圖示＋名字＋彈數），右半副武器（圖示＋名字＋個數）
+    const wp = this.hudInner('hud_weapon', 354, 12, 330, 98);
+    const wr1 = wp.y0 + 11, wr2 = wp.y1 - 13, mid = (wp.y0 + wp.y1) / 2, half = (wp.x0 + wp.x1) / 2;
     const wd = WEAPONS[a.weapon];
-    this.drawIcon(ctx, a.weapon === 'shuriken' ? 'shuriken' : wd.icon, 396, 56, 58);
-    ctx.font = `bold 20px ${FONT}`; ctx.fillStyle = '#ffe9c4'; ctx.textAlign = 'left';
-    ctx.fillText(wd.name.replace('！', ''), 434, 38);
-    ctx.font = `bold 26px ${FONT}`; ctx.fillStyle = a.ammo < 20 && a.weapon !== 'shuriken' ? '#ff8a6a' : '#fff3a0';
-    ctx.fillText(a.weapon === 'shuriken' ? '∞' : String(a.ammo), 434, 72);
+    this.drawIcon(ctx, a.weapon === 'shuriken' ? 'shuriken' : wd.icon, wp.x0 + SAFE + 20, mid, 42);
+    const tx = wp.x0 + SAFE + 46;
+    fitFont(ctx, wd.name.replace('！', ''), 17, half - tx - 6); ctx.fillStyle = '#ffe9c4'; ctx.fillText(wd.name.replace('！', ''), tx, wr1);
+    const ammo = a.weapon === 'shuriken' ? '∞' : String(a.ammo);
+    fitFont(ctx, ammo, 23, half - tx - 6); ctx.fillStyle = a.ammo < 20 && a.weapon !== 'shuriken' ? '#ff8a6a' : '#fff3a0';
+    ctx.fillText(ammo, tx, wr2);
     const sd = SUBS[a.sub];
-    this.drawIcon(ctx, a.sub === 'bomb' ? 'bomb_tag' : a.sub === 'bigbomb' ? 'horoku' : 'smoke_ball', 590, 56, 50);
-    ctx.font = `bold 18px ${FONT}`; ctx.fillStyle = '#ffe9c4'; ctx.fillText(sd.name.replace('！', ''), 614, 38);
-    ctx.font = `bold 26px ${FONT}`; ctx.fillStyle = '#fff3a0'; ctx.fillText(`×${a.subs[a.sub]}`, 614, 72);
+    this.drawIcon(ctx, a.sub === 'bomb' ? 'bomb_tag' : a.sub === 'bigbomb' ? 'horoku' : 'smoke_ball', half + 16, mid, 36);
+    const sx = half + 38, subName = sd.name.replace('！', ''), subN = `×${a.subs[a.sub]}`;
+    fitFont(ctx, subName, 16, wp.x1 - SAFE - sx); ctx.fillStyle = '#ffe9c4'; ctx.fillText(subName, sx, wr1);
+    fitFont(ctx, subN, 23, wp.x1 - SAFE - sx); ctx.fillStyle = '#fff3a0'; ctx.fillText(subN, sx, wr2);
     const others = SUB_ORDER.filter((s) => s !== a.sub && a.subs[s] > 0);
     if (others.length) {
       // 還有別種副武器：框下面一條小字「Q 換：焙烙玉×3」
       ctx.font = `bold 15px ${FONT}`; ctx.fillStyle = '#9ff0ff'; ctx.lineWidth = 4; ctx.strokeStyle = '#1a1020';
       const t = `${this.touch ? '「換」：' : 'Q 換：'}${others.map((s) => `${SUBS[s].name.replace('！', '')}×${a.subs[s]}`).join('　')}`;
-      ctx.strokeText(t, 560, 116); ctx.fillText(t, 560, 116);
+      ctx.strokeText(t, 560, 122); ctx.fillText(t, 560, 122);
     }
-    // 中上：時間
-    ctx.textAlign = 'center';
-    this.hudPanel(ctx, 'hud_time', VIEW_W / 2 + 60, 12, 150, 60);
-    ctx.font = `bold 16px ${FONT}`; ctx.fillStyle = '#ffe9c4'; ctx.fillText('時間', VIEW_W / 2 + 135, 28);
-    ctx.font = `bold 30px ${FONT}`; ctx.fillStyle = w.timeLeft < 60 ? '#ff8a6a' : '#fff3a0'; ctx.fillText(String(Math.ceil(w.timeLeft)), VIEW_W / 2 + 135, 55);
+    // 中上：時間（內板只有 28 像素高，排成一排：「時間」小字＋秒數）
+    const tp = this.hudInner('hud_time', VIEW_W / 2 + 60, 12, 150, 60), tm = (tp.y0 + tp.y1) / 2;
+    ctx.textAlign = 'left'; fitFont(ctx, '時間', 15, 34); ctx.fillStyle = '#ffe9c4'; ctx.fillText('時間', tp.x0 + 8, tm);
+    const secs = String(Math.ceil(w.timeLeft));
+    ctx.textAlign = 'right'; fitFont(ctx, secs, 24, tp.x1 - tp.x0 - 52); ctx.fillStyle = w.timeLeft < 60 ? '#ff8a6a' : '#fff3a0'; ctx.fillText(secs, tp.x1 - 8, tm);
     // 右上：救了幾隻村貓
-    this.hudPanel(ctx, 'hud_cats', VIEW_W - 214, 12, 200, 60);
-    ctx.font = `bold 22px ${FONT}`; ctx.fillStyle = '#ffe9c4'; ctx.fillText(`村貓 ${w.rescued} / ${w.captives.length}`, VIEW_W - 114, 42);
+    const cp = this.hudInner('hud_cats', VIEW_W - 214, 12, 200, 60);
+    const cats = `村貓 ${w.rescued} / ${w.captives.length}`;
+    ctx.textAlign = 'center'; fitFont(ctx, cats, 21, cp.x1 - cp.x0 - SAFE); ctx.fillStyle = '#ffe9c4'; ctx.fillText(cats, (cp.x0 + cp.x1) / 2, (cp.y0 + cp.y1) / 2);
     if (w.god) { ctx.font = `bold 16px ${FONT}`; ctx.fillStyle = '#ff9ad5'; ctx.fillText('無敵（開發用）', VIEW_W - 114, 86); }
     ctx.restore();
     // 魔王血條
@@ -2214,9 +2237,11 @@ export class Renderer {
       const hp = partOn ? boss.part!.hp / boss.part!.maxHp : Math.max(0, boss.hp / boss.maxHp);
       const bw = 620, bx = VIEW_W / 2 - bw / 2, by = VIEW_H - 54;
       const woodBar = this.fx('hud_bar');
-      this.hudPanel(ctx, 'hud_boss', bx - 16, by - 34, bw + 32, 70);
-      ctx.font = `bold 20px ${FONT}`; ctx.textAlign = 'left'; ctx.fillStyle = '#ffe9c4';
-      ctx.fillText(`${d.name}${partOn ? '（魚乾背包）' : boss.p2 ? '（發怒）' : ''}`, bx, by - 16);
+      // 牌子加高到 88、往下挪（內板約 by-19～by+24）：名字一排在上、血條 by～by+18 在下，都在內板裡（原本 70 高，名字壓在上緣木框）
+      const bp = this.hudInner('hud_boss', bx - 16, by - 40, bw + 32, 88);
+      const bossName = `${d.name}${partOn ? '（魚乾背包）' : boss.p2 ? '（發怒）' : ''}`;
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; fitFont(ctx, bossName, 18, bw - 20); ctx.fillStyle = '#ffe9c4';
+      ctx.fillText(bossName, bx, bp.y0 + 10);
       if (woodBar) fxDraw(ctx, woodBar, 0, bx - 10, by - 4, 0.5);   // 血條的木槽
       else { ctx.fillStyle = '#2a1016'; ctx.fillRect(bx, by, bw, 18); }
       ctx.fillStyle = partOn ? '#ffb347' : boss.p2 ? '#ff3a5a' : '#ff6a3a';
@@ -2240,6 +2265,14 @@ export class Renderer {
     const f = this.fx(key);
     if (f?.frames[0]) ctx.drawImage(f.frames[0], x, y, w, h);
     else panel(ctx, x, y, w, h);
+  }
+
+  /** 畫木牌，回傳中間能寫字的內板（畫面座標）。比例照 HUD_INNER（量圖得來）；沒有木牌圖時是程式畫的框，四邊留 8 像素 */
+  private hudInner(ctx0: string, x: number, y: number, w: number, h: number): { x0: number; y0: number; x1: number; y1: number } {
+    this.hudPanel(this.hudCtx!, ctx0, x, y, w, h);
+    const k = this.fx(ctx0)?.frames[0] ? HUD_INNER[ctx0] : undefined;
+    if (!k) return { x0: x + 8, y0: y + 8, x1: x + w - 8, y1: y + h - 8 };
+    return { x0: x + w * k[0], y0: y + h * k[1], x1: x + w * k[2], y1: y + h * k[3] };
   }
 
   /** 書法招牌（任務開始／完成）：畫在畫面中間、寬 width，副標寫在招牌下方 */
@@ -2392,6 +2425,23 @@ function tintNow(img: CanvasImageSource, color: string): HTMLCanvasElement {
   g.fillRect(0, 0, w, h);
   g.globalCompositeOperation = 'source-over';
   return c;
+}
+
+/** 攀爬時球球往背後挪幾像素（量 climb 動作：手在身體中線前方約 45 像素） */
+const CLIMB_DX = 44;
+
+/** 木牌圖中間深色內板的範圍（佔整張圖的比例：左、上、右、下；2026-10-09 用 PIL 量 public/art/fx2/hud_*.webp） */
+const HUD_INNER: Record<string, [number, number, number, number]> = {
+  hud_score: [0.086, 0.234, 0.898, 0.734], hud_weapon: [0.086, 0.234, 0.898, 0.734],
+  hud_time: [0.13, 0.242, 0.85, 0.717], hud_cats: [0.098, 0.242, 0.887, 0.717], hud_boss: [0.037, 0.236, 0.949, 0.729],
+};
+
+/** 設粗體字級：從 px 開始往下縮，直到 text 寬度不超過 maxW（最小 10 像素） */
+export function fitFont(ctx: CanvasRenderingContext2D, text: string, px: number, maxW: number): number {
+  let size = px;
+  ctx.font = `bold ${size}px ${FONT}`;
+  while (size > 10 && ctx.measureText(text).width > maxW) { size -= 1; ctx.font = `bold ${size}px ${FONT}`; }
+  return size;
 }
 
 function panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void {
