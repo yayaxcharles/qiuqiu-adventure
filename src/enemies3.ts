@@ -139,7 +139,10 @@ function miniBroom(e: Enemy, w: World, dt: number): void {
   const tgt = w.target(), m = e.mem;
   e.bodyHarm = true;
   if (!e.onGround) {
-    if (fallStep(e, w, dt)) { setState(e, 'wait'); w.dust(e.x, e.y, 2); }
+    if (fallStep(e, w, dt)) {
+      setState(e, 'wait'); w.dust(e.x, e.y, 2);
+      if (e.aware && w.onScreen(e.x, 0)) w.addBullet('wave', e.x + e.facing * 30, e.y, e.facing * 320, 0, { w: 40, h: 30, life: 0.35, src: 'mini_broom:dust' });
+    }
     if (e.y > 900) e.dead = true;
     return;
   }
@@ -167,7 +170,10 @@ function centipede(e: Enemy, w: World, dt: number): void {
     }
     // 頭抬起來、停住（預兆）→ 往前竄
     case 'rear':
-      if (e.t > 0.5) { setState(e, 'lunge'); w.event('enemyAttack', { kind: e.kind, move: '往前竄' }); }
+      if (e.t > 0.5) {
+        setState(e, 'lunge'); w.event('enemyAttack', { kind: e.kind, move: '往前竄' });
+        w.addBullet('wave', e.x + e.facing * 100, e.y, e.facing * 620, 0, { w: 56, h: 44, life: 0.6, src: 'broom_centipede:dust' });
+      }
       break;
     case 'lunge':
       walkOn(e, w, e.facing * 470 * dt);
@@ -218,12 +224,14 @@ function arhat(e: Enemy, w: World, dt: number): void {
     }
     // 拳頭往後拉（預兆，這時候護甲打開）
     case 'windup':
-      if (e.t > 0.6) { setState(e, 'punch'); w.shakeIt(0.08); w.event('enemyAttack', { kind: e.kind, move: '鐵拳' }); }
+      if (e.t > 0.6) {
+        setState(e, 'punch'); w.shakeIt(0.08); w.event('enemyAttack', { kind: e.kind, move: '鐵拳' });
+        w.addBullet('pellet', e.x + e.facing * 90, e.y - 150, e.facing * 700, 0, { w: 60, h: 50, life: 0.55, src: 'iron_arhat:fist' });
+      }
       break;
     // 直拳：打在頭的高度（蹲下躲得過）
     case 'punch':
       if (e.t < 0.1) walkOn(e, w, e.facing * 450 * dt);
-      if (e.t < 0.25) e.harm = front(e, 40, 250, 100, 200);
       if (e.t > 0.3) setState(e, 'recover');
       break;
     case 'recover':
@@ -251,11 +259,13 @@ function armor(e: Enemy, w: World, dt: number): void {
     }
     // 槍往後收（預兆）→ 往前突刺：槍在胸口高度，蹲下躲得過
     case 'windup':
-      if (e.t > 0.6) { setState(e, 'thrust'); w.event('enemyAttack', { kind: e.kind, move: '突刺' }); }
+      if (e.t > 0.6) {
+        setState(e, 'thrust'); w.event('enemyAttack', { kind: e.kind, move: '突刺' });
+        w.addBullet('kunai', e.x + e.facing * 80, e.y - 130, e.facing * 760, 0, { w: 70, h: 18, life: 0.55, src: 'armor_ghost:spear' });
+      }
       break;
     case 'thrust':
       if (e.t < 0.15) walkOn(e, w, e.facing * 600 * dt);
-      if (e.t < 0.3) e.harm = front(e, 30, 300, 100, 160);
       if (e.t > 0.35) setState(e, 'recover');
       break;
     case 'recover':
@@ -329,10 +339,12 @@ function wraith(e: Enemy, w: World, dt: number): void {
     // 出現、壓低（預兆）→ 貼地橫斬（跳起來躲）
     case 'appear':
       m.alpha = Math.min(0.82, e.t / 0.2);
-      if (e.t > 0.45) { setState(e, 'slash'); w.event('enemyAttack', { kind: e.kind, move: '瞬移斬' }); }
+      if (e.t > 0.45) {
+        setState(e, 'slash'); w.event('enemyAttack', { kind: e.kind, move: '瞬移斬' });
+        w.addBullet('wave', e.x + e.facing * 60, e.y, e.facing * 520, 0, { w: 70, h: 60, life: 0.55, src: 'wraith_samurai:slash' });
+      }
       break;
     case 'slash':
-      if (e.t < 0.25) e.harm = front(e, 20, 240, 10, 120);
       if (e.t > 0.35) setState(e, 'recover');
       break;
     case 'recover':
@@ -355,10 +367,12 @@ function statue(e: Enemy, w: World, dt: number): void {
     }
     // 符文變亮、站起來（預兆）→ 石爪橫掃（貼地，跳起來躲、退後）
     case 'windup':
-      if (e.t > 0.8) { setState(e, 'swipe'); w.shakeIt(0.12); w.event('enemyAttack', { kind: e.kind, move: '石爪橫掃' }); }
+      if (e.t > 0.8) {
+        setState(e, 'swipe'); w.shakeIt(0.12); w.event('enemyAttack', { kind: e.kind, move: '石爪橫掃' });
+        w.addBullet('wave', e.x + e.facing * 70, e.y, e.facing * 480, 0, { w: 80, h: 70, life: 0.65, src: 'guardian_statue:swipe' });
+      }
       break;
     case 'swipe':
-      if (e.t < 0.3) e.harm = front(e, 30, 280, 0, 150);
       if (e.t > 0.4) setState(e, 'recover');
       break;
     case 'recover':
@@ -405,7 +419,14 @@ function roomba(e: Enemy, w: World, dt: number): void {
       break;
     case 'suck':
       suck(e, w, dt, 780, fast ? 190 : 160);
-      if (e.t > 1.8) { setState(e, 'recover'); m.rec = 0.6; }
+      if (e.t > 1.8) {
+        const mo = mouthOf(e), pb = w.player.body;
+        if (w.player.alive && Math.abs(pb.x - mo.x) < 260 && Math.abs(pb.y - e.y) < 200) {
+          w.addBullet('garbage', mo.x, mo.y - 30, e.facing * 520, -180, { g: 1500, life: 2, src: 'roomba_king:spit' });
+          w.event('enemyAttack', { kind: e.kind, move: '吐垃圾' });
+        }
+        setState(e, 'recover'); m.rec = 0.6;
+      }
       break;
     // 噴垃圾彈：抖一抖（預兆）→ 三顆（快死了四顆）拋物線，落地小爆炸
     case 'garbageWind':
@@ -434,8 +455,6 @@ function roomba(e: Enemy, w: World, dt: number): void {
       break;
     case 'ram': {
       const ok = walkOn(e, w, e.facing * 1100 * dt);
-      const bx = enemyBox(e);
-      e.harm = { x0: bx.x0, x1: bx.x1, y0: e.y - RAM_H, y1: e.y };
       const edge = e.x < ar.x0 + 150 || e.x > ar.x1 - 150;
       if (!ok || edge || Math.abs(e.x - (m.rx ?? e.x)) > RAM_DIST || e.t > 0.6) { w.shakeIt(0.2); w.dust(e.x + e.facing * 140, e.y, 8); setState(e, 'ramBack'); }
       break;
@@ -508,11 +527,13 @@ function claw(e: Enemy, w: World, dt: number): void {
     // 巨爪橫掃：站起來、爪子冒火花（預兆）→ 貼地往前一大掃（跳起來躲）
     case 'swipeWind':
       if (tgt && e.t < 0.2) faceTo(e, tgt.x);
-      if (e.t > (P2 ? 0.5 : 0.7)) { setState(e, 'swipe'); w.shakeIt(0.15); w.event('enemyAttack', { kind: e.kind, move: '巨爪橫掃' }); }
+      if (e.t > (P2 ? 0.5 : 0.7)) {
+        setState(e, 'swipe'); w.shakeIt(0.15); w.event('enemyAttack', { kind: e.kind, move: '巨爪火焰刃' });
+        w.addBullet('fireball', e.x + e.facing * 140, e.y - 45, e.facing * 640, 0, { w: 90, h: 70, life: 1.4, src: 'iron_claw:fireblade' });
+      }
       break;
     case 'swipe':
       if (e.t < 0.1) walkOn(e, w, e.facing * 380 * dt);
-      if (e.t < 0.35) e.harm = front(e, 60, 400, 0, 120);
       if (e.t > 0.5) { setState(e, 'recover'); m.rec = 0.6; }
       break;
     // 背後飛彈：艙門打開（預兆）→ 往上飛出畫面 → 地上出現瞄準圈 → 掉下來爆炸
@@ -554,13 +575,14 @@ function claw(e: Enemy, w: World, dt: number): void {
       if (tgt && e.t < 0.1) faceTo(e, tgt.x);
       e.squash = Math.min(1, e.t / 0.8) * 0.2;
       if (Math.random() < dt * 30) w.fx({ kind: 'smoke', x: e.x - e.facing * 120, y: e.y - rnd(60, 160), vx: -e.facing * rnd(60, 140), vy: -rnd(40, 90), life: 0.6, r: rnd(14, 26), color: '#e8e8f0' });
-      if (e.t > 0.8) { setState(e, 'rampage'); m.dir = e.facing; w.event('enemyAttack', { kind: e.kind, move: '暴走衝撞' }); }
+      if (e.t > 0.8) {
+        setState(e, 'rampage'); m.dir = e.facing; w.event('enemyAttack', { kind: e.kind, move: '暴走衝撞' });
+        w.addBullet('wave', e.x + e.facing * 160, e.y, e.facing * 980, 0, { w: 90, h: 80, life: 1.2, src: 'iron_claw:rampage' });
+      }
       break;
     case 'rampage': {
       e.squash = 0.2;
       const ok = walkOn(e, w, (m.dir ?? e.facing) * 760 * dt);
-      const b = enemyBox(e);
-      e.harm = { x0: b.x0, x1: b.x1, y0: e.y - 140, y1: e.y };
       if (Math.random() < dt * 30) w.dust(e.x - e.facing * 120, e.y, 2);
       const edge = (m.dir ?? e.facing) < 0 ? e.x < ar.x0 + 190 : e.x > ar.x1 - 190;
       if (!ok || edge || e.t > 1.8) { w.shakeIt(0.35); setState(e, 'recover'); m.rec = 0.9; }

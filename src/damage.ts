@@ -18,6 +18,7 @@ const BY_SRC: Record<string, number> = {
   // 魔王的招（同一種子彈，魔王丟的比較痛）
   'orange_king:bone': 15, 'orange_king:wave': 20, 'drum_tanuki:wave': 15,
   'frog_daimyo:slime': 18, 'frog_daimyo:wave': 20, 'tanuki_lord:giantwave': 25,
+  'roomba_king:spit': 18, 'iron_claw:fireblade': 25, 'iron_claw:rampage': 25, 'iron_claw:laser': 35,
 };
 
 /** 敵人自己出招（判定框打到）：照敵人種類 */

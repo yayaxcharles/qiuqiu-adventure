@@ -166,7 +166,7 @@ describe('第三關的魔王', () => {
       expect(w.player.hp < MAX_HP).toBe(hit);
     }
   });
-  it('掃地機王衝撞：在衝撞範圍裡站地上會被撞，站上鐵走道就撞不到', () => {
+  it('掃地機王衝撞（10-10 改成只撞開不扣血）：在衝撞範圍裡站地上會被推走，站上鐵走道就碰不到', () => {
     for (const onWalk of [false, true]) {
       const w = world({ platforms: [{ x: 850, y: 446, w: 240, look: 'catwalk' }], bosses: [{ at: 600, kind: 'roomba_king' }] }, false);
       w.skipTo(600 + VIEW_W * 0.42);
@@ -176,7 +176,8 @@ describe('第三關的魔王', () => {
       const p = w.player.body;
       p.x = 970; p.y = onWalk ? 446 : 596; p.vy = 0; p.onGround = true; w.player.invincible = 0;
       run(w, 1.4);
-      expect(w.player.hp < MAX_HP).toBe(!onWalk);
+      expect(w.player.hp).toBe(MAX_HP);
+      expect(Math.abs(p.x - 970) > 40).toBe(!onWalk);
     }
   });
   it('掃地機王吸塵：站著不動會被往吸口拉過去', () => {
