@@ -520,6 +520,8 @@ export class World {
     const show = (key: string, text: string): void => { TIPS_SHOWN.add(key); this.tip = { text, t: 0 }; this.event('tip', { key }); };
     // 第二版階段二：貼牆（第一次滑下來）、攀爬（站在藤蔓梯子底下）、二段跳（面前的牆一次跳不上去、兩次跳得上去）
     if (!TIPS_SHOWN.has('wall') && b.sliding) { show('wall', '貼牆＋跳'); return; }
+    // 第一次拿到特殊忍具：J 還是手裏劍，提醒要按 K（10-10 按鍵分開後）
+    if (!TIPS_SHOWN.has('special') && p.arsenal.hasSpecial && !this.banners.length) { show('special', 'K 特殊'); return; }
     if (!b.onGround) return;
     if (!TIPS_SHOWN.has('climb') && this.climbs.some((c) => Math.abs(c.x - b.x) < 90 && Math.abs(c.bottom - b.y) < 40 && c.top < b.y - 100)) { show('climb', '↑ 抓'); return; }
     if (!TIPS_SHOWN.has('air2')) {
@@ -1247,7 +1249,7 @@ export class World {
       this.banner(SUBS[k.kind].name.replace('！', '') + ` ＋${SUBS[k.kind].pickup}！`, '', 'weapon', 1.4);
     } else {
       a.pick(k.kind);
-      this.banner(WEAPONS[k.kind].name, `剩 ${a.ammo} 發`, 'weapon', 1.5);
+      this.banner(WEAPONS[k.kind].name, `按 K 丟・剩 ${a.ammo} 發`, 'weapon', 1.8);
     }
     this.event('pickup', { kind: k.kind });
   }

@@ -1777,10 +1777,10 @@ export class Renderer {
     ctx.save();
     ctx.globalAlpha = Math.min(1, tip.t / 0.12, (TIP_TIME - tip.t) / 0.25);
     ctx.font = `900 26px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const tw = ctx.measureText(tip.text).width + 28, x = b.x, y = b.y - 232 - Math.sin(Math.min(1, k * 6) * Math.PI / 2) * 6;
+    const tw = ctx.measureText(this.tt(tip.text)).width + 28, x = b.x, y = b.y - 232 - Math.sin(Math.min(1, k * 6) * Math.PI / 2) * 6;
     ctx.fillStyle = 'rgba(20,12,8,.78)'; ctx.strokeStyle = '#ffd23a'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.roundRect(x - tw / 2, y - 21, tw, 42, 10); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#fff3c4'; ctx.fillText(tip.text, x, y + 1);
+    ctx.fillStyle = '#fff3c4'; ctx.fillText(this.tt(tip.text), x, y + 1);
     ctx.restore();
   }
 
@@ -2435,7 +2435,7 @@ export class Renderer {
       } else {
         ctx.font = `900 40px ${FONT}`; ctx.lineWidth = 8; ctx.strokeStyle = '#2a0a0a'; ctx.fillStyle = '#ffec8a';
         ctx.strokeText(b.text, VIEW_W / 2, 250); ctx.fillText(b.text, VIEW_W / 2, 250);
-        if (b.sub) { ctx.font = `bold 20px ${FONT}`; ctx.lineWidth = 5; ctx.fillStyle = '#fff'; ctx.strokeText(b.sub, VIEW_W / 2, 286); ctx.fillText(b.sub, VIEW_W / 2, 286); }
+        if (b.sub) { ctx.font = `bold 20px ${FONT}`; ctx.lineWidth = 5; ctx.fillStyle = '#fff'; ctx.strokeText(this.tt(b.sub), VIEW_W / 2, 286); ctx.fillText(this.tt(b.sub), VIEW_W / 2, 286); }
       }
       ctx.restore();
     }
@@ -2449,7 +2449,7 @@ const easeOut = (k: number): number => 1 - (1 - k) * (1 - k);
 const TOUCH_WORDS: [string, string][] = [
   ['← → 移動　空白鍵 跳（按久跳高）', '左邊方向盤 ◀ ▶ 移動　按「跳」跳（按久跳高）'],
   ['J 攻擊：', '「攻」：'], ['J 普通攻擊：', '「攻」：'], ['K 特殊攻擊', '「特」特殊攻擊'], ['　L 丟爆裂符', '　「大」丟爆裂符'],
-  ['按住 ↑ 往上丟', '按住方向盤 ▲ 再按「攻」往上丟'], ['↓＋跳', '方向盤 ▼＋「跳」'], ['爆裂符（L）', '爆裂符（「大」）'],
+  ['按住 ↑ 往上丟', '按住方向盤 ▲ 再按「攻」往上丟'], ['↓＋跳', '方向盤 ▼＋「跳」'], ['爆裂符（L）', '爆裂符（「大」）'], ['按 K 丟', '按「特」丟'], ['K 特殊', '「特」特殊'],
 ];
 /** 升降台圖上兩條鋼索在圖寬的幾成（量 platform_s3_lift.webp 的頂端） */
 const LIFT_CABLES = [0.087, 0.912];
