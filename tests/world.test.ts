@@ -126,7 +126,7 @@ describe('忍具彈數', () => {
 });
 
 describe('傷害與無敵時間', () => {
-  it('被打照來源扣血（苦無 10、魔王 30）、之後無敵 1.2 秒（這段時間再被打不算），過了才會再扣', () => {
+  it('被打照來源扣血（苦無比魔王輕）、之後無敵 1.2 秒（這段時間再被打不算），過了才會再扣', () => {
     const w = started(testStage());
     const k = damageFor('kunai'), boss = damageFor('orange_king:belly');
     expect(k).toBeLessThan(boss);
