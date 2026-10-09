@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { damageFor, MAX_HP } from '../src/damage';
 import { P2_HP } from '../src/enemies';
 import { LASER_BAND } from '../src/enemies3';
 import { VIEW_W, type Shot } from '../src/entities';
@@ -70,7 +71,7 @@ describe('第三關的敵人', () => {
       const a = w.spawn('iron_arhat', w.player.body.x + 180, 596);
       a.facing = -1; a.state = 'windup'; a.t = 0; a.mem.cd = 99;
       run(w, 1.0, F({ down: duck }));
-      expect(w.player.hp).toBe(duck ? 3 : 2);
+      expect(w.player.hp < MAX_HP).toBe(!duck);
     }
   });
   it('掃把蜈蚣：打倒分裂成三隻小掃把（跟牠同一波）', () => {
@@ -107,7 +108,7 @@ describe('第三關的機關', () => {
     expect(w.player.hp).toBe(hp);
     while (!w.ventState(v).on) run(w, 0.02);
     run(w, 0.1);
-    expect(w.player.hp).toBe(hp - 1);
+    expect(w.player.hp).toBe(hp - damageFor('steam'));
   });
   it('升降台：站上去會被載到上面', () => {
     const w = world({ platforms: [{ x: 500, y: 596, w: 230, look: 'lift', lift: { y1: 396, travel: 1.6, stop: 1.2 } }] });
@@ -152,7 +153,7 @@ describe('第三關的魔王', () => {
       w.player.invincible = 0;
       b.state = 'laserWind'; b.t = 0; b.mem.low = low;
       run(w, 2.2, F({ down: where === 'crouch' }));
-      expect(w.player.hp < 3).toBe(hit);
+      expect(w.player.hp < MAX_HP).toBe(hit);
       expect(LASER_BAND.low[1]).toBeLessThan(150);   // 屋脊（離地 150）比低雷射高
     }
   });
@@ -162,7 +163,7 @@ describe('第三關的魔王', () => {
       const x = w.player.body.x;
       w.addMark(x + dx, 0.5);
       run(w, 1.6);
-      expect(w.player.hp < 3).toBe(hit);
+      expect(w.player.hp < MAX_HP).toBe(hit);
     }
   });
   it('掃地機王衝撞：在衝撞範圍裡站地上會被撞，站上鐵走道就撞不到', () => {
@@ -175,7 +176,7 @@ describe('第三關的魔王', () => {
       const p = w.player.body;
       p.x = 970; p.y = onWalk ? 446 : 596; p.vy = 0; p.onGround = true; w.player.invincible = 0;
       run(w, 1.4);
-      expect(w.player.hp < 3).toBe(!onWalk);
+      expect(w.player.hp < MAX_HP).toBe(!onWalk);
     }
   });
   it('掃地機王吸塵：站著不動會被往吸口拉過去', () => {

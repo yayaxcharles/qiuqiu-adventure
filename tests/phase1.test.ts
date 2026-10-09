@@ -2,6 +2,7 @@
  * 第二版階段一（docs/2026-09-28_第二版規劃.md 第 2～5.1、7 節）：斜上丟、手裏劍削弱、揮爪修正、翻滾、拿掉教學字幕。
  * 動作圖用真的 anims.json（格數、標記、速度照實際）。
  */
+import { damageFor, MAX_HP } from '../src/damage';
 import { describe, expect, it } from 'vitest';
 import { enemyBox } from '../src/enemies';
 import { NO_INPUT, type Frame } from '../src/input';
@@ -128,7 +129,7 @@ describe('揮爪修正', () => {
       }
       expect(pressed).toBeGreaterThanOrEqual(0);
       expect(hitAt, `速度 ${spd}`).toBeGreaterThan(pressed);
-      expect(w.player.hp).toBe(3);
+      expect(w.player.hp).toBe(MAX_HP);
       expect(w.events.some((ev) => ev.type === 'playerHurt')).toBe(false);
     }
   });
@@ -158,7 +159,7 @@ describe('揮爪修正', () => {
     expect(w.player.clawGuard()).toBe(true);
     w.bullets.push({ id: 999, kind: 'kunai', x: b.x + 10, y: b.y - 90, vx: -300, vy: 0, g: 0, w: 40, h: 16, rot: 0, spin: 0, age: 0, life: 2, ground: false });
     w.update(DT, F());
-    expect(w.player.hp).toBe(2);
+    expect(w.player.hp).toBeLessThan(MAX_HP);
   });
   it('魔王：揮爪傷害 25（小兵 40）', () => {
     expect(CLAW_DMG).toBe(40);

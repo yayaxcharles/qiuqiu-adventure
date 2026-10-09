@@ -3,6 +3,7 @@ import { VIEW_W } from '../src/entities';
 import { KING_BODY_CHIP, KING_PACK_HP, P2_HP } from '../src/enemies';
 import { NO_INPUT, type Frame } from '../src/input';
 import { HURT_IFRAMES, MAX_HP } from '../src/player';
+import { damageFor } from '../src/damage';
 import { parseAnims } from '../src/sprite';
 import { STAGE1 } from '../src/stages/stage1';
 import type { StageDef } from '../src/stages/types';
@@ -108,22 +109,24 @@ describe('忍具彈數', () => {
 });
 
 describe('傷害與無敵時間', () => {
-  it('被打扣一滴、之後無敵 1.2 秒（這段時間再被打不算），過了才會再扣', () => {
+  it('被打照來源扣血（苦無 10、魔王 30）、之後無敵 1.2 秒（這段時間再被打不算），過了才會再扣', () => {
     const w = started(testStage());
+    const k = damageFor('kunai'), boss = damageFor('orange_king:belly');
+    expect(k).toBeLessThan(boss);
     expect(w.player.hp).toBe(MAX_HP);
-    expect(w.hurtPlayer(1)).toBe(true);
-    expect(w.player.hp).toBe(MAX_HP - 1);
+    expect(w.hurtPlayer(1, 'kunai')).toBe(true);
+    expect(w.player.hp).toBe(MAX_HP - k);
     run(w, HURT_IFRAMES - 0.1);
-    expect(w.hurtPlayer(1)).toBe(false);
-    expect(w.player.hp).toBe(MAX_HP - 1);
+    expect(w.hurtPlayer(1, 'kunai')).toBe(false);
+    expect(w.player.hp).toBe(MAX_HP - k);
     run(w, 0.15);
-    expect(w.hurtPlayer(1)).toBe(true);
-    expect(w.player.hp).toBe(MAX_HP - 2);
+    expect(w.hurtPlayer(1, 'orange_king:belly')).toBe(true);
+    expect(w.player.hp).toBe(MAX_HP - k - boss);
   });
   it('血扣光倒下、掉一條命、重生時血補滿；三條命用完出現接關，接關命補滿', () => {
     const w = started(testStage());
     for (let life = 1; life <= LIVES; life++) {
-      for (let k = 0; k < MAX_HP; k++) { w.player.invincible = 0; w.hurtPlayer(1); }
+      for (let k = 0; k < MAX_HP; k++) { w.player.invincible = 0; w.hurtPlayer(1, 'kunai'); }
       expect(w.lives).toBe(LIVES - life);
       expect(w.state).toBe('dying');
       run(w, DOWN_TIME + 0.1);
@@ -140,7 +143,7 @@ describe('傷害與無敵時間', () => {
     const b = w.player.body;
     w.addBullet('kunai', b.x + 60, b.y - 110, -500, 0);
     run(w, 0.3);
-    expect(w.player.hp).toBe(MAX_HP - 1);
+    expect(w.player.hp).toBe(MAX_HP - damageFor('kunai'));
     run(w, 0.6);   // 被打的踉蹌演完
     const e = w.spawn('orange_bandit', w.player.body.x + 500, 596);
     w.player.body.facing = 1;
@@ -148,12 +151,26 @@ describe('傷害與無敵時間', () => {
     run(w, 0.6);
     expect(e.hp).toBe(40 - WEAPONS.shuriken.dmg);
   });
-  it('掉進坑：扣一滴血，從坑前的安全地面重來', () => {
+  it('吃飯糰補 30、魚乾補 15，補不超過滿血', () => {
+    const w = started(testStage());
+    w.player.hp = 50;
+    const b = w.player.body;
+    w.drop('onigiri', b.x, b.y - 40, 0, 0);
+    run(w, 0.8);
+    expect(w.player.hp).toBe(80);
+    w.drop('fish', w.player.body.x, w.player.body.y - 40, 0, 0);
+    run(w, 0.8);
+    expect(w.player.hp).toBe(95);
+    w.drop('onigiri', w.player.body.x, w.player.body.y - 40, 0, 0);
+    run(w, 0.8);
+    expect(w.player.hp).toBe(MAX_HP);
+  });
+  it('掉進坑：扣血，從坑前的安全地面重來', () => {
     const w = started(testStage());
     w.skipTo(2800);
     for (let i = 0; i < 300 && !w.events.some((e) => e.type === 'fellInPit'); i++) w.update(DT, F({ right: true }));
     expect(w.events.some((e) => e.type === 'fellInPit')).toBe(true);
-    expect(w.player.hp).toBe(MAX_HP - 1);
+    expect(w.player.hp).toBe(MAX_HP - damageFor('pit'));
     expect(w.player.body.x).toBeLessThan(3000);
   });
 });

@@ -2,6 +2,7 @@
  * 09-26 獨立審查（docs/2026-09-26_獨立審查.md）修正的驗收測試：每一條修好的，都有一個會在「沒修之前」紅的測試。
  * 螢幕更新率那一條（高 1）在 tests/framerate.test.ts。
  */
+import { damageFor, MAX_HP } from '../src/damage';
 import { describe, expect, it } from 'vitest';
 import { createBot } from '../src/autopilot';
 import { ENEMY_DEFS } from '../src/enemies';
@@ -70,7 +71,7 @@ describe('高 3：第二階段的橘皮大王（全身是刺）', () => {
       const shots0 = w.shots.length;
       run(w, 0.02, F({ attackPressed: true, attackHeld: true }));
       run(w, 0.4);
-      expect(w.player.hp, `距離 ${d}`).toBe(3);
+      expect(w.player.hp, `距離 ${d}`).toBe(MAX_HP);
       expect(w.events.some((e) => e.type === 'claw'), `距離 ${d}`).toBe(false);
       expect(w.events.some((e) => e.type === 'fire') || w.shots.length > shots0, `距離 ${d}`).toBe(true);
     }
@@ -202,7 +203,7 @@ describe('低級修正', () => {
     const w = world({}, false);
     w.addMark(w.player.body.x + 45, 0.3);
     run(w, 1.5);
-    expect(w.player.hp).toBe(2);
+    expect(w.player.hp).toBe(MAX_HP - damageFor('explosion:missile'));
   });
   it('低 2：時間到扣一條命，再給 60 秒', () => {
     const w = world({}, false);

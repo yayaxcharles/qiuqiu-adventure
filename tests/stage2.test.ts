@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { damageFor, MAX_HP } from '../src/damage';
 import { P2_HP } from '../src/enemies';
 import { VIEW_W } from '../src/entities';
 import { NO_INPUT, type Frame } from '../src/input';
@@ -76,7 +77,7 @@ describe('第二關的敵人', () => {
     w.addBullet('gust', x0 + 100, 520, -1, 0, { w: 560, h: 300, life: 1, push: 420 });
     run(w, 0.8);
     expect(w.player.body.x).toBeLessThan(x0 - 200);
-    expect(w.player.hp).toBe(3);
+    expect(w.player.hp).toBe(MAX_HP);
   });
 });
 
@@ -87,7 +88,7 @@ describe('第二關的魔王', () => {
       const fg = w.spawn('frog_daimyo', w.player.body.x + 380, 596);
       fg.facing = -1; fg.state = 'tongueWind'; fg.t = 0; fg.group = 1000;
       run(w, 1.6, F({ down: duck }));
-      expect(w.player.hp).toBe(duck ? 3 : 2);
+      expect(w.player.hp < MAX_HP).toBe(!duck);
       if (!duck) expect(w.events.some((e) => e.type === 'grabbed')).toBe(true);
     }
   });

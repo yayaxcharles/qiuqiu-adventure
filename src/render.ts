@@ -14,7 +14,7 @@ import { ENEMY_DEFS, enemyBox, kingPackBox } from './enemies';
 import { fxDraw, loopFrame, type FxSet } from './fx2';
 import { laserBox, mouthOf, RAM_DIST } from './enemies3';
 import { HUD_BOTTOM, isGate, VIEW_H, VIEW_W, type Breakable, type Bullet, type Captive, type Enemy, type Particle, type Pickup, type Shot } from './entities';
-import { HURT_IFRAMES, SCALE, type Player } from './player';
+import { HURT_IFRAMES, MAX_HP, SCALE, type Player } from './player';
 import { drawFrame, type FrameDef } from './sprite';
 import { wallFaceX } from './physics';
 import type { DeckDef, PlatformDef, ZoneDef } from './stages/types';
@@ -102,6 +102,9 @@ export class Renderer {
 
   /** 這一格畫面經過的時間（環境小動畫用） */
   private frameDt = 0;
+  /** 血量條的白色殘影（剛被扣掉的那段）與殘影開始縮之前還要等幾秒 */
+  private hpTrail = MAX_HP;
+  private hpTrailWait = 0;
   /** 上方資訊欄現在的不透明度（底下有敵人時淡掉） */
   private hudA = 1;
   /** 這一段背景是紅橘色的（第二關夜祭）：敵人子彈的光暈改青白色 */
@@ -2239,13 +2242,20 @@ export class Renderer {
     const r1 = sp.y0 + 11, r2 = sp.y1 - 13;
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     fitFont(ctx, '球球', 17, 60); ctx.fillStyle = '#ffe9c4'; ctx.fillText('球球', sp.x0 + SAFE, r1);
-    for (let i = 0; i < 3; i++) {
-      // 血：貓掌圖（第三批美術），沒有就畫愛心
-      const paw = this.fx(i < p.hp ? 'paw_full' : 'paw_empty'), px = sp.x0 + SAFE + 54 + i * 26;
-      if (paw) fxDraw(ctx, paw, 0, px, r1, 22 / paw.w);
-      else heart(ctx, px, r1, 10, i < p.hp);
-    }
     const lives = `命 ×${Math.max(0, w.lives)}`;
+    // 血量條（2026-10-10 取代三個貓掌）：剛被扣掉的那段先留白、0.35 秒後再慢慢縮掉，看得出這一下扣多少
+    const hp = Math.max(0, p.hp), frac = hp / MAX_HP;
+    if (hp >= this.hpTrail) { this.hpTrail = hp; this.hpTrailWait = 0.35; }
+    else if ((this.hpTrailWait -= this.frameDt) <= 0) this.hpTrail = Math.max(hp, this.hpTrail - MAX_HP * 0.9 * this.frameDt);
+    const bx0 = sp.x0 + SAFE + 50, bx1 = sp.x1 - SAFE - 74, bh = 14, by = r1 - bh / 2, bw = bx1 - bx0;
+    ctx.fillStyle = '#2a140a'; ctx.fillRect(bx0 - 2, by - 2, bw + 4, bh + 4);
+    ctx.fillStyle = '#4a2a1a'; ctx.fillRect(bx0, by, bw, bh);
+    ctx.fillStyle = '#fff6e8'; ctx.fillRect(bx0, by, bw * Math.min(1, this.hpTrail / MAX_HP), bh);
+    ctx.fillStyle = frac > 0.5 ? '#7bd86a' : frac > 0.25 ? '#ffc94a' : (Math.sin(performance.now() / 90) > 0 ? '#ff5a4a' : '#d83a2e');
+    ctx.fillRect(bx0, by, bw * frac, bh);
+    ctx.fillStyle = 'rgba(255,255,255,0.28)'; ctx.fillRect(bx0, by, bw * frac, 4);
+    ctx.textAlign = 'center'; fitFont(ctx, '100', 13, 40); ctx.fillStyle = '#fff'; ctx.strokeStyle = '#2a140a'; ctx.lineWidth = 3;
+    ctx.strokeText(String(Math.ceil(hp)), bx0 + bw / 2, r1 + 1); ctx.fillText(String(Math.ceil(hp)), bx0 + bw / 2, r1 + 1);
     ctx.textAlign = 'right'; fitFont(ctx, lives, 17, 70); ctx.fillStyle = '#ffe9c4'; ctx.fillText(lives, sp.x1 - SAFE, r1);
     ctx.textAlign = 'left';
     const sc = String(w.score).padStart(8, '0');

@@ -12,10 +12,11 @@ import { Feel } from './feel';
 import { Animator, type AnimDefs } from './sprite';
 import { Arsenal, WEAPONS } from './weapons';
 import type { World } from './world';
+import { MAX_HP } from './damage';
 
 /** 動作圖 → 畫面：站直的球球在圖裡 240 像素高，畫面上約 190 像素 */
 export const SCALE = 190 / 240;
-export const MAX_HP = 3;
+export { MAX_HP };
 /** 被打之後無敵幾秒（一閃一閃） */
 export const HURT_IFRAMES = 1.2;
 /** 重生（接關、掉命）後無敵幾秒 */

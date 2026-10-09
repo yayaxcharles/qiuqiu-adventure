@@ -15,7 +15,8 @@ import { popAllClones, popClone } from './enemies2';
 import { arhatBlocks, splitCentipede } from './enemies3';
 import type { Frame } from './input';
 import { STEP_UP, type Climb, type Platform, type Solid, type World as PhysWorld } from './physics';
-import { CLAW, HAND, Player } from './player';
+import { CLAW, HAND, MAX_HP, Player } from './player';
+import { damageFor } from './damage';
 import { Animator, type AnimDefs } from './sprite';
 import type { PlatformDef, SpawnDef, StageDef } from './stages/types';
 import { Terrain } from './terrain';
@@ -77,6 +78,8 @@ export interface Mark { x: number; y: number; age: number; life: number }
 /** 瞭望台圖上瞭望平台的地板：離地 235、從中心往左 85 到往右 90（圖 563×842、顯示 0.5 倍，地板在第 372 列） */
 const TOWER_DECK = { up: 235, x0: -85, x1: 90 };
 const FOOD_SCORE: Record<string, number> = { fish: 500, onigiri: 300 };
+/** 吃了補多少血（2026-10-10 改血量條後，食物同時補血） */
+const FOOD_HEAL: Record<string, number> = { fish: 15, onigiri: 30 };
 /** 全身是刺（第二階段的橘皮大王）：爪子打不下去 */
 const spiky = (e: Enemy): boolean => e.kind === 'orange_king' && e.p2 && e.state !== 'die';
 
@@ -1235,7 +1238,10 @@ export class World {
     if (k.kind === 'fish' || k.kind === 'onigiri') {
       const n = FOOD_SCORE[k.kind] ?? 100;
       this.addScore(n);
+      const p = this.player, heal = Math.min(MAX_HP - p.hp, FOOD_HEAL[k.kind] ?? 0);
+      p.hp += heal;
       this.pop(k.x, k.y - 70, `${k.kind === 'fish' ? '魚乾' : '飯糰'} +${n}`, '#b6ff8a', 26);
+      if (heal > 0) { this.pop(p.body.x, p.body.y - 210, `血 +${heal}`, '#ff8fa3', 28); this.event('heal', { hp: p.hp, heal }); }
     } else if (k.kind === 'bomb' || k.kind === 'bigbomb' || k.kind === 'smoke') {
       a.pickSub(k.kind);
       this.banner(SUBS[k.kind].name.replace('！', '') + ` ＋${SUBS[k.kind].pickup}！`, '', 'weapon', 1.4);
@@ -1288,13 +1294,15 @@ export class World {
     return !this.god && this.state === 'play' && p.alive && p.invincible <= 0 && p.held <= 0 && !p.rollSafe();
   }
 
-  /** 扣一滴血；無敵中、開發用無敵、倒下中不算。回傳有沒有真的扣到 */
+  /** 扣血（扣多少看 damage.ts 的表）；無敵中、開發用無敵、倒下中不算。回傳有沒有真的扣到 */
   /** how：被什麼方式打到（body＝敵人身體碰到、harm＝敵人出招的判定；平衡報表分「揮爪中被碰到」用） */
   hurtPlayer(dir: 1 | -1, src = '', how = ''): boolean {
     const p = this.player;
     if (this.god || this.state !== 'play' || !p.alive || p.invincible > 0 || p.rollSafe()) return false;
-    p.hp -= 1;
-    this.event('playerHurt', { hp: p.hp, src, act: p.act, how });
+    const dmg = damageFor(src);
+    if (dmg <= 0) return false;
+    p.hp = Math.max(0, p.hp - dmg);
+    this.event('playerHurt', { hp: p.hp, src, act: p.act, how, dmg });
     this.hitstop = Math.max(this.hitstop, 0.08);
     this.shakeIt(0.2);
     if (p.hp <= 0) this.playerDown();
@@ -1339,13 +1347,14 @@ export class World {
 
   private checkPlayer(): void {
     const p = this.player;
-    // 掉進坑：扣一滴血，從最後的安全點重來
+    // 掉進坑：扣血（damage.ts 的 pit），從最後的安全點重來
     if (this.state === 'play' && p.body.y > VIEW_H + 90) {
       this.event('fellInPit', {});
       if (this.god) { this.respawn(false); return; }
-      p.hp -= 1;
+      const dmg = damageFor('pit');
+      p.hp = Math.max(0, p.hp - dmg);
       if (p.hp <= 0) { this.playerDown(); p.body.y = VIEW_H + 90; p.body.vy = 0; }
-      else { p.invincible = 0; this.respawn(false); p.invincible = 1.5; this.event('playerHurt', { hp: p.hp, pit: true }); }
+      else { p.invincible = 0; this.respawn(false); p.invincible = 1.5; this.event('playerHurt', { hp: p.hp, pit: true, src: 'pit', dmg }); }
     }
   }
 
