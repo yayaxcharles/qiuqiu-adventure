@@ -248,7 +248,9 @@ export class Renderer {
     this.amb.drawMidfar(ctx, w, cam, rMidfar);   // 遠層霧、風箏、飛艇、閃電劈屋脊、百鬼夜行、遠方鐵爪黑影
     if (has('mid')) {
       // 墊底：中景頂端的透明缺口後面先墊上方那一欄的底色（見 drawClimbBacking），破洞就不會是一塊方形天空
-      if (up > 0 && vs?.bg) drawClimbBacking(ctx, vs.bg, cam * rMid, up * V_RATE.mid, VIEW_W, vs.hold !== undefined && climbAligned(vs.bg, vs.hold * rMid, VIEW_W));
+      // 只墊「對齊的」攀爬段（第一關瀑布：那一欄照長卷頂往上畫，中景頂端的缺口才會剛好接在它的平直底邊下）。練習場那種沒對齊的，長卷頂上大片是透明天空，墊了會整片透出拉長的條紋（10-09 練習場截圖）
+      const aligned = !!vs?.bg && vs.hold !== undefined && climbAligned(vs.bg, vs.hold * rMid, VIEW_W);
+      if (up > 0 && vs?.bg && aligned) drawClimbBacking(ctx, vs.bg, cam * rMid, up * V_RATE.mid, VIEW_W, true);
       if (up > 0) this.drawLayerFaded(ctx, sp!.layers.mid, cam * rMid, up * V_RATE.mid, keep);
       else { ctx.save(); ctx.translate(0, up * V_RATE.mid); this.drawLayer(ctx, sp!.layers.mid, cam * rMid); ctx.restore(); }
     }

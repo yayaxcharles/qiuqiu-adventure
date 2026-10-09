@@ -10,7 +10,7 @@ import { assertLocal, loadPlaywright, newContext } from 'file:///F:/ClaudeWork/q
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'vids', '_record', 'seam1009');
 const PORT = 4418;
-const ST = Number(process.argv[2] ?? 1);
+const ST = process.argv[2] === 'practice' ? 'practice' : Number(process.argv[2] ?? 1);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 mkdirSync(OUT, { recursive: true });
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort', '--host', '127.0.0.1'], { cwd: ROOT, shell: true, windowsHide: true });
@@ -19,7 +19,7 @@ for (let i = 0; i < 80 && !/127\.0\.0\.1:\d+/.test(slog); i++) await sleep(250);
 await loadPlaywright();
 const s = await newContext('side', 'climbup' + ST);
 const { page } = s;
-const url = `http://127.0.0.1:${PORT}/?bot&god${ST > 1 ? `&stage=${ST}` : ''}`;
+const url = `http://127.0.0.1:${PORT}/?bot&god${ST === 'practice' ? '&stage=practice' : ST > 1 ? `&stage=${ST}` : ''}`;
 assertLocal(url);
 await page.goto(url);
 const shots = [];

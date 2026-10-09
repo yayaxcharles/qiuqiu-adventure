@@ -180,9 +180,22 @@ export function drawClimbBg(ctx: CanvasRenderingContext2D, bg: string, layer: 'f
     // 中景那一欄 1536 寬：畫在長卷上對應的位置；練習場這種長卷對不上的地方，夾在畫面裡（整片蓋住畫面寬）。
     // free＝關卡的攀爬段剛好停在這一欄底下（climbAligned）：照長卷一起捲，爬完往右走時這一欄跟著長卷往左移出去（旁邊露出最遠景的夜空）
     const x = free ? C.x - off : Math.min(0, Math.max(viewW - C.w, C.x - off));
+    // 沒對齊的（練習場）：這一欄平直的底邊直接壓在長卷的天空上，是一條硬邊 → 底部 COL_FADE 像素往下淡出（10-09 撕裂感）。
+    // 對齊的（第一關瀑布）照原樣畫：它的底邊本來就接著長卷頂端
+    const fade = !free ? colCtx(viewW, ctx.canvas.height || 720) : null;
+    const g0 = fade ?? ctx;
+    if (fade) fade.clearRect(0, 0, fade.canvas.width, fade.canvas.height);
     for (const p of C.pieces as { path: string; y: number; h: number }[]) {
       const im = img(p.path);
-      if (im) ctx.drawImage(im, x, topY + p.y, C.w, p.h);
+      if (im) g0.drawImage(im, x, topY + p.y, C.w, p.h);
+    }
+    if (fade) {
+      fade.globalCompositeOperation = 'destination-out';
+      const gr = fade.createLinearGradient(0, topY - COL_FADE, 0, topY);
+      gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,1)');
+      fade.fillStyle = gr; fade.fillRect(0, topY - COL_FADE, fade.canvas.width, COL_FADE + 2);
+      fade.globalCompositeOperation = 'source-over';
+      ctx.drawImage(fade.canvas, 0, 0);
     }
   }
   // 接縫：長卷頂上下蓋一條漸層霧
@@ -213,6 +226,17 @@ export function climbAligned(bg: string, holdOff: number, viewW: number): boolea
   if (!C) return false;
   const x = C.x - holdOff;
   return x <= 1 && x >= viewW - C.w - 1;
+}
+
+/** 沒對齊的那一欄底部淡出多高（像素） */
+const COL_FADE = 140;
+let colCanvas: HTMLCanvasElement | null = null;
+/** 那一欄先畫在這張暫存畫布上，底部淡出後再貼回主畫面 */
+function colCtx(w: number, h: number): CanvasRenderingContext2D | null {
+  if (typeof document === 'undefined') return null;
+  const c = colCanvas ?? (colCanvas = document.createElement('canvas'));
+  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+  return c.getContext('2d');
 }
 
 /**
