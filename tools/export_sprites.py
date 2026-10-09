@@ -50,10 +50,20 @@ SPEC = {
     # 09-26 晚上追加：跑步中甩手丟（第 27、60 格各甩一次，取中間一圈循環）、蹲著低位丟（取第一次甩出）
     "跑丟": dict(video="跑丟_v1.mp4", ref="center", t=(1.0, 2.4), loop=(32, 34), anchor="fixed", solo=True, marks={"release": 27 / 24}),
     "蹲丟": dict(video="蹲丟_v1.mp4", ref="crouch", t=(0.75, 2.5), anchor="fixed", solo=True, marks={"release": 27 / 24}),
+    # 10-09 角色手感：09-28 用 Flow Omni 生好、一直沒接進遊戲的五支（vids/flow/大冒險/球球/，4 秒 24 格，參考圖置中）
+    "空翻": dict(video="flow/大冒險/球球/二段跳空翻_omni_v1.mp4", ref="center", t=(23 / 24, 37 / 24), anchor="fixed", solo=True),
+    "下落": dict(video="flow/大冒險/球球/二段跳空翻_omni_v1.mp4", ref="center", t=(60 / 24, 95 / 24), loop=(12, 30), anchor="fixed", solo=True),
+    "攀爬": dict(video="flow/大冒險/球球/攀爬_omni_v1.mp4", ref="center", t=(16 / 24, 95 / 24), loop=(18, 36), anchor="fixed", solo=True),
+    "貼牆": dict(video="flow/大冒險/球球/貼牆下滑_omni_v1.mp4", ref="center", t=(24 / 24, 95 / 24), loop=(16, 40), anchor="fixed", solo=True),
+    "翻滾": dict(video="flow/大冒險/球球/翻滾_omni_v1.mp4", ref="center", t=(28 / 24, 56 / 24), anchor="fixed", solo=True),
+    # 10-09 Vids 新生：蹬牆跳（vids/clips_v3/，原片第 17～40 格＝蹲低蹬出去、拉直往右上飛；之後落地帶塵土不取）
+    "蹬牆": dict(video="clips_v3/vids_wallkick_v1.mp4", ref="center", t=(17 / 24, 40 / 24), anchor="fixed", solo=True),
+    "斜上投": dict(video="flow/大冒險/球球/站著斜上丟_omni_v2.mp4", ref="center", t=(4 / 24, 48 / 24), anchor="fixed", solo=True, marks={"release": 16 / 24}),
 }
 NAME_EN = {"待機": "idle", "跑步": "run", "揮爪": "claw", "丟手裏劍": "throw_baked", "前投": "throw", "上投": "throwup", "走路": "walk", "跳躍": "jump",
            "蹲下": "crouch", "蹲走": "crouchwalk", "衝刺": "dash", "空中丟": "airthrow", "受傷": "hurt", "倒下": "down",
-           "跑丟": "runthrow", "蹲丟": "crouchthrow"}
+           "跑丟": "runthrow", "蹲丟": "crouchthrow",
+           "空翻": "airflip", "下落": "fall", "攀爬": "climb", "貼牆": "wallslide", "翻滾": "roll", "斜上投": "throwdiag", "蹬牆": "wallkick"}
 
 
 def frames_of(video: Path, t0: float, t1: float, tag: str = ""):

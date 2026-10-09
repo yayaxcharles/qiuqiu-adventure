@@ -15,7 +15,7 @@ const PRACTICE = process.argv.includes('practice');   // 動作練習場（第�
 const STAGE = PRACTICE ? 0 : Number(process.argv.find((a) => /^\d+$/.test(a)) ?? 1);
 const GOD = process.argv.includes('--god');
 const PORT = 4399;
-const URL = `http://127.0.0.1:${PORT}/?bot${PRACTICE ? '&stage=practice' : STAGE > 1 ? `&stage=${STAGE}` : ''}${GOD ? '&god' : ''}`;
+const URL = `http://127.0.0.1:${PORT}/?bot${PRACTICE ? '&stage=practice' : STAGE > 1 ? `&stage=${STAGE}` : ''}${GOD ? '&god' : ''}${process.env.REC_QUERY ?? ''}`;   // REC_QUERY：多加的網址參數（例 &feel=old 錄改版前的手感對照，10-09）
 const OUT = process.env.REC_OUT ? resolve(process.env.REC_OUT) : join(ROOT, 'vids', '_record');
 const stamp = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '');
 const FILE = join(OUT, `${PRACTICE ? 'practice' : 'stage' + STAGE}_${stamp}.webm`);

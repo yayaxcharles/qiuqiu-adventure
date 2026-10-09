@@ -5,6 +5,7 @@ import { Game } from './game';
 import { darkOf, HIT_RIM, NINJA_RIM, SIL_FILTER, WARN_RIM } from './render';
 import { attachInput, consume, heldOnly, NO_INPUT, setDevKeys, type Frame } from './input';
 import { attachTouch, isTouchDevice } from './touch';
+import { feelEnabledFromUrl, feelSwitch } from './feel';
 import { SCALE } from './player';
 import { bootStats, drawFrame, loadFrameSlow } from './sprite';
 import { PRACTICE, STAGES } from './stages';
@@ -107,6 +108,9 @@ async function main(): Promise<void> {
   (window as unknown as { __qq: typeof debug; __game: Game }).__qq = debug;
   (window as unknown as { __game: Game }).__game = game;
   attachInput();
+  // 角色手感（feel.ts）：網址 ?feel=old 關掉；F8 隨時切換新舊版比較（2026-10-09）
+  feelSwitch.on = feelEnabledFromUrl(location.search);
+  window.addEventListener('keydown', (e) => { if (e.code === 'F8') { e.preventDefault(); feelSwitch.on = !feelSwitch.on; console.info(`手感：${feelSwitch.on ? '新版' : '改版前'}`); } });
   attachTouch(canvas, () => game.screen);   // 手機：觸控按鈕（只在觸控裝置出現）
   /*
    * 每一格畫面都照「實際經過的時間」往前推，切成不超過 1/120 秒的小步（2026-09-25 使用者：「動作不流暢」）。

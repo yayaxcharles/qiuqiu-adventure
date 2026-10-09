@@ -8,6 +8,7 @@
 import type { Aim, Box } from './entities';
 import type { Frame } from './input';
 import { findClimb, grabClimb, PARAMS, newBody, releaseClimb, stepBody, stepClimb, type Body, type Ctrl, type Params } from './physics';
+import { Feel } from './feel';
 import { Animator, type AnimDefs } from './sprite';
 import { Arsenal, WEAPONS } from './weapons';
 import type { World } from './world';
@@ -62,13 +63,18 @@ const STILL: Ctrl = { left: false, right: false, jumpHeld: false, jumpPressed: f
 type Act = 'move' | 'land' | 'claw' | 'throw' | 'dash' | 'roll' | 'hurt' | 'down' | 'climb';
 
 /**
- * 第二版階段二的新動作，動作圖還沒生（docs/2026-09-28_待生Vids片段.md），先借現有的動作暫代：
- *   二段跳、蹬牆跳：跳躍（jump）從離地那格重播上升段
- *   貼牆下滑：跳躍的下落段停在 WALL_FRAME 那一格
- *   攀爬：朝上丟（throwup）手舉直的那幾格（出手後 CLIMB_FRAMES），爬的時候來回播、停著就停在第一格
+ * 第二版階段二的新動作（2026-10-09 起改用 09-28 Flow 生好的專屬動作，anims.json 沒有時才退回下面的暫代）：
+ *   二段跳、蹬牆跳：空翻（airflip），翻完接下落循環（fall）；蹬牆跳另有 wallkick（10-09 Vids 新生）
+ *   貼牆下滑：wallslide 循環（暫代：跳躍的下落段停在 WALL_FRAME 那一格）
+ *   攀爬：climb 循環，停著就停在當格（暫代：朝上丟 throwup 手舉直的那幾格來回播）
+ *   長距離下落：跳躍的下落段播完還在掉，就接 fall 循環（原本停在下落段最後一格不動）
  */
 const WALL_FRAME = 40;
 const CLIMB_FRAMES = [4, 11] as const;
+/** 空翻一圈要幾秒（影片 14 格約 0.58 秒，遊戲裡二段跳要快） */
+const AIRFLIP_TIME = 0.32;
+/** 蹬牆跳：蹲低蹬出去到身體拉直要幾秒（10-09 Vids 新生的 wallkick） */
+const WALLKICK_TIME = 0.3;
 /** 落下速度超過這個算重落地（音效用） */
 const HEAVY_LAND = 1150;
 
@@ -97,14 +103,16 @@ export class Player {
   /** 跑步中丟：還要播「跑丟」幾秒（之後回到一般的跑步） */
   runThrowT = 0;
   subCd = 0;
-  /** 二段跳、蹬牆跳剛發生：下一次挑空中動作時從起跳重播 */
-  relaunch = false;
+  /** 二段跳（air）、蹬牆跳（wall）剛發生：下一次挑空中動作時換成空翻／蹬牆 */
+  relaunch: false | 'air' | 'wall' = false;
   /** 上一次站在安全地面的位置（掉坑後從這裡重來） */
   safeX: number;
   /** 最後一次朝哪個方向丟（畫面用） */
   lastAim: Aim = 'fwd';
   /** 倒下動作沒有圖時，程式把站姿慢慢放倒（0～1） */
   downT = 0;
+  /** 畫的時候加的彈性（起跳拉長、落地壓扁、跑步前傾、轉身壓窄），見 feel.ts */
+  feel = new Feel();
 
   constructor(defs: AnimDefs, x: number, y: number) {
     this.body = newBody(x, y);
@@ -150,11 +158,12 @@ export class Player {
     if (this.act === 'down') {
       this.downT = Math.min(1, this.downT + dt * 2.5);
       stepBody(b, STILL, dt, w.physWorld());
+      this.feelStep(dt, 0, false, false, 0);
       return;
     }
 
     // 攀爬中：只管上下爬、跳開（不能出招）；被打由 hurt() 放手
-    if (this.act === 'climb') { this.climbStep(dt, f, w); return; }
+    if (this.act === 'climb') { this.climbStep(dt, f, w); this.feelStep(dt, 0, false, false, 0); return; }
 
     // 2. 按鍵：攻擊（近身揮爪／丟忍具）、副武器、衝刺；收招可以取消的時候，按方向或跳就回到移動
     const canAct = this.act === 'move' || this.act === 'land' || this.cancellable();
@@ -198,7 +207,7 @@ export class Player {
       if (this.act === 'land' || (this.act === 'throw' && this.cancellable())) this.act = 'move';
       w.dust(b.x + (wallJumped ? -b.facing * 24 : 0), b.y - (wallJumped ? 60 : 0), 5, wallJumped ? b.facing : 0);
       w.event(wallJumped ? 'wallKick' : 'airJump', {});
-      this.relaunch = true;
+      this.relaunch = wallJumped ? 'wall' : 'air';
     }
     if (this.act === 'roll') {
       // 滾出平台邊緣：照速度飛出去、變成往下掉；撞到牆：停在牆前、提早結束
@@ -217,6 +226,14 @@ export class Player {
 
     // 4. 沒在出招：照按鍵與物理挑動作
     if (this.act === 'move') this.pickMove(dir, f);
+    this.feelStep(dt, dir, jumped || airJumped || wallJumped, landed, fallSpeed);
+  }
+
+  /** 手感變形往前推一格（feel.ts）；翻滾、空翻、攀爬、貼牆、出招、被打的時候不加傾斜與轉身壓窄 */
+  private feelStep(dt: number, dir: number, jumped: boolean, landed: boolean, fallSpeed: number): void {
+    const b = this.body, n = this.anim.name;
+    const calm = (this.act !== 'move' && this.act !== 'land') || b.sliding || n === 'airflip' || n === 'wallkick' || n === 'roll' || n === 'climb' || n === 'wallslide';
+    this.feel.update({ dt, onGround: b.onGround, vx: b.vx, vy: b.vy, facing: b.facing, runSpeed: PARAMS.runSpeed, dir, jumped, landed, fallSpeed, calm });
   }
 
   /** x 前後 r 像素內每 20 像素都有地面（沒有坑） */
@@ -277,8 +294,9 @@ export class Player {
       an.play('crouchthrow', { restart: true, from: Math.max(0, rel - 1), rate: THROW.rate, onEnd: () => { if (this.act === 'throw') this.act = 'move'; } });
       return;
     }
-    // 斜上：還沒有斜丟動作圖，暫用朝上丟（throwup）代替（docs/2026-09-28_待生Vids片段.md）
-    const name = (aim === 'up' || aim === 'diag') && an.has('throwup') ? 'throwup' : !b.onGround && an.has('airthrow') ? 'airthrow' : 'throw';
+    // 斜上：有斜上投（throwdiag，10-09 接上）就用它，站著與空中共用；沒有就退回朝上丟
+    const name = aim === 'diag' && an.has('throwdiag') ? 'throwdiag'
+      : (aim === 'up' || aim === 'diag') && an.has('throwup') ? 'throwup' : !b.onGround && an.has('airthrow') ? 'airthrow' : 'throw';
     if (!an.has(name)) return;
     const d = an.defs[name]!, rel = d.markers.release ?? 0;
     this.act = 'throw'; this.airThrow = !b.onGround;
@@ -361,8 +379,14 @@ export class Player {
     this.act = 'roll'; this.rollT = 0;
     this.dashCd = ROLL.time + ROLL.cooldown;
     b.vx = b.facing * ROLL.speed;
-    const d = an.defs.dash!, go = d.markers.go ?? 0, stop = d.markers.stop ?? d.frames.length - 1;
-    an.play('dash', { restart: true, from: go, to: stop, rate: (stop - go) / d.fps / ROLL.time });
+    if (an.has('roll')) {
+      // 專屬翻滾動作（10-09 接上）：整段照翻滾時間播完
+      const r = an.defs.roll!;
+      an.play('roll', { restart: true, rate: r.frames.length / r.fps / ROLL.time });
+    } else {
+      const d = an.defs.dash!, go = d.markers.go ?? 0, stop = d.markers.stop ?? d.frames.length - 1;
+      an.play('dash', { restart: true, from: go, to: stop, rate: (stop - go) / d.fps / ROLL.time });
+    }
     w.dust(b.x, b.y, 6, -b.facing);
     w.event('roll', {});
   }
@@ -378,7 +402,7 @@ export class Player {
   private climbStep(dt: number, f: Frame, w: World): void {
     const b = this.body;
     const r = stepClimb(b, { up: f.up, down: f.down, left: f.left, right: f.right, jumpPressed: f.jumpPressed }, dt, w.physWorld());
-    if (r.jumped) { this.act = 'move'; this.relaunch = true; w.event('jump', { from: 'climb' }); w.dust(b.x, b.y - 40, 4, -b.facing); this.pickMove(0, f); return; }
+    if (r.jumped) { this.act = 'move'; this.relaunch = 'air'; w.event('jump', { from: 'climb' }); w.dust(b.x, b.y - 40, 4, -b.facing); this.pickMove(0, f); return; }
     if (r.topped) { this.act = 'move'; w.event('climbTop', {}); this.pickMove(0, f); return; }
     if (b.climb < 0) { this.act = 'move'; this.pickMove(0, f); return; }
     this.climbAnim(r.moving);
@@ -388,6 +412,11 @@ export class Player {
   /** 攀爬暫代動作：朝上丟手舉直那幾格（沒有朝上丟就用跳躍最高點那格） */
   private climbAnim(moving: boolean): void {
     const an = this.anim;
+    if (an.has('climb')) {
+      an.play('climb');
+      an.rate = moving ? 1 : 0;
+      return;
+    }
     if (an.has('throwup')) {
       const rel = an.defs.throwup!.markers.release ?? 15, a = rel + CLIMB_FRAMES[0], z = rel + CLIMB_FRAMES[1];
       if (an.name !== 'throwup' || an.pos < a || an.pos > z) an.play('throwup', { from: a, to: z, restart: true, rate: 0.8 });
@@ -423,10 +452,28 @@ export class Player {
     const b = this.body, an = this.anim;
     if (!an.has('jump')) { an.play(AIR_FALLBACK.anim, { from: AIR_FALLBACK.frame, to: AIR_FALLBACK.frame }); return; }
     const { takeoff, apex, land } = this.jumpMarks();
-    // 二段跳、蹬牆跳：上升段從頭再播一次（暫代，見檔頭 WALL_FRAME 那段）
-    if (this.relaunch) { this.relaunch = false; an.play('jump', { from: takeoff, to: apex - 1, restart: true }); }
-    // 貼牆下滑：停在下落段的一格
-    if (b.sliding) { const k = Math.min(land - 1, Math.max(apex, WALL_FRAME)); an.play('jump', { from: k, to: k, rate: 1 }); return; }
+    // 二段跳、蹬牆跳：空翻一圈（沒有空翻就把上升段從頭再播一次，見檔頭 WALL_FRAME 那段）
+    if (this.relaunch) {
+      const kind = this.relaunch === 'wall' && an.has('wallkick') ? 'wallkick' : an.has('airflip') ? 'airflip' : '';
+      this.relaunch = false;
+      if (kind) { const d = an.defs[kind]!; an.play(kind, { restart: true, rate: d.frames.length / d.fps / (kind === 'wallkick' ? WALLKICK_TIME : AIRFLIP_TIME) }); }
+      else an.play('jump', { from: takeoff, to: apex - 1, restart: true });
+    }
+    // 貼牆下滑：有循環就播循環，沒有就停在下落段的一格
+    if (b.sliding) {
+      if (an.has('wallslide')) { an.play('wallslide', { rate: 1 }); return; }
+      const k = Math.min(land - 1, Math.max(apex, WALL_FRAME)); an.play('jump', { from: k, to: k, rate: 1 }); return;
+    }
+    // 空翻還沒翻完：翻完為止；翻完了還在往上，就停在最後一格（張開的姿勢）等開始掉
+    if ((an.name === 'airflip' || an.name === 'wallkick') && (!an.done || b.vy < 0)) return;
+    // 往下掉：空翻接下落循環（同一支影片翻完的姿勢，接得上）；跳躍的下落段播完還在掉，也接下落循環
+    if (b.vy >= 0 && an.has('fall')) {
+      if (an.name === 'fall') return;
+      if (an.name === 'airflip' || an.name === 'wallkick' || an.name === 'wallslide' || an.name === 'climb') { an.play('fall', { rate: 1 }); return; }
+      if (an.name === 'jump' && an.pos >= apex) { if (an.done) an.play('fall', { rate: 1 }); return; }
+      an.play('jump', { from: apex, to: land - 1, rate: 1 });
+      return;
+    }
     if (b.vy < 0) {
       // 上升段剛好在最高點播完：剩幾格 ÷ 還要升幾秒
       an.play('jump', { from: takeoff, to: apex - 1 });
@@ -482,6 +529,7 @@ export class Player {
     this.act = 'move'; this.queued = null; this.downT = 0;
     this.invincible = RESPAWN_IFRAMES;
     this.dropping = true;
+    this.feel.reset();
     this.anim.play('idle', { restart: true });
   }
 }

@@ -1694,6 +1694,11 @@ export class Renderer {
       // 沒有倒下動作：把這一格慢慢放倒
       ctx.translate(b.x - cam, b.y); ctx.rotate(-b.facing * p.downT * 1.35); ctx.translate(-(b.x - cam), -b.y);
     }
+    // 手感變形（feel.ts）：以腳底為中心拉長／壓扁、前傾、轉身壓窄；關掉時三個值都是 1、1、0
+    const fl = p.feel;
+    if (fl.scaleX !== 1 || fl.scaleY !== 1 || fl.lean !== 0) {
+      ctx.translate(b.x - cam, b.y); ctx.rotate(b.facing * fl.lean); ctx.scale(fl.scaleX, fl.scaleY); ctx.translate(-(b.x - cam), -b.y);
+    }
     drawFrame(ctx, img, fr, b.x - cam, b.y, b.facing, SCALE / (this.a.sprites.shrink ?? 1));   // 圖已縮成畫面大小（shrink）
     ctx.restore();
   }
