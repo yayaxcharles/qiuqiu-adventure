@@ -137,6 +137,26 @@ export function wallContact(b: Body, w: World, p: Params = PARAMS): -1 | 0 | 1 {
   return 0;
 }
 
+/**
+ * 貼著的那面牆的牆面在哪（x）：給畫面用（2026-10-09 貼牆下滑時手掌插進牆裡）。d＝牆在哪一邊。
+ * 實心方塊取側面；地形落差從身體往牆那邊一像素一像素找，第一個「地面高過腰」的位置。找不到回 null。
+ */
+export function wallFaceX(b: Body, w: World, d: -1 | 1): number | null {
+  for (const s of w.solids ?? []) {
+    if (!(b.y - BODY_H < s.y + s.h && b.y > s.y + 20)) continue;
+    const face = d > 0 ? s.x : s.x + s.w;
+    const gap = d > 0 ? face - (b.x + BODY_HW) : (b.x - BODY_HW) - face;
+    if (gap >= -1 && gap <= 4) return face;
+  }
+  if (w.groundAt) {
+    for (let k = 0; k <= 40; k++) {
+      const g = w.groundAt(b.x + d * k);
+      if (Number.isFinite(g) && g < b.y - 60) return b.x + d * k;
+    }
+  }
+  return null;
+}
+
 export interface StepResult { jumped: boolean; landed: boolean; airJumped: boolean; wallJumped: boolean; bumped: boolean; fallSpeed: number }
 
 /** 走一步；回傳這一步有沒有起跳、落地、二段跳、蹬牆跳、撞頭（fallSpeed＝落地那一下的下落速度） */

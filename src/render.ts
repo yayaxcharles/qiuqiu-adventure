@@ -16,6 +16,7 @@ import { laserBox, mouthOf, RAM_DIST } from './enemies3';
 import { HUD_BOTTOM, isGate, VIEW_H, VIEW_W, type Breakable, type Bullet, type Captive, type Enemy, type Particle, type Pickup, type Shot } from './entities';
 import { HURT_IFRAMES, SCALE, type Player } from './player';
 import { drawFrame, type FrameDef } from './sprite';
+import { wallFaceX } from './physics';
 import type { DeckDef, PlatformDef, ZoneDef } from './stages/types';
 import { SUB_ORDER, SUBS, WEAPONS } from './weapons';
 import { TIP_TIME, type World } from './world';
@@ -165,6 +166,7 @@ export class Renderer {
 
     // 球球（照動作圖基準點畫，跟其他東西用同一個鏡頭小數座標）
     ctx.save(); ctx.translate(0, -camY);
+    this.curWorld = w;
     this.drawPlayer(ctx, w.player, cam);
     ctx.restore();
 
@@ -1684,6 +1686,10 @@ export class Renderer {
     ctx.beginPath(); ctx.ellipse(b.x, g + 2, 42 * (1 - lift * 0.5), 8 * (1 - lift * 0.5), 0, 0, Math.PI * 2); ctx.fill();
   }
 
+  /** 畫球球時要查牆面用的物理世界（render 每格從 game 帶進來的 world） */
+  private wallWorld(_p: Player): ReturnType<World['physWorld']> { return this.curWorld!.physWorld(); }
+  private curWorld: World | null = null;
+
   /** 上一次畫的是哪個動作第幾格（檢查腳底、換動作有沒有空白用） */
   lastDraw = { name: '', frame: -1, serial: 0, ok: false };
 
@@ -1706,8 +1712,16 @@ export class Renderer {
     }
     // 攀爬（2026-10-09 使用者：「球球在攀爬時穿模了」）：攀爬動作是側身、手往前伸抓，身體中心卻對齊梯子／藤蔓中心，
     // 身體前半截塞進旁邊的木牆。畫的時候往背後挪 CLIMB_DX，手剛好抓在梯子上、身體留在外側（物理位置不動）
-    const dx = p.act === 'climb' && an.name === 'climb' ? -b.facing * CLIMB_DX : 0;
-    drawFrame(ctx, img, fr, b.x - cam + dx, b.y, b.facing, SCALE / (this.a.sprites.shrink ?? 1));   // 圖已縮成畫面大小（shrink）
+    let dx = p.act === 'climb' && an.name === 'climb' ? -b.facing * CLIMB_DX : 0;
+    // 貼牆下滑（10-09）：判定框半寬 22，動作圖的手掌卻伸到身體前方 80 像素，等於插進牆裡將近 60 像素。
+    // 找出牆面實際在哪，把整張往後挪到手掌剛好貼著牆面（物理位置不動）
+    const sc = SCALE / (this.a.sprites.shrink ?? 1);
+    if (an.name === 'wallslide' && b.sliding && fr.k) {
+      const side = (b.wall || b.wallSide || b.facing) as 1 | -1;
+      const face = wallFaceX(b, this.wallWorld(p), side);
+      if (face !== null) dx = face - (b.x + side * (fr.k[2] - fr.k[4]) * sc) + side * 2;
+    }
+    drawFrame(ctx, img, fr, b.x - cam + dx, b.y, b.facing, sc);   // 圖已縮成畫面大小（shrink）
     ctx.restore();
   }
 
