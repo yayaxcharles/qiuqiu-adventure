@@ -340,6 +340,22 @@ export function stepClimb(b: Body, c: ClimbCtrl, dt: number, w: World, p: Params
 }
 
 /** 從 x0 往 x1 走，找到撞牆的位置（地面突然比腳高出 STEP_UP 的那一點），停在牆前 */
+/**
+ * 從旁邊把身體推到 nx（被敵人撞開、被風吹、被吸過去）：碰到地形的牆、方塊的側面就停在面前，不會被推進去。
+ * 2026-10-10：撞開改成直接設位置之後，球球被老鼠推進第一關瀑布段的岩塊裡（手裏劍一丟就打到岩塊，卡關）
+ */
+export function shoveTo(b: Body, nx: number, w: World): number {
+  if (nx === b.x) return nx;
+  let x = nx;
+  if (groundOf(w, x) < b.y - STEP_UP) x = wallStop((gx) => groundOf(w, gx), b.x, x, b.y);
+  for (const s of w.solids ?? []) {
+    if (!(b.y > s.y + 0.5 && b.y - BODY_H < s.y + s.h)) continue;
+    if (x > b.x && b.x + BODY_HW <= s.x + 0.5 && x + BODY_HW > s.x) x = s.x - BODY_HW;
+    else if (x < b.x && b.x - BODY_HW >= s.x + s.w - 0.5 && x - BODY_HW < s.x + s.w) x = s.x + s.w + BODY_HW;
+  }
+  return x;
+}
+
 function wallStop(groundAt: (x: number) => number, x0: number, x1: number, feet: number): number {
   let ok = x0, bad = x1;
   for (let i = 0; i < 14; i++) {

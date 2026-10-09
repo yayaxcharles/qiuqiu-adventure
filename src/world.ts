@@ -14,7 +14,7 @@ import { animateEnemy } from './enemyAnim';
 import { popAllClones, popClone } from './enemies2';
 import { arhatBlocks, splitCentipede } from './enemies3';
 import type { Frame } from './input';
-import { STEP_UP, type Climb, type Platform, type Solid, type World as PhysWorld } from './physics';
+import { shoveTo, STEP_UP, type Climb, type Platform, type Solid, type World as PhysWorld } from './physics';
 import { CLAW, HAND, MAX_HP, Player } from './player';
 import { damageFor } from './damage';
 import { Animator, type AnimDefs } from './sprite';
@@ -1272,7 +1272,7 @@ export class World {
       if (b.push) {
         // 天狗的風：不傷人，把球球往風吹的方向推（跑步 340，風 420：頂著風跑會慢慢往後退）
         const dir = Math.sign(b.vx) || 1;
-        p.body.x = Math.max(this.camX + 36, Math.min(this.camX + VIEW_W - 36, p.body.x + dir * b.push * dt));
+        p.body.x = shoveTo(p.body, Math.max(this.camX + 36, Math.min(this.camX + VIEW_W - 36, p.body.x + dir * b.push * dt)), this.physWorld());
         if (Math.random() < dt * 36) this.fx({ kind: 'puff', x: p.body.x - dir * 30, y: p.body.y - 20, vx: dir * 200, vy: -30, life: 0.3, r: 6, color: '#e8f4ff' });
         continue;
       }
@@ -1290,7 +1290,7 @@ export class World {
         // 吸塵（suck）不推：球球被吸到吸口邊，接著由吸塵的招式決定怎麼處理
         const eb = enemyBox(e), side = p.body.x < e.x ? -1 : 1;
         const depth = side < 0 ? pb.x1 - eb.x0 : eb.x1 - pb.x0;
-        p.body.x = Math.max(this.camX + 36, Math.min(this.camX + VIEW_W - 36, p.body.x + side * Math.min(depth, 960 * dt)));
+        p.body.x = shoveTo(p.body, Math.max(this.camX + 36, Math.min(this.camX + VIEW_W - 36, p.body.x + side * Math.min(depth, 960 * dt))), this.physWorld());
       }
     }
     // 碰到被綁的村貓就放了牠

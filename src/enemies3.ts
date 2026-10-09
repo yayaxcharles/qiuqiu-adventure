@@ -18,6 +18,7 @@
 import { ballistic, bossDie, ENEMY_DEFS, enemyBox, faceTo, fallStep, idleActivity, pick, rnd, setState, walkOn } from './enemies';
 import { phaseUp } from './enemies2';
 import type { Box, Enemy, Shot, ShotKind } from './entities';
+import { shoveTo } from './physics';
 import type { World } from './world';
 
 export function updateStage3(e: Enemy, w: World, dt: number): void {
@@ -83,7 +84,7 @@ function suck(e: Enemy, w: World, dt: number, range: number, pull: number): numb
   const pd = (b.x - m.x) * e.facing;
   if (pull > 0 && p.alive && w.state === 'play' && pd > -20 && pd < range && Math.abs(b.y - e.y) < 220) {
     const k = pull * (1.15 - 0.5 * pd / range);
-    b.x = Math.max(w.camX + 36, Math.min(w.camX + 1280 - 36, b.x - e.facing * k * dt));
+    b.x = shoveTo(b, Math.max(w.camX + 36, Math.min(w.camX + 1280 - 36, b.x - e.facing * k * dt)), w.physWorld());
   }
   // 風線、灰塵往吸口飛
   if (Math.random() < dt * 40) {

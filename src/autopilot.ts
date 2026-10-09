@@ -6,7 +6,7 @@
  */
 import { ENEMY_DEFS, enemyBox } from './enemies';
 import { RAM_DIST } from './enemies3';
-import { isGate } from './entities';
+import { isGate, VIEW_W } from './entities';
 import type { Game } from './game';
 import { NO_INPUT, type Frame } from './input';
 import { BODY_HW, STEP_UP } from './physics';
@@ -190,7 +190,8 @@ export function createBot(): (g: Game, dt: number) => Frame {
       const st = w.ventState(v), hot = st.on || st.warn;
       const d = (v.x - px) * (move || 1);
       if (!hot) continue;
-      if (Math.abs(v.x - px) < 64) move = px < v.x ? -1 : 1;
+      // 往外走；那一邊是畫面邊（魔王場地的牆）就往另一邊走（10-10：被夾在牆角的噴口上一直燙）
+      if (Math.abs(v.x - px) < 64) { const out = px < v.x ? -1 : 1, edge = out > 0 ? px > w.camX + VIEW_W - 90 : px < w.camX + 90; move = edge ? -out : out; }
       else if (d > 0 && d < 150) move = 0;
     }
 
