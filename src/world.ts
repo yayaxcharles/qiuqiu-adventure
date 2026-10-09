@@ -1276,9 +1276,10 @@ export class World {
     for (const e of this.enemies) {
       if (e.dying > 0 || e.dead) continue;
       if (e.harm && overlap(pb, e.harm)) this.hurtPlayer(e.x < p.body.x ? 1 : -1, `${e.kind}:${e.state}`, 'harm');
-      else if (e.bodyHarm && overlap(pb, enemyBox(e))) { if (!p.clawGuard()) this.hurtPlayer(e.x < p.body.x ? 1 : -1, `${e.kind}:${e.state}`, 'body'); }
-      else if (e.boss && e.state !== 'die' && p.act !== 'roll' && p.body.y > e.y - 100 && overlap(pb, enemyBox(e))) {
-        // 魔王站著、走路：碰到只會被推開（不扣血）
+      else if ((e.boss || e.bodyHarm) && e.state !== 'die' && e.state !== 'suck' && p.act !== 'roll' && p.body.y > e.y - 100 && overlap(pb, enemyBox(e))) {
+        // 碰到敵人身體一律不扣血、只會被推開（2026-10-10 使用者：「碰到敵人就扣血這設定不行，要敵人丟出東西才扣血」）。
+        // 魔王隨時會推；小怪只有在衝撞、撲下來這類「身體在出招」的時候推（bodyHarm），平常走路擦身而過不管。
+        // 吸塵（suck）不推：球球被吸到吸口邊，接著由吸塵的招式決定怎麼處理
         const eb = enemyBox(e), side = p.body.x < e.x ? -1 : 1;
         const depth = side < 0 ? pb.x1 - eb.x0 : eb.x1 - pb.x0;
         p.body.x = Math.max(this.camX + 36, Math.min(this.camX + VIEW_W - 36, p.body.x + side * Math.min(depth, 960 * dt)));
