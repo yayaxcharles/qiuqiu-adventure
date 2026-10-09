@@ -1,0 +1,2308 @@
+{
+ "_說明": "第二版地形美術（tools/gen_v2_terrain.py 生、tools/post_v2_terrain.py 後製）。格式跟 public/art/terrain.json 一樣（座標一律圖片像素、左上角 0,0；displayScale＝顯示時乘多少；standY＝腳踩的線），新格式見 post_v2_terrain.py 檔頭。模擬畫面在 art_raw/v2/_check/。",
+ "ground": {
+  "s1_terrace": {
+   "path": "v2/terrain/ground_s1_terrace.webp",
+   "w": 976,
+   "h": 300,
+   "standY": 29,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.484,
+   "seam": 0.98,
+   "bottomColor": "#0f0804",
+   "source": "ground_s1_terrace.try1.png",
+   "use": "第一關·梯田坡道土路：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s1_rock": {
+   "path": "v2/terrain/ground_s1_rock.webp",
+   "w": 976,
+   "h": 268,
+   "standY": 22,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.699,
+   "seam": 0.91,
+   "bottomColor": "#05080f",
+   "source": "ground_s1_rock.try1.png",
+   "use": "第一關·山溪瀑布濕岩：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s1_trail": {
+   "path": "v2/terrain/ground_s1_trail.webp",
+   "w": 976,
+   "h": 295,
+   "standY": 21,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.787,
+   "seam": 1.06,
+   "bottomColor": "#160c0a",
+   "source": "ground_s1_trail.try1.png",
+   "use": "第一關·山路：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s2_rock": {
+   "path": "v2/terrain/ground_s2_rock.webp",
+   "w": 976,
+   "h": 309,
+   "standY": 36,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.747,
+   "seam": 0.94,
+   "bottomColor": "#04070d",
+   "source": "ground_s2_rock.try1.png",
+   "use": "第二關·河童瀑布濕岩（夜）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s3_wet": {
+   "path": "v2/terrain/ground_s3_wet.webp",
+   "w": 976,
+   "h": 298,
+   "standY": 9,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.971,
+   "seam": 0.81,
+   "bottomColor": "#060503",
+   "source": "ground_s3_wet.try1.png",
+   "use": "第三關·冷卻水道濕鐵格柵：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s3_walk": {
+   "path": "v2/terrain/ground_s3_walk.webp",
+   "w": 972,
+   "h": 276,
+   "standY": 18,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.997,
+   "seam": 1.24,
+   "bottomColor": "#030308",
+   "source": "ground_s3_walk.try1.png",
+   "use": "第三關·天守閣外牆濕木棧道：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  }
+ },
+ "slope": {
+  "s1_village_up20": {
+   "path": "v2/terrain/slope_s1_village_up20.webp",
+   "w": 394,
+   "h": 266,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.49,
+   "bottomColor": "#130b04",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 22.3
+   },
+   "source": "slope_s1_village_up20.try1.png",
+   "use": "s1_village 陡坡（the packed brown dirt village road）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_village.webp"
+  },
+  "s1_village_dn20": {
+   "path": "v2/terrain/slope_s1_village_dn20.webp",
+   "w": 394,
+   "h": 229,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.62,
+   "bottomColor": "#130b04",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 25.6
+   },
+   "source": "slope_s1_village_dn20.try1.png",
+   "use": "s1_village 陡坡（the packed brown dirt village road）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_village.webp"
+  },
+  "s1_village_up30": {
+   "path": "v2/terrain/slope_s1_village_up30.webp",
+   "w": 294,
+   "h": 257,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.97,
+   "bottomColor": "#130b04",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.2
+   },
+   "source": "slope_s1_village_up30.try1.png",
+   "use": "s1_village 陡坡（the packed brown dirt village road）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_village.webp"
+  },
+  "s1_village_dn30": {
+   "path": "v2/terrain/slope_s1_village_dn30.webp",
+   "w": 294,
+   "h": 241,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.32,
+   "bottomColor": "#130b04",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 32.1
+   },
+   "source": "slope_s1_village_dn30.try1.png",
+   "use": "s1_village 陡坡（the packed brown dirt village road）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_village.webp"
+  },
+  "s1_terrace_up20": {
+   "path": "v2/terrain/slope_s1_terrace_up20.webp",
+   "w": 394,
+   "h": 223,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.96,
+   "bottomColor": "#0f0804",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 27.1
+   },
+   "source": "slope_s1_terrace_up20.try1.png",
+   "use": "s1_terrace 陡坡（the packed-earth terrace path over a mossy dry-stone retaining wall）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_terrace.webp"
+  },
+  "s1_terrace_dn20": {
+   "path": "v2/terrain/slope_s1_terrace_dn20.webp",
+   "w": 394,
+   "h": 216,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.16,
+   "bottomColor": "#0f0804",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 28.5
+   },
+   "source": "slope_s1_terrace_dn20.try1.png",
+   "use": "s1_terrace 陡坡（the packed-earth terrace path over a mossy dry-stone retaining wall）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_terrace.webp"
+  },
+  "s1_terrace_up30": {
+   "path": "v2/terrain/slope_s1_terrace_up30.webp",
+   "w": 294,
+   "h": 239,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.76,
+   "bottomColor": "#0f0804",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 31.6
+   },
+   "source": "slope_s1_terrace_up30.try1.png",
+   "use": "s1_terrace 陡坡（the packed-earth terrace path over a mossy dry-stone retaining wall）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_terrace.webp"
+  },
+  "s1_terrace_dn30": {
+   "path": "v2/terrain/slope_s1_terrace_dn30.webp",
+   "w": 294,
+   "h": 226,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.28,
+   "bottomColor": "#0f0804",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 32.3
+   },
+   "source": "slope_s1_terrace_dn30.try1.png",
+   "use": "s1_terrace 陡坡（the packed-earth terrace path over a mossy dry-stone retaining wall）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_terrace.webp"
+  },
+  "s1_rock_up20": {
+   "path": "v2/terrain/slope_s1_rock_up20.webp",
+   "w": 394,
+   "h": 259,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.13,
+   "bottomColor": "#05080f",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 23.1
+   },
+   "source": "slope_s1_rock_up20.try1.png",
+   "use": "s1_rock 陡坡（the wet layered stream rock）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_rock.webp"
+  },
+  "s1_rock_dn20": {
+   "path": "v2/terrain/slope_s1_rock_dn20.webp",
+   "w": 394,
+   "h": 230,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.03,
+   "bottomColor": "#05080f",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 26.1
+   },
+   "source": "slope_s1_rock_dn20.try1.png",
+   "use": "s1_rock 陡坡（the wet layered stream rock）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_rock.webp"
+  },
+  "s1_rock_up30": {
+   "path": "v2/terrain/slope_s1_rock_up30.webp",
+   "w": 294,
+   "h": 249,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.22,
+   "bottomColor": "#05080f",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.8
+   },
+   "source": "slope_s1_rock_up30.try1.png",
+   "use": "s1_rock 陡坡（the wet layered stream rock）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_rock.webp"
+  },
+  "s1_rock_dn30": {
+   "path": "v2/terrain/slope_s1_rock_dn30.webp",
+   "w": 294,
+   "h": 248,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.25,
+   "bottomColor": "#05080f",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 31.5
+   },
+   "source": "slope_s1_rock_dn30.try1.png",
+   "use": "s1_rock 陡坡（the wet layered stream rock）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_rock.webp"
+  },
+  "s1_trail_up20": {
+   "path": "v2/terrain/slope_s1_trail_up20.webp",
+   "w": 394,
+   "h": 258,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.12,
+   "bottomColor": "#160c0a",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 22.8
+   },
+   "source": "slope_s1_trail_up20.try1.png",
+   "use": "s1_trail 陡坡（the rocky mountain dirt trail）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_trail.webp"
+  },
+  "s1_trail_dn20": {
+   "path": "v2/terrain/slope_s1_trail_dn20.webp",
+   "w": 394,
+   "h": 222,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.0,
+   "bottomColor": "#160c0a",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 26.6
+   },
+   "source": "slope_s1_trail_dn20.try1.png",
+   "use": "s1_trail 陡坡（the rocky mountain dirt trail）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_trail.webp"
+  },
+  "s1_trail_up30": {
+   "path": "v2/terrain/slope_s1_trail_up30.webp",
+   "w": 294,
+   "h": 245,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.03,
+   "bottomColor": "#160c0a",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 31.0
+   },
+   "source": "slope_s1_trail_up30.try1.png",
+   "use": "s1_trail 陡坡（the rocky mountain dirt trail）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_trail.webp"
+  },
+  "s1_trail_dn30": {
+   "path": "v2/terrain/slope_s1_trail_dn30.webp",
+   "w": 294,
+   "h": 226,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.98,
+   "bottomColor": "#160c0a",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 32.1
+   },
+   "source": "slope_s1_trail_dn30.try1.png",
+   "use": "s1_trail 陡坡（the rocky mountain dirt trail）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s1_trail.webp"
+  },
+  "s2_street_up20": {
+   "path": "v2/terrain/slope_s2_street_up20.webp",
+   "w": 394,
+   "h": 280,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.47,
+   "bottomColor": "#03060c",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 20.7
+   },
+   "source": "slope_s2_street_up20.try1.png",
+   "use": "s2_street 陡坡（the worn grey flagstone street (the slabs follow the slope)）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_street.webp"
+  },
+  "s2_street_dn20": {
+   "path": "v2/terrain/slope_s2_street_dn20.webp",
+   "w": 394,
+   "h": 260,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.05,
+   "bottomColor": "#03060c",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 23.1
+   },
+   "source": "slope_s2_street_dn20.try1.png",
+   "use": "s2_street 陡坡（the worn grey flagstone street (the slabs follow the slope)）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_street.webp"
+  },
+  "s2_street_up30": {
+   "path": "v2/terrain/slope_s2_street_up30.webp",
+   "w": 294,
+   "h": 256,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.07,
+   "bottomColor": "#03060c",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.1
+   },
+   "source": "slope_s2_street_up30.try1.png",
+   "use": "s2_street 陡坡（the worn grey flagstone street (the slabs follow the slope)）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_street.webp"
+  },
+  "s2_street_dn30": {
+   "path": "v2/terrain/slope_s2_street_dn30.webp",
+   "w": 294,
+   "h": 251,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.38,
+   "bottomColor": "#03060c",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.6
+   },
+   "source": "slope_s2_street_dn30.try1.png",
+   "use": "s2_street 陡坡（the worn grey flagstone street (the slabs follow the slope)）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_street.webp"
+  },
+  "s2_shrine_up20": {
+   "path": "v2/terrain/slope_s2_shrine_up20.webp",
+   "w": 394,
+   "h": 275,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.96,
+   "bottomColor": "#01040d",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 20.8
+   },
+   "source": "slope_s2_shrine_up20.try1.png",
+   "use": "s2_shrine 陡坡（the grey stone slab shrine path with fallen maple leaves）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_shrine.webp"
+  },
+  "s2_shrine_dn20": {
+   "path": "v2/terrain/slope_s2_shrine_dn20.webp",
+   "w": 394,
+   "h": 251,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.46,
+   "bottomColor": "#01040d",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 23.6
+   },
+   "source": "slope_s2_shrine_dn20.try1.png",
+   "use": "s2_shrine 陡坡（the grey stone slab shrine path with fallen maple leaves）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_shrine.webp"
+  },
+  "s2_shrine_up30": {
+   "path": "v2/terrain/slope_s2_shrine_up30.webp",
+   "w": 294,
+   "h": 255,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.06,
+   "bottomColor": "#01040d",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.0
+   },
+   "source": "slope_s2_shrine_up30.try1.png",
+   "use": "s2_shrine 陡坡（the grey stone slab shrine path with fallen maple leaves）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_shrine.webp"
+  },
+  "s2_shrine_dn30": {
+   "path": "v2/terrain/slope_s2_shrine_dn30.webp",
+   "w": 294,
+   "h": 248,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.9,
+   "bottomColor": "#01040d",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 31.1
+   },
+   "source": "slope_s2_shrine_dn30.try1.png",
+   "use": "s2_shrine 陡坡（the grey stone slab shrine path with fallen maple leaves）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s2_shrine.webp"
+  },
+  "s2_rock_up20": {
+   "path": "v2/terrain/slope_s2_rock_up20.webp",
+   "w": 394,
+   "h": 274,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.84,
+   "bottomColor": "#04070d",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 21.2
+   },
+   "source": "slope_s2_rock_up20.try1.png",
+   "use": "s2_rock 陡坡（the wet dark gorge rock）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s2_rock.webp"
+  },
+  "s2_rock_dn20": {
+   "path": "v2/terrain/slope_s2_rock_dn20.webp",
+   "w": 394,
+   "h": 246,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.12,
+   "bottomColor": "#04070d",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 24.0
+   },
+   "source": "slope_s2_rock_dn20.try1.png",
+   "use": "s2_rock 陡坡（the wet dark gorge rock）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s2_rock.webp"
+  },
+  "s2_rock_up30": {
+   "path": "v2/terrain/slope_s2_rock_up30.webp",
+   "w": 294,
+   "h": 258,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.86,
+   "bottomColor": "#04070d",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.3
+   },
+   "source": "slope_s2_rock_up30.try1.png",
+   "use": "s2_rock 陡坡（the wet dark gorge rock）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s2_rock.webp"
+  },
+  "s2_rock_dn30": {
+   "path": "v2/terrain/slope_s2_rock_dn30.webp",
+   "w": 294,
+   "h": 246,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.09,
+   "bottomColor": "#04070d",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 31.5
+   },
+   "source": "slope_s2_rock_dn30.try1.png",
+   "use": "s2_rock 陡坡（the wet dark gorge rock）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s2_rock.webp"
+  },
+  "s3_grate_up20": {
+   "path": "v2/terrain/slope_s3_grate_up20.webp",
+   "w": 394,
+   "h": 282,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.91,
+   "bottomColor": "#040200",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 20.2
+   },
+   "source": "slope_s3_grate_up20.try1.png",
+   "use": "s3_grate 陡坡（the riveted iron grating ramp (the grating and the hazard stripe follow the slope)）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_grate.webp"
+  },
+  "s3_grate_dn20": {
+   "path": "v2/terrain/slope_s3_grate_dn20.webp",
+   "w": 394,
+   "h": 282,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.08,
+   "bottomColor": "#040200",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 20.0
+   },
+   "source": "slope_s3_grate_dn20.try1.png",
+   "use": "s3_grate 陡坡（the riveted iron grating ramp (the grating and the hazard stripe follow the slope)）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_grate.webp"
+  },
+  "s3_grate_up30": {
+   "path": "v2/terrain/slope_s3_grate_up30.webp",
+   "w": 294,
+   "h": 258,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.77,
+   "bottomColor": "#040200",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.0
+   },
+   "source": "slope_s3_grate_up30.try1.png",
+   "use": "s3_grate 陡坡（the riveted iron grating ramp (the grating and the hazard stripe follow the slope)）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_grate.webp"
+  },
+  "s3_grate_dn30": {
+   "path": "v2/terrain/slope_s3_grate_dn30.webp",
+   "w": 294,
+   "h": 244,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.97,
+   "bottomColor": "#040200",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 32.0
+   },
+   "source": "slope_s3_grate_dn30.try1.png",
+   "use": "s3_grate 陡坡（the riveted iron grating ramp (the grating and the hazard stripe follow the slope)）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_grate.webp"
+  },
+  "s3_wet_up20": {
+   "path": "v2/terrain/slope_s3_wet_up20.webp",
+   "w": 394,
+   "h": 266,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.92,
+   "bottomColor": "#060503",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 21.7
+   },
+   "source": "slope_s3_wet_up20.try1.png",
+   "use": "s3_wet 陡坡（the wet riveted iron grating ramp）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s3_wet.webp"
+  },
+  "s3_wet_dn20": {
+   "path": "v2/terrain/slope_s3_wet_dn20.webp",
+   "w": 394,
+   "h": 255,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.0,
+   "bottomColor": "#060503",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 23.4
+   },
+   "source": "slope_s3_wet_dn20.try1.png",
+   "use": "s3_wet 陡坡（the wet riveted iron grating ramp）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s3_wet.webp"
+  },
+  "s3_wet_up30": {
+   "path": "v2/terrain/slope_s3_wet_up30.webp",
+   "w": 294,
+   "h": 255,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.14,
+   "bottomColor": "#060503",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.2
+   },
+   "source": "slope_s3_wet_up30.try1.png",
+   "use": "s3_wet 陡坡（the wet riveted iron grating ramp）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s3_wet.webp"
+  },
+  "s3_wet_dn30": {
+   "path": "v2/terrain/slope_s3_wet_dn30.webp",
+   "w": 294,
+   "h": 255,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.93,
+   "bottomColor": "#060503",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.7
+   },
+   "source": "slope_s3_wet_dn30.try1.png",
+   "use": "s3_wet 陡坡（the wet riveted iron grating ramp）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "v2/terrain/ground_s3_wet.webp"
+  },
+  "s3_roof_up20": {
+   "path": "v2/terrain/slope_s3_roof_up20.webp",
+   "w": 394,
+   "h": 282,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.67,
+   "bottomColor": "#030407",
+   "slope": {
+    "dir": "up",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 20.1
+   },
+   "source": "slope_s3_roof_up20.try1.png",
+   "use": "s3_roof 陡坡（the steep wet castle roof of dark tiles (the rows of tiles run down the slope like a real sloping roof)）：只用在「往右上、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_roof.webp"
+  },
+  "s3_roof_dn20": {
+   "path": "v2/terrain/slope_s3_roof_dn20.webp",
+   "w": 394,
+   "h": 263,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.61,
+   "bottomColor": "#030407",
+   "slope": {
+    "dir": "down",
+    "grade": 0.364,
+    "deg": 20,
+    "drawnDeg": 22.4
+   },
+   "source": "slope_s3_roof_dn20.try1.png",
+   "use": "s3_roof 陡坡（the steep wet castle roof of dark tiles (the rows of tiles run down the slope like a real sloping roof)）：只用在「往右下、約 20 度（每前進 1 像素高低差 0.364）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_roof.webp"
+  },
+  "s3_roof_up30": {
+   "path": "v2/terrain/slope_s3_roof_up30.webp",
+   "w": 294,
+   "h": 258,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 0.8,
+   "bottomColor": "#030407",
+   "slope": {
+    "dir": "up",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.0
+   },
+   "source": "slope_s3_roof_up30.try1.png",
+   "use": "s3_roof 陡坡（the steep wet castle roof of dark tiles (the rows of tiles run down the slope like a real sloping roof)）：只用在「往右上、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_roof.webp"
+  },
+  "s3_roof_dn30": {
+   "path": "v2/terrain/slope_s3_roof_dn30.webp",
+   "w": 294,
+   "h": 257,
+   "standY": 30,
+   "tileX": true,
+   "displayScale": 1.0,
+   "seam": 1.4,
+   "bottomColor": "#030407",
+   "slope": {
+    "dir": "down",
+    "grade": 0.577,
+    "deg": 30,
+    "drawnDeg": 30.2
+   },
+   "source": "slope_s3_roof_dn30.try1.png",
+   "use": "s3_roof 陡坡（the steep wet castle roof of dark tiles (the rows of tiles run down the slope like a real sloping roof)）：只用在「往右下、約 30 度（每前進 1 像素高低差 0.577）」的坡段；畫法跟平地帶一樣（每一欄照地形高度上下移、u＝世界x % 寬），第 standY 列＝腳踩的線，圖底以下用 bottomColor 補到畫面底；坡頂坡底轉折處跟平地帶左右交叉淡化約 40 像素，或蓋一件 cover 遮蓋件",
+   "flat": "terrain/ground_s3_roof.webp"
+  }
+ },
+ "block": {
+  "s1_rock": {
+   "pieces": {
+    "center": {
+     "path": "v2/terrain/block_s1_rock_center.webp",
+     "w": 279,
+     "h": 90
+    },
+    "top": {
+     "path": "v2/terrain/block_s1_rock_top.webp",
+     "w": 279,
+     "h": 70
+    },
+    "bottom": {
+     "path": "v2/terrain/block_s1_rock_bottom.webp",
+     "w": 279,
+     "h": 62
+    },
+    "left": {
+     "path": "v2/terrain/block_s1_rock_left.webp",
+     "w": 66,
+     "h": 90
+    },
+    "right": {
+     "path": "v2/terrain/block_s1_rock_right.webp",
+     "w": 67,
+     "h": 90
+    },
+    "tl": {
+     "path": "v2/terrain/block_s1_rock_tl.webp",
+     "w": 66,
+     "h": 70
+    },
+    "tr": {
+     "path": "v2/terrain/block_s1_rock_tr.webp",
+     "w": 67,
+     "h": 70
+    },
+    "bl": {
+     "path": "v2/terrain/block_s1_rock_bl.webp",
+     "w": 66,
+     "h": 62
+    },
+    "br": {
+     "path": "v2/terrain/block_s1_rock_br.webp",
+     "w": 67,
+     "h": 62
+    }
+   },
+   "place": {
+    "top": {
+     "oy": 14
+    },
+    "bottom": {
+     "oy": 46
+    },
+    "left": {
+     "ox": 6
+    },
+    "right": {
+     "ox": 61
+    },
+    "tl": {
+     "ox": 6,
+     "oy": 14
+    },
+    "tr": {
+     "ox": 61,
+     "oy": 14
+    },
+    "bl": {
+     "ox": 6,
+     "oy": 46
+    },
+    "br": {
+     "ox": 61,
+     "oy": 46
+    }
+   },
+   "minW": 89,
+   "minH": 70,
+   "edge": {
+    "solidTop": 14,
+    "solidBottom": 214,
+    "solidLeft": 6,
+    "solidRight": 414
+   },
+   "margins": {
+    "top": 54,
+    "bottom": 46,
+    "left": 50,
+    "right": 51,
+    "fade": 16
+   },
+   "displayScale": 1.0,
+   "source": "block_s1_rock.try1.png",
+   "use": "block_s1_rock：九宮格。畫一個實心範圍 (x, y, w, h) 的方塊：center 從 (x, y) 起鋪滿 w×h（上下左右重複，超出裁掉）→ top 從 x 起沿上緣左右重複，圖左上角＝(x+k·寬, y−place.top.oy)；bottom 同理（y+h−place.bottom.oy）→ left 圖左上角＝(x−place.left.ox, y+k·高)、right＝(x+w−place.right.ox, …) 上下重複 → 四角最後蓋上（tl＝(x−ox, y−oy)、tr＝(x+w−ox, y−oy)…）。邊件內側 fade 像素是淡出，疊在 center 上；外緣凸出的苔蘚、瓦片是裝飾（不算碰撞）。w、h 不要小於 minW、minH。"
+  },
+  "s1_log": {
+   "pieces": {
+    "center": {
+     "path": "v2/terrain/block_s1_log_center.webp",
+     "w": 279,
+     "h": 80
+    },
+    "top": {
+     "path": "v2/terrain/block_s1_log_top.webp",
+     "w": 279,
+     "h": 59
+    },
+    "bottom": {
+     "path": "v2/terrain/block_s1_log_bottom.webp",
+     "w": 279,
+     "h": 50
+    },
+    "left": {
+     "path": "v2/terrain/block_s1_log_left.webp",
+     "w": 66,
+     "h": 80
+    },
+    "right": {
+     "path": "v2/terrain/block_s1_log_right.webp",
+     "w": 67,
+     "h": 80
+    },
+    "tl": {
+     "path": "v2/terrain/block_s1_log_tl.webp",
+     "w": 66,
+     "h": 59
+    },
+    "tr": {
+     "path": "v2/terrain/block_s1_log_tr.webp",
+     "w": 67,
+     "h": 59
+    },
+    "bl": {
+     "path": "v2/terrain/block_s1_log_bl.webp",
+     "w": 66,
+     "h": 50
+    },
+    "br": {
+     "path": "v2/terrain/block_s1_log_br.webp",
+     "w": 67,
+     "h": 50
+    }
+   },
+   "place": {
+    "top": {
+     "oy": 3
+    },
+    "bottom": {
+     "oy": 46
+    },
+    "left": {
+     "ox": 4
+    },
+    "right": {
+     "ox": 64
+    },
+    "tl": {
+     "ox": 4,
+     "oy": 3
+    },
+    "tr": {
+     "ox": 64,
+     "oy": 3
+    },
+    "bl": {
+     "ox": 4,
+     "oy": 46
+    },
+    "br": {
+     "ox": 64,
+     "oy": 46
+    }
+   },
+   "minW": 94,
+   "minH": 70,
+   "edge": {
+    "solidTop": 3,
+    "solidBottom": 193,
+    "solidLeft": 4,
+    "solidRight": 417
+   },
+   "margins": {
+    "top": 43,
+    "bottom": 34,
+    "left": 50,
+    "right": 51,
+    "fade": 16
+   },
+   "displayScale": 1.0,
+   "source": "block_s1_log.try1.png",
+   "use": "block_s1_log：九宮格。畫一個實心範圍 (x, y, w, h) 的方塊：center 從 (x, y) 起鋪滿 w×h（上下左右重複，超出裁掉）→ top 從 x 起沿上緣左右重複，圖左上角＝(x+k·寬, y−place.top.oy)；bottom 同理（y+h−place.bottom.oy）→ left 圖左上角＝(x−place.left.ox, y+k·高)、right＝(x+w−place.right.ox, …) 上下重複 → 四角最後蓋上（tl＝(x−ox, y−oy)、tr＝(x+w−ox, y−oy)…）。邊件內側 fade 像素是淡出，疊在 center 上；外緣凸出的苔蘚、瓦片是裝飾（不算碰撞）。w、h 不要小於 minW、minH。"
+  },
+  "s2_rock": {
+   "pieces": {
+    "center": {
+     "path": "v2/terrain/block_s2_rock_center.webp",
+     "w": 279,
+     "h": 73
+    },
+    "top": {
+     "path": "v2/terrain/block_s2_rock_top.webp",
+     "w": 279,
+     "h": 59
+    },
+    "bottom": {
+     "path": "v2/terrain/block_s2_rock_bottom.webp",
+     "w": 279,
+     "h": 67
+    },
+    "left": {
+     "path": "v2/terrain/block_s2_rock_left.webp",
+     "w": 66,
+     "h": 73
+    },
+    "right": {
+     "path": "v2/terrain/block_s2_rock_right.webp",
+     "w": 67,
+     "h": 73
+    },
+    "tl": {
+     "path": "v2/terrain/block_s2_rock_tl.webp",
+     "w": 66,
+     "h": 59
+    },
+    "tr": {
+     "path": "v2/terrain/block_s2_rock_tr.webp",
+     "w": 67,
+     "h": 59
+    },
+    "bl": {
+     "path": "v2/terrain/block_s2_rock_bl.webp",
+     "w": 66,
+     "h": 67
+    },
+    "br": {
+     "path": "v2/terrain/block_s2_rock_br.webp",
+     "w": 67,
+     "h": 67
+    }
+   },
+   "place": {
+    "top": {
+     "oy": 3
+    },
+    "bottom": {
+     "oy": 46
+    },
+    "left": {
+     "ox": 3
+    },
+    "right": {
+     "ox": 63
+    },
+    "tl": {
+     "ox": 3,
+     "oy": 3
+    },
+    "tr": {
+     "ox": 63,
+     "oy": 3
+    },
+    "bl": {
+     "ox": 3,
+     "oy": 46
+    },
+    "br": {
+     "ox": 63,
+     "oy": 46
+    }
+   },
+   "minW": 94,
+   "minH": 70,
+   "edge": {
+    "solidTop": 3,
+    "solidBottom": 186,
+    "solidLeft": 3,
+    "solidRight": 416
+   },
+   "margins": {
+    "top": 43,
+    "bottom": 51,
+    "left": 50,
+    "right": 51,
+    "fade": 16
+   },
+   "displayScale": 1.0,
+   "source": "block_s2_rock.try1.png",
+   "use": "block_s2_rock：九宮格。畫一個實心範圍 (x, y, w, h) 的方塊：center 從 (x, y) 起鋪滿 w×h（上下左右重複，超出裁掉）→ top 從 x 起沿上緣左右重複，圖左上角＝(x+k·寬, y−place.top.oy)；bottom 同理（y+h−place.bottom.oy）→ left 圖左上角＝(x−place.left.ox, y+k·高)、right＝(x+w−place.right.ox, …) 上下重複 → 四角最後蓋上（tl＝(x−ox, y−oy)、tr＝(x+w−ox, y−oy)…）。邊件內側 fade 像素是淡出，疊在 center 上；外緣凸出的苔蘚、瓦片是裝飾（不算碰撞）。w、h 不要小於 minW、minH。"
+  },
+  "s2_stone": {
+   "pieces": {
+    "center": {
+     "path": "v2/terrain/block_s2_stone_center.webp",
+     "w": 279,
+     "h": 92
+    },
+    "top": {
+     "path": "v2/terrain/block_s2_stone_top.webp",
+     "w": 279,
+     "h": 58
+    },
+    "bottom": {
+     "path": "v2/terrain/block_s2_stone_bottom.webp",
+     "w": 279,
+     "h": 47
+    },
+    "left": {
+     "path": "v2/terrain/block_s2_stone_left.webp",
+     "w": 66,
+     "h": 92
+    },
+    "right": {
+     "path": "v2/terrain/block_s2_stone_right.webp",
+     "w": 67,
+     "h": 92
+    },
+    "tl": {
+     "path": "v2/terrain/block_s2_stone_tl.webp",
+     "w": 66,
+     "h": 58
+    },
+    "tr": {
+     "path": "v2/terrain/block_s2_stone_tr.webp",
+     "w": 67,
+     "h": 58
+    },
+    "bl": {
+     "path": "v2/terrain/block_s2_stone_bl.webp",
+     "w": 66,
+     "h": 47
+    },
+    "br": {
+     "path": "v2/terrain/block_s2_stone_br.webp",
+     "w": 67,
+     "h": 47
+    }
+   },
+   "place": {
+    "top": {
+     "oy": 2
+    },
+    "bottom": {
+     "oy": 46
+    },
+    "left": {
+     "ox": 7
+    },
+    "right": {
+     "ox": 62
+    },
+    "tl": {
+     "ox": 7,
+     "oy": 2
+    },
+    "tr": {
+     "ox": 62,
+     "oy": 2
+    },
+    "bl": {
+     "ox": 7,
+     "oy": 46
+    },
+    "br": {
+     "ox": 62,
+     "oy": 46
+    }
+   },
+   "minW": 89,
+   "minH": 70,
+   "edge": {
+    "solidTop": 2,
+    "solidBottom": 204,
+    "solidLeft": 7,
+    "solidRight": 415
+   },
+   "margins": {
+    "top": 42,
+    "bottom": 31,
+    "left": 50,
+    "right": 51,
+    "fade": 16
+   },
+   "displayScale": 1.0,
+   "source": "block_s2_stone.try1.png",
+   "use": "block_s2_stone：九宮格。畫一個實心範圍 (x, y, w, h) 的方塊：center 從 (x, y) 起鋪滿 w×h（上下左右重複，超出裁掉）→ top 從 x 起沿上緣左右重複，圖左上角＝(x+k·寬, y−place.top.oy)；bottom 同理（y+h−place.bottom.oy）→ left 圖左上角＝(x−place.left.ox, y+k·高)、right＝(x+w−place.right.ox, …) 上下重複 → 四角最後蓋上（tl＝(x−ox, y−oy)、tr＝(x+w−ox, y−oy)…）。邊件內側 fade 像素是淡出，疊在 center 上；外緣凸出的苔蘚、瓦片是裝飾（不算碰撞）。w、h 不要小於 minW、minH。"
+  },
+  "s3_iron": {
+   "pieces": {
+    "center": {
+     "path": "v2/terrain/block_s3_iron_center.webp",
+     "w": 279,
+     "h": 93
+    },
+    "top": {
+     "path": "v2/terrain/block_s3_iron_top.webp",
+     "w": 279,
+     "h": 59
+    },
+    "bottom": {
+     "path": "v2/terrain/block_s3_iron_bottom.webp",
+     "w": 279,
+     "h": 48
+    },
+    "left": {
+     "path": "v2/terrain/block_s3_iron_left.webp",
+     "w": 66,
+     "h": 93
+    },
+    "right": {
+     "path": "v2/terrain/block_s3_iron_right.webp",
+     "w": 67,
+     "h": 93
+    },
+    "tl": {
+     "path": "v2/terrain/block_s3_iron_tl.webp",
+     "w": 66,
+     "h": 59
+    },
+    "tr": {
+     "path": "v2/terrain/block_s3_iron_tr.webp",
+     "w": 67,
+     "h": 59
+    },
+    "bl": {
+     "path": "v2/terrain/block_s3_iron_bl.webp",
+     "w": 66,
+     "h": 48
+    },
+    "br": {
+     "path": "v2/terrain/block_s3_iron_br.webp",
+     "w": 67,
+     "h": 48
+    }
+   },
+   "place": {
+    "top": {
+     "oy": 3
+    },
+    "bottom": {
+     "oy": 46
+    },
+    "left": {
+     "ox": 4
+    },
+    "right": {
+     "ox": 63
+    },
+    "tl": {
+     "ox": 4,
+     "oy": 3
+    },
+    "tr": {
+     "ox": 63,
+     "oy": 3
+    },
+    "bl": {
+     "ox": 4,
+     "oy": 46
+    },
+    "br": {
+     "ox": 63,
+     "oy": 46
+    }
+   },
+   "minW": 93,
+   "minH": 70,
+   "edge": {
+    "solidTop": 3,
+    "solidBottom": 206,
+    "solidLeft": 4,
+    "solidRight": 416
+   },
+   "margins": {
+    "top": 43,
+    "bottom": 32,
+    "left": 50,
+    "right": 51,
+    "fade": 16
+   },
+   "displayScale": 1.0,
+   "source": "block_s3_iron.try1.png",
+   "use": "block_s3_iron：九宮格。畫一個實心範圍 (x, y, w, h) 的方塊：center 從 (x, y) 起鋪滿 w×h（上下左右重複，超出裁掉）→ top 從 x 起沿上緣左右重複，圖左上角＝(x+k·寬, y−place.top.oy)；bottom 同理（y+h−place.bottom.oy）→ left 圖左上角＝(x−place.left.ox, y+k·高)、right＝(x+w−place.right.ox, …) 上下重複 → 四角最後蓋上（tl＝(x−ox, y−oy)、tr＝(x+w−ox, y−oy)…）。邊件內側 fade 像素是淡出，疊在 center 上；外緣凸出的苔蘚、瓦片是裝飾（不算碰撞）。w、h 不要小於 minW、minH。"
+  },
+  "s3_plaster": {
+   "pieces": {
+    "center": {
+     "path": "v2/terrain/block_s3_plaster_center.webp",
+     "w": 279,
+     "h": 60
+    },
+    "top": {
+     "path": "v2/terrain/block_s3_plaster_top.webp",
+     "w": 279,
+     "h": 58
+    },
+    "bottom": {
+     "path": "v2/terrain/block_s3_plaster_bottom.webp",
+     "w": 279,
+     "h": 46
+    },
+    "left": {
+     "path": "v2/terrain/block_s3_plaster_left.webp",
+     "w": 66,
+     "h": 60
+    },
+    "right": {
+     "path": "v2/terrain/block_s3_plaster_right.webp",
+     "w": 67,
+     "h": 60
+    },
+    "tl": {
+     "path": "v2/terrain/block_s3_plaster_tl.webp",
+     "w": 66,
+     "h": 58
+    },
+    "tr": {
+     "path": "v2/terrain/block_s3_plaster_tr.webp",
+     "w": 67,
+     "h": 58
+    },
+    "bl": {
+     "path": "v2/terrain/block_s3_plaster_bl.webp",
+     "w": 66,
+     "h": 46
+    },
+    "br": {
+     "path": "v2/terrain/block_s3_plaster_br.webp",
+     "w": 67,
+     "h": 46
+    }
+   },
+   "place": {
+    "top": {
+     "oy": 2
+    },
+    "bottom": {
+     "oy": 46
+    },
+    "left": {
+     "ox": 11
+    },
+    "right": {
+     "ox": 61
+    },
+    "tl": {
+     "ox": 11,
+     "oy": 2
+    },
+    "tr": {
+     "ox": 61,
+     "oy": 2
+    },
+    "bl": {
+     "ox": 11,
+     "oy": 46
+    },
+    "br": {
+     "ox": 61,
+     "oy": 46
+    }
+   },
+   "minW": 84,
+   "minH": 70,
+   "edge": {
+    "solidTop": 2,
+    "solidBottom": 172,
+    "solidLeft": 11,
+    "solidRight": 414
+   },
+   "margins": {
+    "top": 42,
+    "bottom": 30,
+    "left": 50,
+    "right": 51,
+    "fade": 16
+   },
+   "displayScale": 1.0,
+   "source": "block_s3_plaster.try1.png",
+   "use": "block_s3_plaster：九宮格。畫一個實心範圍 (x, y, w, h) 的方塊：center 從 (x, y) 起鋪滿 w×h（上下左右重複，超出裁掉）→ top 從 x 起沿上緣左右重複，圖左上角＝(x+k·寬, y−place.top.oy)；bottom 同理（y+h−place.bottom.oy）→ left 圖左上角＝(x−place.left.ox, y+k·高)、right＝(x+w−place.right.ox, …) 上下重複 → 四角最後蓋上（tl＝(x−ox, y−oy)、tr＝(x+w−ox, y−oy)…）。邊件內側 fade 像素是淡出，疊在 center 上；外緣凸出的苔蘚、瓦片是裝飾（不算碰撞）。w、h 不要小於 minW、minH。"
+  }
+ },
+ "wall": {
+  "s1_rock": {
+   "top": {
+    "path": "v2/terrain/wall_s1_rock_top.webp",
+    "w": 264,
+    "h": 201,
+    "standY": 31
+   },
+   "body": {
+    "path": "v2/terrain/wall_s1_rock_body.webp",
+    "w": 264,
+    "h": 561,
+    "tileY": true,
+    "seam": 1.02
+   },
+   "faceX": 52,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_s1_rock.try1.png",
+   "use": "wall_s1_rock 岩壁／牆（蹬牆跳用；兩面對放＝夾縫，右邊那面水平翻轉）：擺法同第一批崖壁（壁面朝左；左邊高就整組水平翻轉；頂塊 standY 對齊高處站立線，壁身往下重複到畫面底）。"
+  },
+  "s2_rock": {
+   "top": {
+    "path": "v2/terrain/wall_s2_rock_top.webp",
+    "w": 258,
+    "h": 213,
+    "standY": 43
+   },
+   "body": {
+    "path": "v2/terrain/wall_s2_rock_body.webp",
+    "w": 258,
+    "h": 549,
+    "tileY": true,
+    "seam": 1.42
+   },
+   "faceX": 74,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_s2_rock.try1.png",
+   "use": "wall_s2_rock 岩壁／牆（蹬牆跳用；兩面對放＝夾縫，右邊那面水平翻轉）：擺法同第一批崖壁（壁面朝左；左邊高就整組水平翻轉；頂塊 standY 對齊高處站立線，壁身往下重複到畫面底）。"
+  },
+  "s3_plaster": {
+   "top": {
+    "path": "v2/terrain/wall_s3_plaster_top.webp",
+    "w": 309,
+    "h": 211,
+    "standY": 41
+   },
+   "body": {
+    "path": "v2/terrain/wall_s3_plaster_body.webp",
+    "w": 309,
+    "h": 551,
+    "tileY": true,
+    "seam": 2.35
+   },
+   "faceX": 90,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_s3_plaster.try1.png",
+   "use": "wall_s3_plaster 岩壁／牆（蹬牆跳用；兩面對放＝夾縫，右邊那面水平翻轉）：擺法同第一批崖壁（壁面朝左；左邊高就整組水平翻轉；頂塊 standY 對齊高處站立線，壁身往下重複到畫面底）。"
+  }
+ },
+ "ledge": {
+  "s1_rock": {
+   "left": {
+    "path": "v2/terrain/ledge_s1_rock_left.webp",
+    "w": 148,
+    "h": 144
+   },
+   "mid": {
+    "path": "v2/terrain/ledge_s1_rock_mid.webp",
+    "w": 133,
+    "h": 144,
+    "repeat": true
+   },
+   "right": {
+    "path": "v2/terrain/ledge_s1_rock_right.webp",
+    "w": 242,
+    "h": 144
+   },
+   "standY": 17,
+   "bandH": 96,
+   "displayScale": 0.5,
+   "split": {
+    "P": 133,
+    "a0": 122,
+    "r0": 780,
+    "midSeam": 1.28
+   },
+   "source": "ledge_s1_rock.try1.png",
+   "use": "ledge_s1_rock 岩棚／單向平台（從下面跳得上去）：左端＋中段×n＋右端，standY＝站的線"
+  },
+  "s2_rock": {
+   "left": {
+    "path": "v2/terrain/ledge_s2_rock_left.webp",
+    "w": 154,
+    "h": 145
+   },
+   "mid": {
+    "path": "v2/terrain/ledge_s2_rock_mid.webp",
+    "w": 147,
+    "h": 145,
+    "repeat": true
+   },
+   "right": {
+    "path": "v2/terrain/ledge_s2_rock_right.webp",
+    "w": 168,
+    "h": 145
+   },
+   "standY": 11,
+   "bandH": 78,
+   "displayScale": 0.5,
+   "split": {
+    "P": 147,
+    "a0": 125,
+    "r0": 878,
+    "midSeam": 0.65
+   },
+   "source": "ledge_s2_rock.try1.png",
+   "use": "ledge_s2_rock 岩棚／單向平台（從下面跳得上去）：左端＋中段×n＋右端，standY＝站的線"
+  },
+  "s3_iron": {
+   "left": {
+    "path": "v2/terrain/ledge_s3_iron_left.webp",
+    "w": 146,
+    "h": 125
+   },
+   "mid": {
+    "path": "v2/terrain/ledge_s3_iron_mid.webp",
+    "w": 124,
+    "h": 125,
+    "repeat": true
+   },
+   "right": {
+    "path": "v2/terrain/ledge_s3_iron_right.webp",
+    "w": 159,
+    "h": 125
+   },
+   "standY": 8,
+   "bandH": 49,
+   "displayScale": 0.5,
+   "split": {
+    "P": 124,
+    "a0": 122,
+    "r0": 862,
+    "midSeam": 0.84
+   },
+   "source": "ledge_s3_iron.try1.png",
+   "use": "ledge_s3_iron 岩棚／單向平台（從下面跳得上去）：左端＋中段×n＋右端，standY＝站的線"
+  },
+  "s3_eave": {
+   "left": {
+    "path": "v2/terrain/ledge_s3_eave_left.webp",
+    "w": 115,
+    "h": 104
+   },
+   "mid": {
+    "path": "v2/terrain/ledge_s3_eave_mid.webp",
+    "w": 91,
+    "h": 104,
+    "repeat": true
+   },
+   "right": {
+    "path": "v2/terrain/ledge_s3_eave_right.webp",
+    "w": 128,
+    "h": 104
+   },
+   "standY": 6,
+   "bandH": 83,
+   "displayScale": 0.5,
+   "split": {
+    "P": 91,
+    "a0": 97,
+    "r0": 683,
+    "midSeam": 0.42
+   },
+   "source": "ledge_s3_eave.try1.png",
+   "use": "ledge_s3_eave 岩棚／單向平台（從下面跳得上去）：左端＋中段×n＋右端，standY＝站的線"
+  }
+ },
+ "stair": {
+  "s3_iron": {
+   "path": "v2/terrain/stairs_s3_iron.webp",
+   "w": 335,
+   "h": 171,
+   "riserH": 30,
+   "treadW": 57,
+   "steps": [
+    {
+     "x": 1,
+     "y": 121
+    },
+    {
+     "x": 58,
+     "y": 91
+    },
+    {
+     "x": 115,
+     "y": 61
+    },
+    {
+     "x": 172,
+     "y": 31
+    },
+    {
+     "x": 230,
+     "y": 0
+    }
+   ],
+   "displayScale": 1.0,
+   "source": "stairs_s3_iron.try1.png",
+   "use": "stairs_s3_iron：一張圖＝一整段階梯（往右上）。steps＝每一階「立面頂端、踏面左緣」在圖上的位置；每階高 riserH、踏面寬 treadW；關卡用 TerrainBuilder.stairs(n, treadW, −riserH) 對齊，圖底以下用最後一列顏色補；要往左上就整張水平翻轉。"
+  },
+  "s2_shrine": {
+   "path": "v2/terrain/stairs_s2_shrine.webp",
+   "w": 454,
+   "h": 190,
+   "riserH": 34,
+   "treadW": 79,
+   "steps": [
+    {
+     "x": 15,
+     "y": 144
+    },
+    {
+     "x": 97,
+     "y": 108
+    },
+    {
+     "x": 176,
+     "y": 73
+    },
+    {
+     "x": 255,
+     "y": 39
+    },
+    {
+     "x": 332,
+     "y": 7
+    }
+   ],
+   "displayScale": 1.0,
+   "source": "stairs_s2_shrine.try1.png",
+   "use": "stairs_s2_shrine：一張圖＝一整段階梯（往右上）。steps＝每一階「立面頂端、踏面左緣」在圖上的位置；每階高 riserH、踏面寬 treadW；關卡用 TerrainBuilder.stairs(n, treadW, −riserH) 對齊，圖底以下用最後一列顏色補；要往左上就整張水平翻轉。",
+   "stepsFix": "最低一階（x15,y144）手動補：自動量測漏掉"
+  },
+  "s1_terrace": {
+   "path": "v2/terrain/stairs_s1_terrace.webp",
+   "w": 1058,
+   "h": 350,
+   "riserH": 60,
+   "treadW": 193,
+   "steps": [
+    {
+     "x": 50,
+     "y": 244
+    },
+    {
+     "x": 244,
+     "y": 184
+    },
+    {
+     "x": 435,
+     "y": 124
+    },
+    {
+     "x": 626,
+     "y": 64
+    },
+    {
+     "x": 822,
+     "y": 6
+    }
+   ],
+   "displayScale": 1.0,
+   "source": "stairs_s1_terrace.try1.png",
+   "use": "stairs_s1_terrace：一張圖＝一整段階梯（往右上）。steps＝每一階「立面頂端、踏面左緣」在圖上的位置；每階高 riserH、踏面寬 treadW；關卡用 TerrainBuilder.stairs(n, treadW, −riserH) 對齊，圖底以下用最後一列顏色補；要往左上就整張水平翻轉。"
+  }
+ },
+ "climb": {
+  "s1_vine": {
+   "top": {
+    "path": "v2/terrain/climb_s1_vine_top.webp",
+    "w": 144,
+    "h": 151
+   },
+   "body": {
+    "path": "v2/terrain/climb_s1_vine_body.webp",
+    "w": 144,
+    "h": 380,
+    "tileY": true,
+    "seam": 1.46
+   },
+   "bottom": {
+    "path": "v2/terrain/climb_s1_vine_bottom.webp",
+    "w": 144,
+    "h": 132
+   },
+   "overlap": 40,
+   "displayScale": 0.5,
+   "displayW": 72,
+   "source": "climb_s1_vine.try1.png",
+   "use": "climb_s1_vine：body 上下重複鋪滿 top～bottom，再把 top 蓋在最上面（下緣 overlap 像素淡出）、bottom 蓋在最下面（上緣淡出）；圖存顯示大小的 2 倍"
+  },
+  "s2_vine": {
+   "top": {
+    "path": "v2/terrain/climb_s2_vine_top.webp",
+    "w": 144,
+    "h": 183
+   },
+   "body": {
+    "path": "v2/terrain/climb_s2_vine_body.webp",
+    "w": 144,
+    "h": 502,
+    "tileY": true,
+    "seam": 1.27
+   },
+   "bottom": {
+    "path": "v2/terrain/climb_s2_vine_bottom.webp",
+    "w": 144,
+    "h": 159
+   },
+   "overlap": 40,
+   "displayScale": 0.5,
+   "displayW": 72,
+   "source": "climb_s2_vine.try1.png",
+   "use": "climb_s2_vine：body 上下重複鋪滿 top～bottom，再把 top 蓋在最上面（下緣 overlap 像素淡出）、bottom 蓋在最下面（上緣淡出）；圖存顯示大小的 2 倍"
+  },
+  "s1_ladder": {
+   "top": {
+    "path": "v2/terrain/climb_s1_ladder_top.webp",
+    "w": 144,
+    "h": 190
+   },
+   "body": {
+    "path": "v2/terrain/climb_s1_ladder_body.webp",
+    "w": 144,
+    "h": 528,
+    "tileY": true,
+    "seam": 0.23
+   },
+   "bottom": {
+    "path": "v2/terrain/climb_s1_ladder_bottom.webp",
+    "w": 144,
+    "h": 165
+   },
+   "overlap": 40,
+   "displayScale": 0.5,
+   "displayW": 72,
+   "source": "climb_s1_ladder.try1.png",
+   "use": "climb_s1_ladder：body 上下重複鋪滿 top～bottom，再把 top 蓋在最上面（下緣 overlap 像素淡出）、bottom 蓋在最下面（上緣淡出）；圖存顯示大小的 2 倍"
+  },
+  "s3_chain": {
+   "top": {
+    "path": "v2/terrain/climb_s3_chain_top.webp",
+    "w": 144,
+    "h": 258
+   },
+   "body": {
+    "path": "v2/terrain/climb_s3_chain_body.webp",
+    "w": 144,
+    "h": 783,
+    "tileY": true,
+    "seam": 0.96
+   },
+   "bottom": {
+    "path": "v2/terrain/climb_s3_chain_bottom.webp",
+    "w": 144,
+    "h": 221
+   },
+   "overlap": 40,
+   "displayScale": 0.5,
+   "displayW": 72,
+   "source": "climb_s3_chain.try1.png",
+   "use": "climb_s3_chain：body 上下重複鋪滿 top～bottom，再把 top 蓋在最上面（下緣 overlap 像素淡出）、bottom 蓋在最下面（上緣淡出）；圖存顯示大小的 2 倍"
+  },
+  "s3_ladder": {
+   "top": {
+    "path": "v2/terrain/climb_s3_ladder_top.webp",
+    "w": 144,
+    "h": 178
+   },
+   "body": {
+    "path": "v2/terrain/climb_s3_ladder_body.webp",
+    "w": 144,
+    "h": 480,
+    "tileY": true,
+    "seam": 1.28
+   },
+   "bottom": {
+    "path": "v2/terrain/climb_s3_ladder_bottom.webp",
+    "w": 144,
+    "h": 154
+   },
+   "overlap": 40,
+   "displayScale": 0.5,
+   "displayW": 72,
+   "source": "climb_s3_ladder.try1.png",
+   "use": "climb_s3_ladder：body 上下重複鋪滿 top～bottom，再把 top 蓋在最上面（下緣 overlap 像素淡出）、bottom 蓋在最下面（上緣淡出）；圖存顯示大小的 2 倍"
+  }
+ },
+ "waterfall": {
+  "s1": {
+   "column": {
+    "path": "v2/terrain/wf_s1_column.webp",
+    "w": 420,
+    "h": 754,
+    "tileY": true,
+    "seam": 0.88,
+    "displayScale": 1.0,
+    "source": "wf_s1_column.try1.png",
+    "use": "水柱：上下重複，程式每秒往下捲約 360 像素（看起來在流）"
+   },
+   "foam": {
+    "path": "v2/terrain/wf_s1_foam.webp",
+    "w": 420,
+    "h": 867,
+    "tileY": true,
+    "seam": 1.16,
+    "displayScale": 1.0,
+    "source": "wf_s1_foam.try1.png",
+    "use": "白沫疊層：疊在水柱上、捲得比水柱快（約 1.5 倍）、半透明"
+   },
+   "lip": {
+    "path": "v2/terrain/wf_s1_lip.webp",
+    "w": 560,
+    "h": 313,
+    "displayScale": 1.0,
+    "source": "wf_s1_lip.try1.png",
+    "use": "水口（瀑布頂）：蓋在水柱最上端，水柱從它下面接出去"
+   },
+   "splash": {
+    "frames": [
+     {
+      "path": "v2/terrain/wf_s1_splash_0.webp",
+      "w": 360,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s1_splash_1.webp",
+      "w": 360,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s1_splash_2.webp",
+      "w": 360,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s1_splash_3.webp",
+      "w": 360,
+      "h": 300
+     }
+    ],
+    "baseX": 178,
+    "source": "wf_s1_splash.try1.png",
+    "displayScale": 0.5,
+    "fps": 10,
+    "use": "落水水花 4 格循環，底部中心（baseX）對準水柱底"
+   },
+   "mist": {
+    "path": "v2/terrain/wf_s1_mist.webp",
+    "w": 1100,
+    "h": 278,
+    "displayScale": 1.0,
+    "source": "wf_s1_mist.try1.png",
+    "use": "水霧：半透明，蓋在瀑布底部與水潭上，慢慢左右飄；也能拿來蓋背景接縫"
+   },
+   "pool": {
+    "frames": [
+     {
+      "path": "v2/terrain/wf_s1_pool_0.webp",
+      "w": 976,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s1_pool_1.webp",
+      "w": 976,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s1_pool_2.webp",
+      "w": 976,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s1_pool_3.webp",
+      "w": 976,
+      "h": 300
+     }
+    ],
+    "surfaceY": 14,
+    "tileX": true,
+    "fps": 6,
+    "displayScale": 1.0,
+    "seam": 1.4,
+    "bottomColor": "#050505",
+    "source": "wf_s1_pool.try1.png",
+    "use": "s1 水潭：4 格輪播（約每秒 6 格）；每格都左右無縫重複；第 surfaceY 列＝水面線，圖底以下用 bottomColor 補到畫面底"
+   }
+  },
+  "s2": {
+   "column": {
+    "path": "v2/terrain/wf_s2_column.webp",
+    "w": 420,
+    "h": 793,
+    "tileY": true,
+    "seam": 1.29,
+    "displayScale": 1.0,
+    "source": "wf_s2_column.try1.png",
+    "use": "水柱：上下重複，程式每秒往下捲約 360 像素（看起來在流）"
+   },
+   "foam": {
+    "path": "v2/terrain/wf_s2_foam.webp",
+    "w": 420,
+    "h": 750,
+    "tileY": true,
+    "seam": 0.8,
+    "displayScale": 1.0,
+    "source": "wf_s2_foam.try1.png",
+    "use": "白沫疊層：疊在水柱上、捲得比水柱快（約 1.5 倍）、半透明"
+   },
+   "lip": {
+    "path": "v2/terrain/wf_s2_lip.webp",
+    "w": 560,
+    "h": 353,
+    "displayScale": 1.0,
+    "source": "wf_s2_lip.try1.png",
+    "use": "水口（瀑布頂）：蓋在水柱最上端，水柱從它下面接出去"
+   },
+   "splash": {
+    "frames": [
+     {
+      "path": "v2/terrain/wf_s2_splash_0.webp",
+      "w": 293,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s2_splash_1.webp",
+      "w": 293,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s2_splash_2.webp",
+      "w": 293,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s2_splash_3.webp",
+      "w": 293,
+      "h": 300
+     }
+    ],
+    "baseX": 145,
+    "source": "wf_s2_splash.try1.png",
+    "displayScale": 0.5,
+    "fps": 10,
+    "use": "落水水花 4 格循環，底部中心（baseX）對準水柱底"
+   },
+   "mist": {
+    "path": "v2/terrain/wf_s2_mist.webp",
+    "w": 1100,
+    "h": 236,
+    "displayScale": 1.0,
+    "source": "wf_s2_mist.try1.png",
+    "use": "水霧：半透明，蓋在瀑布底部與水潭上，慢慢左右飄；也能拿來蓋背景接縫"
+   }
+  },
+  "s3": {
+   "column": {
+    "path": "v2/terrain/wf_s3_column.webp",
+    "w": 420,
+    "h": 763,
+    "tileY": true,
+    "seam": 1.08,
+    "displayScale": 1.0,
+    "source": "wf_s3_column.try1.png",
+    "use": "水柱：上下重複，程式每秒往下捲約 360 像素（看起來在流）"
+   },
+   "foam": {
+    "path": "v2/terrain/wf_s3_foam.webp",
+    "w": 420,
+    "h": 804,
+    "tileY": true,
+    "seam": 0.99,
+    "displayScale": 1.0,
+    "source": "wf_s3_foam.try1.png",
+    "use": "白沫疊層：疊在水柱上、捲得比水柱快（約 1.5 倍）、半透明"
+   },
+   "lip": {
+    "path": "v2/terrain/wf_s3_lip.webp",
+    "w": 560,
+    "h": 363,
+    "displayScale": 1.0,
+    "source": "wf_s3_lip.try1.png",
+    "use": "水口（瀑布頂）：蓋在水柱最上端，水柱從它下面接出去"
+   },
+   "splash": {
+    "frames": [
+     {
+      "path": "v2/terrain/wf_s3_splash_0.webp",
+      "w": 327,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s3_splash_1.webp",
+      "w": 327,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s3_splash_2.webp",
+      "w": 327,
+      "h": 300
+     },
+     {
+      "path": "v2/terrain/wf_s3_splash_3.webp",
+      "w": 327,
+      "h": 300
+     }
+    ],
+    "baseX": 164,
+    "source": "wf_s3_splash.try1.png",
+    "displayScale": 0.5,
+    "fps": 10,
+    "use": "落水水花 4 格循環，底部中心（baseX）對準水柱底"
+   },
+   "mist": {
+    "path": "v2/terrain/wf_s3_mist.webp",
+    "w": 1100,
+    "h": 253,
+    "displayScale": 1.0,
+    "source": "wf_s3_mist.try1.png",
+    "use": "水霧：半透明，蓋在瀑布底部與水潭上，慢慢左右飄；也能拿來蓋背景接縫"
+   },
+   "pool": {
+    "frames": [
+     {
+      "path": "v2/terrain/wf_s3_pool_0.webp",
+      "w": 976,
+      "h": 311
+     },
+     {
+      "path": "v2/terrain/wf_s3_pool_1.webp",
+      "w": 976,
+      "h": 311
+     },
+     {
+      "path": "v2/terrain/wf_s3_pool_2.webp",
+      "w": 976,
+      "h": 311
+     },
+     {
+      "path": "v2/terrain/wf_s3_pool_3.webp",
+      "w": 976,
+      "h": 311
+     }
+    ],
+    "surfaceY": 14,
+    "tileX": true,
+    "fps": 6,
+    "displayScale": 1.0,
+    "seam": 1.07,
+    "bottomColor": "#000407",
+    "source": "wf_s3_pool.try1.png",
+    "use": "s3 水潭：4 格輪播（約每秒 6 格）；每格都左右無縫重複；第 surfaceY 列＝水面線，圖底以下用 bottomColor 補到畫面底"
+   }
+  }
+ },
+ "cover": {
+  "cover_s1_1": {
+   "path": "v2/props/cover_s1_1.webp",
+   "w": 283,
+   "h": 130,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "蕨類草叢（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s1_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s1_2": {
+   "path": "v2/props/cover_s1_2.webp",
+   "w": 314,
+   "h": 130,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "苔石堆（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s1_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s1_3": {
+   "path": "v2/props/cover_s1_3.webp",
+   "w": 243,
+   "h": 130,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "芒草叢（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s1_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s1_4": {
+   "path": "v2/props/cover_s1_4.webp",
+   "w": 341,
+   "h": 129,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "倒木（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s1_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s1_fore": {
+   "path": "v2/terrain/cover_s1_fore.webp",
+   "w": 1280,
+   "h": 343,
+   "displayScale": 1.0,
+   "source": "cover_s1_fore.try1.png",
+   "use": "前景遮蓋件（貼畫面底、比地形快捲），用來蓋背景插段接縫或段落轉場"
+  },
+  "cover_s2_1": {
+   "path": "v2/props/cover_s2_1.webp",
+   "w": 218,
+   "h": 130,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "蘆葦香蒲（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s2_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s2_2": {
+   "path": "v2/props/cover_s2_2.webp",
+   "w": 285,
+   "h": 129,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "苔石堆（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s2_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s2_3": {
+   "path": "v2/props/cover_s2_3.webp",
+   "w": 254,
+   "h": 130,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "紅葉矮叢（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s2_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s2_4": {
+   "path": "v2/props/cover_s2_4.webp",
+   "w": 241,
+   "h": 130,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "小石燈籠（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s2_sheet.try1.png",
+   "displayH": 64
+  },
+  "cover_s2_fore": {
+   "path": "v2/terrain/cover_s2_fore.webp",
+   "w": 1280,
+   "h": 358,
+   "displayScale": 1.0,
+   "source": "cover_s2_fore.try1.png",
+   "use": "前景遮蓋件（貼畫面底、比地形快捲），用來蓋背景插段接縫或段落轉場"
+  },
+  "cover_s3_1": {
+   "path": "v2/props/cover_s3_1.webp",
+   "w": 212,
+   "h": 114,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "斷管閥門堆（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s3_sheet.try1.png",
+   "displayH": 56
+  },
+  "cover_s3_2": {
+   "path": "v2/props/cover_s3_2.webp",
+   "w": 265,
+   "h": 114,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "煤與廢鐵（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s3_sheet.try1.png",
+   "displayH": 56
+  },
+  "cover_s3_3": {
+   "path": "v2/props/cover_s3_3.webp",
+   "w": 279,
+   "h": 114,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "鐵板齒輪堆（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s3_sheet.try1.png",
+   "displayH": 56
+  },
+  "cover_s3_4": {
+   "path": "v2/props/cover_s3_4.webp",
+   "w": 307,
+   "h": 114,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "鐵箱（遮地面接縫、坡頂坡底轉折）",
+   "source": "cover_s3_sheet.try1.png",
+   "displayH": 56
+  },
+  "cover_s3_fore": {
+   "path": "v2/terrain/cover_s3_fore.webp",
+   "w": 1280,
+   "h": 311,
+   "displayScale": 1.0,
+   "source": "cover_s3_fore.try1.png",
+   "use": "前景遮蓋件（貼畫面底、比地形快捲），用來蓋背景插段接縫或段落轉場"
+  }
+ },
+ "props": {
+  "stone_s1_1": {
+   "path": "v2/props/stone_s1_1.webp",
+   "w": 309,
+   "h": 122,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瀑布水潭踏腳石（頂面可站）",
+   "source": "stones_s1.try1.png",
+   "displayH": 60
+  },
+  "stone_s1_2": {
+   "path": "v2/props/stone_s1_2.webp",
+   "w": 223,
+   "h": 121,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瀑布水潭踏腳石（頂面可站）",
+   "source": "stones_s1.try1.png",
+   "displayH": 60
+  },
+  "stone_s1_3": {
+   "path": "v2/props/stone_s1_3.webp",
+   "w": 187,
+   "h": 120,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瀑布水潭踏腳石（頂面可站）",
+   "source": "stones_s1.try1.png",
+   "displayH": 60
+  },
+  "stone_s2_1": {
+   "path": "v2/props/stone_s2_1.webp",
+   "w": 285,
+   "h": 122,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瀑布水潭踏腳石（頂面可站）",
+   "source": "stones_s2.try1.png",
+   "displayH": 60
+  },
+  "stone_s2_2": {
+   "path": "v2/props/stone_s2_2.webp",
+   "w": 264,
+   "h": 120,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瀑布水潭踏腳石（頂面可站）",
+   "source": "stones_s2.try1.png",
+   "displayH": 60
+  },
+  "stone_s2_3": {
+   "path": "v2/props/stone_s2_3.webp",
+   "w": 213,
+   "h": 120,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瀑布水潭踏腳石（頂面可站）",
+   "source": "stones_s2.try1.png",
+   "displayH": 60
+  }
+ }
+}

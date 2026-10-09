@@ -1,0 +1,1153 @@
+{
+ "_說明": "第三批美術（tools/gen_fx2.py 生、tools/post_fx2.py 後製；規劃見 docs/2026-09-26_美術補強與場景變化規劃.md 第四節）。圖在 public/art/fx2/。檔案多半存成建議顯示大小的 2 倍（displayScale 0.5）；魔王特寫、村貓、招牌照各自寫的大小。動畫 frames 每一格畫布同樣大小，anchor [x, y]（檔案像素）在每一格的同一個位置：畫的時候把 anchor 對到要的座標即可。anchorKind：center 特效中心、core 火球本體（拖尾在後）、bottom 底部中間貼地、right 右端中間。facing＝圖上朝向，反方向請水平翻轉。renderCase＝對應 src/render.ts 現在程式畫的那一段。檢查用總覽圖在 art_raw/fx2/_check/fx2_*.png，模擬遊戲畫面在 art_raw/fx2/_check/sim_*.png。",
+ "bosses": {
+  "boss_drum_tanuki": {
+   "path": "fx2/boss_drum_tanuki.webp",
+   "w": 1280,
+   "h": 420,
+   "name": "太鼓狸",
+   "displayScale": 1.0,
+   "anchor": "畫面座標：整張放在 (0, 300)＝底邊貼齊畫面底（角色的下緣與右緣是被切掉的，一定要貼齊畫面邊，否則會露出一條直線）",
+   "source": "boss_drum_tanuki.try1.png",
+   "use": "魔王登場特寫：太鼓狸（角色靠右、面向左，左邊約 40% 留給程式寫名字）；可從右邊滑進來配警告橫幅",
+   "renderCase": "drawBanners style=boss（魔王出場）"
+  },
+  "boss_orange_king": {
+   "path": "fx2/boss_orange_king.webp",
+   "w": 1280,
+   "h": 420,
+   "name": "橘皮大王",
+   "displayScale": 1.0,
+   "anchor": "畫面座標：整張放在 (0, 300)＝底邊貼齊畫面底（角色的下緣與右緣是被切掉的，一定要貼齊畫面邊，否則會露出一條直線）",
+   "source": "boss_orange_king.try1.png",
+   "use": "魔王登場特寫：橘皮大王（角色靠右、面向左，左邊約 40% 留給程式寫名字）；可從右邊滑進來配警告橫幅",
+   "renderCase": "drawBanners style=boss（魔王出場）"
+  },
+  "boss_frog_daimyo": {
+   "path": "fx2/boss_frog_daimyo.webp",
+   "w": 1280,
+   "h": 420,
+   "name": "蛙大名",
+   "displayScale": 1.0,
+   "anchor": "畫面座標：整張放在 (0, 300)＝底邊貼齊畫面底（角色的下緣與右緣是被切掉的，一定要貼齊畫面邊，否則會露出一條直線）",
+   "source": "boss_frog_daimyo.try2.png",
+   "use": "魔王登場特寫：蛙大名（角色靠右、面向左，左邊約 40% 留給程式寫名字）；可從右邊滑進來配警告橫幅",
+   "renderCase": "drawBanners style=boss（魔王出場）"
+  },
+  "boss_tanuki_lord": {
+   "path": "fx2/boss_tanuki_lord.webp",
+   "w": 1280,
+   "h": 420,
+   "name": "狸大人",
+   "displayScale": 1.0,
+   "anchor": "畫面座標：整張放在 (0, 300)＝底邊貼齊畫面底（角色的下緣與右緣是被切掉的，一定要貼齊畫面邊，否則會露出一條直線）",
+   "source": "boss_tanuki_lord.try1.png",
+   "use": "魔王登場特寫：狸大人（角色靠右、面向左，左邊約 40% 留給程式寫名字）；可從右邊滑進來配警告橫幅",
+   "renderCase": "drawBanners style=boss（魔王出場）"
+  },
+  "boss_roomba_king": {
+   "path": "fx2/boss_roomba_king.webp",
+   "w": 1280,
+   "h": 420,
+   "name": "掃地機王",
+   "displayScale": 1.0,
+   "anchor": "畫面座標：整張放在 (0, 300)＝底邊貼齊畫面底（角色的下緣與右緣是被切掉的，一定要貼齊畫面邊，否則會露出一條直線）",
+   "source": "boss_roomba_king.try1.png",
+   "use": "魔王登場特寫：掃地機王（角色靠右、面向左，左邊約 40% 留給程式寫名字）；可從右邊滑進來配警告橫幅",
+   "renderCase": "drawBanners style=boss（魔王出場）"
+  },
+  "boss_iron_claw": {
+   "path": "fx2/boss_iron_claw.webp",
+   "w": 1280,
+   "h": 420,
+   "name": "鐵爪機關貓",
+   "displayScale": 1.0,
+   "anchor": "畫面座標：整張放在 (0, 300)＝底邊貼齊畫面底（角色的下緣與右緣是被切掉的，一定要貼齊畫面邊，否則會露出一條直線）",
+   "source": "boss_iron_claw.try1.png",
+   "use": "魔王登場特寫：鐵爪機關貓（角色靠右、面向左，左邊約 40% 留給程式寫名字）；可從右邊滑進來配警告橫幅",
+   "renderCase": "drawBanners style=boss（魔王出場）"
+  }
+ },
+ "bullets": {
+  "fireball": {
+   "frames": [
+    "fx2/fireball_1.webp",
+    "fx2/fireball_2.webp",
+    "fx2/fireball_3.webp"
+   ],
+   "w": 132,
+   "h": 73,
+   "anchor": [
+    35,
+    39
+   ],
+   "anchorKind": "core",
+   "displayScale": 0.5,
+   "fps": 12,
+   "loop": true,
+   "use": "燈籠鬼火球（往左飛、拖尾在右；本體中心＝anchor）",
+   "renderCase": "drawBullet case 'fireball'（沒有 cyanHalo 時）",
+   "source": "b_fireball.try1.png",
+   "facing": "left"
+  },
+  "fireball_cyan": {
+   "frames": [
+    "fx2/fireball_cyan_1.webp",
+    "fx2/fireball_cyan_2.webp",
+    "fx2/fireball_cyan_3.webp"
+   ],
+   "w": 136,
+   "h": 78,
+   "anchor": [
+    39,
+    43
+   ],
+   "anchorKind": "core",
+   "displayScale": 0.5,
+   "fps": 12,
+   "loop": true,
+   "use": "夜祭段的青白火球（cyanHalo 時用這版）",
+   "renderCase": "drawBullet case 'fireball'（cyanHalo）",
+   "source": "b_fireball_cyan.try1.png",
+   "facing": "left"
+  },
+  "wave": {
+   "frames": [
+    "fx2/wave_1.webp",
+    "fx2/wave_2.webp",
+    "fx2/wave_3.webp"
+   ],
+   "w": 225,
+   "h": 102,
+   "anchor": [
+    112,
+    99
+   ],
+   "anchorKind": "bottom",
+   "displayScale": 0.5,
+   "fps": 12,
+   "loop": true,
+   "use": "地面震波（往右滑，底部中間貼地面 b.y；往左請翻轉）",
+   "renderCase": "drawBullet case 'wave'（判定 64x58）",
+   "source": "b_wave.try1.png",
+   "facing": "right"
+  },
+  "water": {
+   "frames": [
+    "fx2/water_1.webp",
+    "fx2/water_2.webp"
+   ],
+   "w": 136,
+   "h": 50,
+   "anchor": [
+    33,
+    25
+   ],
+   "anchorKind": "core",
+   "displayScale": 0.5,
+   "fps": 10,
+   "loop": true,
+   "use": "河童水彈（往左飛）",
+   "renderCase": "drawBullet case 'water'",
+   "source": "b_water_splash.try1.png",
+   "facing": "left"
+  },
+  "splash": {
+   "frames": [
+    "fx2/splash_1.webp",
+    "fx2/splash_2.webp",
+    "fx2/splash_3.webp"
+   ],
+   "w": 125,
+   "h": 121,
+   "anchor": [
+    59,
+    118
+   ],
+   "anchorKind": "bottom",
+   "displayScale": 0.5,
+   "fps": 14,
+   "loop": false,
+   "use": "水花（底部中間＝水面／地面；3 格播一次）",
+   "renderCase": "drawBullet case 'splash'（判定 22x22；也可當入水、落水特效）",
+   "source": "b_water_splash.try1.png"
+  },
+  "fan": {
+   "frames": [
+    "fx2/fan.webp"
+   ],
+   "w": 133,
+   "h": 103,
+   "anchor": [
+    66,
+    39
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "面具舞者的扇子（程式會轉；中心＝扇軸附近的重心）",
+   "renderCase": "drawBullet case 'fan'（判定 50x40）",
+   "source": "b_misc.try1.png"
+  },
+  "pellet_1": {
+   "frames": [
+    "fx2/pellet_1.webp"
+   ],
+   "w": 65,
+   "h": 65,
+   "anchor": [
+    33,
+    33
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "甲蟲光彈第 1 格",
+   "renderCase": "drawBullet case 'pellet'",
+   "source": "b_misc.try1.png"
+  },
+  "pellet_2": {
+   "frames": [
+    "fx2/pellet_2.webp"
+   ],
+   "w": 75,
+   "h": 77,
+   "anchor": [
+    37,
+    38
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "甲蟲光彈第 2 格（兩格交替閃）",
+   "renderCase": "drawBullet case 'pellet'",
+   "source": "b_misc.try1.png"
+  },
+  "bubble_1": {
+   "frames": [
+    "fx2/bubble_1.webp"
+   ],
+   "w": 125,
+   "h": 123,
+   "anchor": [
+    61,
+    60
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "泡泡第 1 格",
+   "renderCase": "drawBullet case 'bubble'（b.w＝56）",
+   "source": "b_misc.try1.png"
+  },
+  "bubble_2": {
+   "frames": [
+    "fx2/bubble_2.webp"
+   ],
+   "w": 125,
+   "h": 104,
+   "anchor": [
+    62,
+    52
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "泡泡第 2 格（兩格交替＝晃）",
+   "renderCase": "drawBullet case 'bubble'",
+   "source": "b_misc.try1.png"
+  },
+  "foxfire": {
+   "frames": [
+    "fx2/foxfire_1.webp",
+    "fx2/foxfire_2.webp",
+    "fx2/foxfire_3.webp"
+   ],
+   "w": 79,
+   "h": 133,
+   "anchor": [
+    38,
+    80
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 10,
+   "loop": true,
+   "use": "白狐巫女的狐火（藍白火，火尖朝上）",
+   "renderCase": "drawBullet case 'foxfire'",
+   "source": "b_foxfire.try1.png"
+  },
+  "gust": {
+   "frames": [
+    "fx2/gust_1.webp",
+    "fx2/gust_2.webp",
+    "fx2/gust_3.webp"
+   ],
+   "w": 1167,
+   "h": 287,
+   "anchor": [
+    571,
+    153
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 10,
+   "loop": true,
+   "use": "天狗的風（往右吹；判定 500x200，整張蓋在判定範圍上，半透明疊）",
+   "renderCase": "drawBullet case 'gust'",
+   "source": "b_gust.try1.png",
+   "facing": "right"
+  },
+  "garbage_can": {
+   "frames": [
+    "fx2/garbage_can.webp"
+   ],
+   "w": 117,
+   "h": 76,
+   "anchor": [
+    59,
+    40
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "掃地機王垃圾彈：空罐（程式會轉）",
+   "renderCase": "drawBullet case 'garbage'（隨機挑一種）",
+   "source": "b_garbage.try1.png"
+  },
+  "garbage_bone": {
+   "frames": [
+    "fx2/garbage_bone.webp"
+   ],
+   "w": 125,
+   "h": 47,
+   "anchor": [
+    57,
+    24
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "垃圾彈：魚骨",
+   "renderCase": "drawBullet case 'garbage'",
+   "source": "b_garbage.try1.png"
+  },
+  "garbage_paper": {
+   "frames": [
+    "fx2/garbage_paper.webp"
+   ],
+   "w": 105,
+   "h": 96,
+   "anchor": [
+    51,
+    49
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "垃圾彈：紙團",
+   "renderCase": "drawBullet case 'garbage'",
+   "source": "b_garbage.try1.png"
+  },
+  "missile": {
+   "frames": [
+    "fx2/missile.webp"
+   ],
+   "w": 133,
+   "h": 65,
+   "anchor": [
+    56,
+    33
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "facing": "right",
+   "tailX": 2,
+   "use": "鐵爪飛彈（頭朝右；程式照速度方向轉：ctx.rotate(atan2(vy, vx))）；tailX＝尾巴在圖上的 x，尾焰接在這裡",
+   "renderCase": "drawBullet case 'missile'（判定 26x60）",
+   "source": "b_missile.try1.png"
+  },
+  "missile_flame": {
+   "frames": [
+    "fx2/missile_flame_1.webp",
+    "fx2/missile_flame_2.webp"
+   ],
+   "w": 128,
+   "h": 55,
+   "anchor": [
+    125,
+    29
+   ],
+   "anchorKind": "right",
+   "displayScale": 0.5,
+   "fps": 20,
+   "loop": true,
+   "facing": "left",
+   "use": "飛彈尾焰 2 格（噴口在右端中間＝anchor，接在飛彈 tailX；跟飛彈一起轉）",
+   "renderCase": "drawBullet case 'missile'",
+   "source": "b_missile.try1.png"
+  },
+  "laser_beam": {
+   "path": "fx2/laser_beam.webp",
+   "w": 1388,
+   "h": 200,
+   "tileX": true,
+   "displayScale": 0.5,
+   "displayH": 100,
+   "coreY": [
+    69,
+    114
+   ],
+   "use": "鐵爪雷射光束段：左右無縫重複；縱向置中對齊判定帶中線，縮放到帶子高（高 100、低 70）的 1～1.2 倍；建議用 lighter 混色畫，才亮；嘴巴那一端的第一段把起點 50 像素淡入（或用 laser_muzzle 蓋住），不然會看到一刀切的直邊",
+   "renderCase": "drawEnemyExtras iron_claw laser（fillRect 那條）",
+   "source": "b_laser_beam.try1.png"
+  },
+  "laser_muzzle": {
+   "frames": [
+    "fx2/laser_muzzle.webp"
+   ],
+   "w": 305,
+   "h": 163,
+   "anchor": [
+    101,
+    85
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "雷射發射口閃光（光芒往右；朝左請翻轉），中心對齊嘴巴 (mx, my)",
+   "renderCase": "drawEnemyExtras iron_claw laser 嘴巴",
+   "source": "b_laser_ends.try1.png",
+   "facing": "right"
+  },
+  "laser_hit": {
+   "frames": [
+    "fx2/laser_hit.webp"
+   ],
+   "w": 265,
+   "h": 233,
+   "anchor": [
+    150,
+    116
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "雷射打中點（火花往左噴；照射方向翻轉），放在光束盡頭或打中球球的位置",
+   "renderCase": "drawEnemyExtras iron_claw laser 盡頭",
+   "source": "b_laser_ends.try1.png",
+   "facing": "left"
+  }
+ },
+ "explosions": {
+  "explosion_small": {
+   "frames": [
+    "fx2/explosion_small_1.webp",
+    "fx2/explosion_small_2.webp",
+    "fx2/explosion_small_3.webp",
+    "fx2/explosion_small_4.webp",
+    "fx2/explosion_small_5.webp",
+    "fx2/explosion_small_6.webp",
+    "fx2/explosion_small_7.webp",
+    "fx2/explosion_small_8.webp"
+   ],
+   "w": 445,
+   "h": 414,
+   "anchor": [
+    224,
+    209
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 16,
+   "loop": false,
+   "use": "小爆炸 8 格（閃光→火球→最大→黑煙→散掉）；半徑 r < 90 用這組",
+   "renderCase": "drawExplosion（取代 explosion_1～4）",
+   "source": "x_small.try1.png",
+   "note": "建議：畫布寬 ≈ r × 3.2（現在的 r 也可以直接換算：顯示倍率＝r×3.2 ÷ 檔案寬）；8 格照 k＝age/life 均分（第 floor(k×8) 格），最後 25% 淡出"
+  },
+  "explosion_medium": {
+   "frames": [
+    "fx2/explosion_medium_1.webp",
+    "fx2/explosion_medium_2.webp",
+    "fx2/explosion_medium_3.webp",
+    "fx2/explosion_medium_4.webp",
+    "fx2/explosion_medium_5.webp",
+    "fx2/explosion_medium_6.webp",
+    "fx2/explosion_medium_7.webp",
+    "fx2/explosion_medium_8.webp"
+   ],
+   "w": 765,
+   "h": 703,
+   "anchor": [
+    384,
+    377
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 16,
+   "loop": false,
+   "use": "中爆炸 8 格（閃光→火球→最大→黑煙→散掉）；半徑 r 90～160 用這組",
+   "renderCase": "drawExplosion（取代 explosion_1～4）",
+   "source": "x_medium.try1.png",
+   "note": "建議：畫布寬 ≈ r × 3.2（現在的 r 也可以直接換算：顯示倍率＝r×3.2 ÷ 檔案寬）；8 格照 k＝age/life 均分（第 floor(k×8) 格），最後 25% 淡出"
+  },
+  "explosion_large": {
+   "frames": [
+    "fx2/explosion_large_1.webp",
+    "fx2/explosion_large_2.webp",
+    "fx2/explosion_large_3.webp",
+    "fx2/explosion_large_4.webp",
+    "fx2/explosion_large_5.webp",
+    "fx2/explosion_large_6.webp",
+    "fx2/explosion_large_7.webp",
+    "fx2/explosion_large_8.webp"
+   ],
+   "w": 1285,
+   "h": 1319,
+   "anchor": [
+    652,
+    678
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 16,
+   "loop": false,
+   "use": "大爆炸 8 格（閃光→火球→最大→黑煙→散掉）；半徑 r ≥ 160 用這組",
+   "renderCase": "drawExplosion（取代 explosion_1～4）",
+   "source": "x_large.try1.png",
+   "note": "建議：畫布寬 ≈ r × 3.2（現在的 r 也可以直接換算：顯示倍率＝r×3.2 ÷ 檔案寬）；8 格照 k＝age/life 均分（第 floor(k×8) 格），最後 25% 淡出"
+  }
+ },
+ "hud": {
+  "hud_score": {
+   "path": "fx2/hud_score.webp",
+   "w": 660,
+   "h": 184,
+   "displayW": 330,
+   "displayH": 92,
+   "displayScale": 0.5,
+   "inner": [
+    57,
+    43,
+    592,
+    133
+   ],
+   "use": "左上：球球、血（貓掌）、命、分數（框內留空，字與圖示由程式畫；inner＝框內深色平板的範圍，檔案像素）",
+   "renderCase": "drawHud panel(14, 12, 330, 92)",
+   "source": "hud_frames.try1.png"
+  },
+  "hud_weapon": {
+   "path": "fx2/hud_weapon.webp",
+   "w": 660,
+   "h": 184,
+   "displayW": 330,
+   "displayH": 92,
+   "displayScale": 0.5,
+   "inner": [
+    57,
+    43,
+    592,
+    133
+   ],
+   "use": "忍具與副武器（框內留空，字與圖示由程式畫；inner＝框內深色平板的範圍，檔案像素）",
+   "renderCase": "drawHud panel(354, 12, 330, 92)",
+   "source": "hud_frames.try1.png"
+  },
+  "hud_time": {
+   "path": "fx2/hud_time.webp",
+   "w": 300,
+   "h": 120,
+   "displayW": 150,
+   "displayH": 60,
+   "displayScale": 0.5,
+   "inner": [
+    44,
+    29,
+    256,
+    85
+   ],
+   "use": "中上：時間（框內留空，字與圖示由程式畫；inner＝框內深色平板的範圍，檔案像素）",
+   "renderCase": "drawHud panel(VIEW_W/2+60, 12, 150, 60)",
+   "source": "hud_frames.try1.png"
+  },
+  "hud_cats": {
+   "path": "fx2/hud_cats.webp",
+   "w": 400,
+   "h": 120,
+   "displayW": 200,
+   "displayH": 60,
+   "displayScale": 0.5,
+   "inner": [
+    44,
+    29,
+    356,
+    85
+   ],
+   "use": "右上：村貓 n / m（框內留空，字與圖示由程式畫；inner＝框內深色平板的範圍，檔案像素）",
+   "renderCase": "drawHud panel(VIEW_W-214, 12, 200, 60)",
+   "source": "hud_frames.try1.png"
+  },
+  "hud_boss": {
+   "path": "fx2/hud_boss.webp",
+   "w": 1304,
+   "h": 140,
+   "displayW": 652,
+   "displayH": 70,
+   "displayScale": 0.5,
+   "inner": [
+    48,
+    33,
+    1238,
+    101
+   ],
+   "use": "魔王血條框（名字＋血條都畫在框內）（框內留空，字與圖示由程式畫；inner＝框內深色平板的範圍，檔案像素）",
+   "renderCase": "drawHud 魔王血條 panel(bx-16, by-34, bw+32, 70)",
+   "source": "hud_frames.try1.png"
+  },
+  "hud_bar": {
+   "path": "fx2/hud_bar.webp",
+   "w": 1280,
+   "h": 52,
+   "displayW": 640,
+   "displayH": 26,
+   "displayScale": 0.5,
+   "inner": [
+    53,
+    18,
+    1213,
+    33
+   ],
+   "renderCase": "drawHud 魔王血條本體（620x18 的槽）",
+   "use": "魔王血條的木槽（可選：血條 fillRect 畫在 inner 範圍裡）",
+   "source": "hud_frames.try1.png"
+  },
+  "paw_full": {
+   "path": "fx2/paw_full.webp",
+   "w": 64,
+   "h": 57,
+   "displayW": 30,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "生命：貓掌（有血）（取代 heart()，顯示約 30 像素）",
+   "renderCase": "drawHud heart(ctx, 100 + i*34, 36, 13, ...)",
+   "source": "hud_paws.try1.png"
+  },
+  "paw_empty": {
+   "path": "fx2/paw_empty.webp",
+   "w": 64,
+   "h": 57,
+   "displayW": 30,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "生命：貓掌（沒血）（取代 heart()，顯示約 30 像素）",
+   "renderCase": "drawHud heart(ctx, 100 + i*34, 36, 13, ...)",
+   "source": "hud_paws.try1.png"
+  },
+  "cat_token": {
+   "path": "fx2/cat_token.webp",
+   "w": 63,
+   "h": 64,
+   "displayW": 30,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "村貓小徽章（可放村貓框左邊）（取代 heart()，顯示約 30 像素）",
+   "renderCase": "drawHud heart(ctx, 100 + i*34, 36, 13, ...)",
+   "source": "hud_paws.try1.png"
+  }
+ },
+ "npc": {
+  "npc_orange_white_tied": {
+   "path": "fx2/npc_orange_white_tied.webp",
+   "w": 636,
+   "h": 764,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_orange_white.try1.png",
+   "use": "被救村貓（橘白）被綁在木樁上：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_orange_white_happy": {
+   "path": "fx2/npc_orange_white_happy.webp",
+   "w": 686,
+   "h": 763,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_orange_white.try1.png",
+   "use": "被救村貓（橘白）被救後揮手：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_black_tied": {
+   "path": "fx2/npc_black_tied.webp",
+   "w": 641,
+   "h": 762,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_black.try1.png",
+   "use": "被救村貓（全黑）被綁在木樁上：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_black_happy": {
+   "path": "fx2/npc_black_happy.webp",
+   "w": 691,
+   "h": 762,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_black.try1.png",
+   "use": "被救村貓（全黑）被救後揮手：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_white_tied": {
+   "path": "fx2/npc_white_tied.webp",
+   "w": 684,
+   "h": 764,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_white.try1.png",
+   "use": "被救村貓（全白）被綁在木樁上：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_white_happy": {
+   "path": "fx2/npc_white_happy.webp",
+   "w": 704,
+   "h": 763,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_white.try1.png",
+   "use": "被救村貓（全白）被救後揮手：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_siamese_tied": {
+   "path": "fx2/npc_siamese_tied.webp",
+   "w": 660,
+   "h": 762,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_siamese.try1.png",
+   "use": "被救村貓（暹羅）被綁在木樁上：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_siamese_happy": {
+   "path": "fx2/npc_siamese_happy.webp",
+   "w": 682,
+   "h": 762,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_siamese.try1.png",
+   "use": "被救村貓（暹羅）被救後揮手：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_grey_tabby_tied": {
+   "path": "fx2/npc_grey_tabby_tied.webp",
+   "w": 636,
+   "h": 761,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_grey_tabby.try1.png",
+   "use": "被救村貓（灰虎斑）被綁在木樁上：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_grey_tabby_happy": {
+   "path": "fx2/npc_grey_tabby_happy.webp",
+   "w": 685,
+   "h": 761,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_grey_tabby.try1.png",
+   "use": "被救村貓（灰虎斑）被救後揮手：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_calico_long_tied": {
+   "path": "fx2/npc_calico_long_tied.webp",
+   "w": 761,
+   "h": 768,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_calico_long.try1.png",
+   "use": "被救村貓（三花長毛）被綁在木樁上：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  },
+  "npc_calico_long_happy": {
+   "path": "fx2/npc_calico_long_happy.webp",
+   "w": 743,
+   "h": 766,
+   "anchor": "bottom-center",
+   "facing": "left",
+   "displayH": 175,
+   "source": "cat_calico_long.try1.png",
+   "use": "被救村貓（三花長毛）被救後揮手：腳底＝圖底，照 art.json 既有 npc_* 的畫法（高 175）"
+  }
+ },
+ "particles": {
+  "smoke_white": {
+   "frames": [
+    "fx2/smoke_white_1.webp",
+    "fx2/smoke_white_2.webp",
+    "fx2/smoke_white_3.webp",
+    "fx2/smoke_white_4.webp"
+   ],
+   "w": 145,
+   "h": 126,
+   "anchor": [
+    61,
+    60
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 8,
+   "loop": false,
+   "use": "白煙 4 格（由小到大、變淡）：一顆煙從第 1 格播到第 4 格",
+   "renderCase": "drawParticle case 'smoke'（淺色）／'puff'",
+   "source": "p_smoke_white.try1.png",
+   "note": "畫的大小照粒子半徑：第 4 格寬 ≈ 2r×1.8"
+  },
+  "smoke_black": {
+   "frames": [
+    "fx2/smoke_black_1.webp",
+    "fx2/smoke_black_2.webp",
+    "fx2/smoke_black_3.webp",
+    "fx2/smoke_black_4.webp"
+   ],
+   "w": 172,
+   "h": 175,
+   "anchor": [
+    82,
+    89
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 8,
+   "loop": false,
+   "use": "黑煙 4 格（爆炸、火災、魔王冒煙）",
+   "renderCase": "drawParticle case 'smoke'（深色 #3a3040／#4a4048）",
+   "source": "p_smoke_black.try1.png"
+  },
+  "fire": {
+   "frames": [
+    "fx2/fire_1.webp",
+    "fx2/fire_2.webp",
+    "fx2/fire_3.webp",
+    "fx2/fire_4.webp"
+   ],
+   "w": 49,
+   "h": 92,
+   "anchor": [
+    24,
+    89
+   ],
+   "anchorKind": "bottom",
+   "displayScale": 0.5,
+   "fps": 12,
+   "loop": true,
+   "use": "小火焰 4 格循環（燒傷、火遁餘火）",
+   "renderCase": "drawParticle case 'fire'",
+   "source": "p_fire.try1.png"
+  },
+  "dust": {
+   "frames": [
+    "fx2/dust_1.webp",
+    "fx2/dust_2.webp",
+    "fx2/dust_3.webp",
+    "fx2/dust_4.webp"
+   ],
+   "w": 225,
+   "h": 100,
+   "anchor": [
+    108,
+    96
+   ],
+   "anchorKind": "bottom",
+   "displayScale": 0.5,
+   "fps": 14,
+   "loop": false,
+   "use": "落地揚塵 4 格（底部中間貼地；球球落地、敵人落地、衝刺）",
+   "renderCase": "drawParticle case 'puff'（#c9a77a 那種）",
+   "source": "p_dust.try1.png"
+  },
+  "spark": {
+   "frames": [
+    "fx2/spark.webp"
+   ],
+   "w": 42,
+   "h": 45,
+   "anchor": [
+    21,
+    22
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "火花（小四角星）",
+   "renderCase": "drawParticle case 'spark'",
+   "source": "p_small.try1.png"
+  },
+  "ember": {
+   "frames": [
+    "fx2/ember.webp"
+   ],
+   "w": 24,
+   "h": 33,
+   "anchor": [
+    11,
+    17
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "火星",
+   "renderCase": "drawParticle case 'ember'",
+   "source": "p_small.try1.png"
+  },
+  "drop_water": {
+   "frames": [
+    "fx2/drop_water.webp"
+   ],
+   "w": 26,
+   "h": 37,
+   "anchor": [
+    13,
+    21
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "水滴（酒桶、水花）",
+   "renderCase": "drawParticle case 'drop'（藍白）",
+   "source": "p_small.try1.png"
+  },
+  "star": {
+   "frames": [
+    "fx2/star.webp"
+   ],
+   "w": 49,
+   "h": 46,
+   "anchor": [
+    24,
+    24
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "暈眩星星（打倒、暈眩）",
+   "renderCase": "drawParticle case 'star'",
+   "source": "p_small.try1.png"
+  },
+  "drop_poison": {
+   "frames": [
+    "fx2/drop_poison.webp"
+   ],
+   "w": 26,
+   "h": 37,
+   "anchor": [
+    13,
+    21
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "毒液滴",
+   "renderCase": "drawParticle case 'drop'（#b06cff）",
+   "source": "p_small.try1.png"
+  },
+  "coin": {
+   "frames": [
+    "fx2/coin.webp"
+   ],
+   "w": 40,
+   "h": 41,
+   "anchor": [
+    19,
+    20
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "金幣（賽錢箱打爛撒出來）",
+   "renderCase": "drawParticle case 'drop'（#ffd23a）",
+   "source": "p_small.try1.png"
+  },
+  "hit_claw": {
+   "frames": [
+    "fx2/hit_claw.webp"
+   ],
+   "w": 225,
+   "h": 172,
+   "anchor": [
+    138,
+    73
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "打中火花：爪子劃過（揮爪打中）",
+   "renderCase": "world.damageEnemy kind='claw' 的 spark 那一串",
+   "source": "p_hits.try1.png"
+  },
+  "hit_shuriken": {
+   "frames": [
+    "fx2/hit_shuriken.webp"
+   ],
+   "w": 151,
+   "h": 165,
+   "anchor": [
+    71,
+    84
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "打中火花：手裏劍打中",
+   "renderCase": "打中火花（取代 art.json 的 hit_spark）",
+   "source": "p_hits.try1.png"
+  },
+  "hit_blunt": {
+   "frames": [
+    "fx2/hit_blunt.webp"
+   ],
+   "w": 190,
+   "h": 205,
+   "anchor": [
+    98,
+    108
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "打中火花：鈍擊（大手裏劍、爆裂、撞擊）",
+   "renderCase": "打中火花",
+   "source": "p_hits.try1.png"
+  }
+ },
+ "qiuqiu": {
+  "claw_arc": {
+   "frames": [
+    "fx2/claw_arc_1.webp",
+    "fx2/claw_arc_2.webp",
+    "fx2/claw_arc_3.webp"
+   ],
+   "w": 465,
+   "h": 356,
+   "anchor": [
+    176,
+    192
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "fps": 20,
+   "loop": false,
+   "use": "揮爪弧光 3 格（往右揮；朝左請翻轉），中心對齊爪子揮的位置（球球前方約 60、腳底上方約 110）",
+   "renderCase": "world 揮爪（event 'claw'）時在球球前面播一次",
+   "source": "q_claw.try1.png",
+   "facing": "right"
+  },
+  "throw_flash": {
+   "frames": [
+    "fx2/throw_flash.webp"
+   ],
+   "w": 145,
+   "h": 72,
+   "anchor": [
+    86,
+    37
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "丟出時的閃光（往右；朝左翻轉），放在出手點",
+   "renderCase": "fire 事件（丟手裏劍）",
+   "source": "q_flash.try1.png",
+   "facing": "right"
+  },
+  "twinkle": {
+   "frames": [
+    "fx2/twinkle.webp"
+   ],
+   "w": 81,
+   "h": 85,
+   "anchor": [
+    40,
+    43
+   ],
+   "anchorKind": "center",
+   "displayScale": 0.5,
+   "use": "小閃光（撿到道具、村貓掏出道具）",
+   "renderCase": "撿到道具",
+   "source": "q_flash.try1.png"
+  },
+  "respawn_pillar": {
+   "frames": [
+    "fx2/respawn_pillar.webp"
+   ],
+   "w": 624,
+   "h": 1440,
+   "anchor": [
+    312,
+    1440
+   ],
+   "anchorKind": "bottom",
+   "displayScale": 0.5,
+   "displayH": 720,
+   "use": "重生光柱（高 720＝整個畫面；底部中間＝球球落地點；淡入淡出用 alpha，建議 lighter 混色）",
+   "renderCase": "重生從天上掉下來",
+   "source": "q_respawn.try1.png"
+  },
+  "landing_dust": {
+   "same": "particles.dust",
+   "use": "落地揚塵跟粒子共用 particles.dust"
+  }
+ },
+ "signs": {
+  "sign_m1": {
+   "path": "fx2/sign_m1.webp",
+   "w": 1400,
+   "h": 382,
+   "text": "任務一 開始！",
+   "displayW": 780,
+   "anchor": "center",
+   "renderCase": "drawBanners style=mission",
+   "source": "sign_m1.try1.png",
+   "use": "書法招牌「任務一 開始！」（已逐字檢查）：畫在畫面中間，建議寬 780，程式把副標（關卡名）寫在招牌下方"
+  },
+  "sign_m2": {
+   "path": "fx2/sign_m2.webp",
+   "w": 1400,
+   "h": 398,
+   "text": "任務二 開始！",
+   "displayW": 780,
+   "anchor": "center",
+   "renderCase": "drawBanners style=mission",
+   "source": "sign_m2.try1.png",
+   "use": "書法招牌「任務二 開始！」（已逐字檢查）：畫在畫面中間，建議寬 780，程式把副標（關卡名）寫在招牌下方"
+  },
+  "sign_m3": {
+   "path": "fx2/sign_m3.webp",
+   "w": 1400,
+   "h": 406,
+   "text": "任務三 開始！",
+   "displayW": 780,
+   "anchor": "center",
+   "renderCase": "drawBanners style=mission",
+   "source": "sign_m3.try1.png",
+   "use": "書法招牌「任務三 開始！」（已逐字檢查）：畫在畫面中間，建議寬 780，程式把副標（關卡名）寫在招牌下方"
+  },
+  "sign_clear": {
+   "path": "fx2/sign_clear.webp",
+   "w": 1400,
+   "h": 390,
+   "text": "任務完成！",
+   "displayW": 780,
+   "anchor": "center",
+   "renderCase": "drawBanners style=mission（過關）",
+   "source": "sign_clear.try1.png",
+   "use": "書法招牌「任務完成！」（已逐字檢查）：畫在畫面中間，建議寬 780，程式把副標（關卡名）寫在招牌下方"
+  },
+  "sign_continue": {
+   "path": "fx2/sign_continue.webp",
+   "w": 1400,
+   "h": 462,
+   "text": "接關？",
+   "displayW": 560,
+   "anchor": "center",
+   "renderCase": "drawBanners style=接關畫面",
+   "source": "sign_continue.try1.png",
+   "use": "書法招牌「接關？」（已逐字檢查）：畫在畫面中間，建議寬 560，程式把副標（關卡名）寫在招牌下方"
+  },
+  "sign_warning": {
+   "path": "fx2/sign_warning.webp",
+   "w": 1400,
+   "h": 302,
+   "text": "（無字）",
+   "displayW": 1280,
+   "anchor": "center",
+   "renderCase": "drawBanners style=boss",
+   "source": "sign_warning.try1.png",
+   "use": "魔王警告橫幅（無字；「警告」與魔王名字由程式寫在中間紅色區，副標寫在下方）",
+   "inner": [
+    203,
+    28,
+    1183,
+    187
+   ]
+  }
+ }
+}
