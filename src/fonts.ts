@@ -10,7 +10,7 @@
  */
 export type FontKey = 'huninn' | 'wenkai' | 'old';
 export const FONT_KEYS: readonly FontKey[] = ['wenkai', 'huninn', 'old'];
-const SYS = '"Microsoft JhengHei", "Noto Sans TC", sans-serif';
+export const SYS = '"Microsoft JhengHei", "Noto Sans TC", sans-serif';
 const FAMILY: Record<Exclude<FontKey, 'old'>, string> = { huninn: 'QQ Huninn', wenkai: 'QQ WenKai' };
 export const FONT_LABEL: Record<FontKey, string> = { huninn: '粉圓', wenkai: '文楷', old: '原本的字' };
 

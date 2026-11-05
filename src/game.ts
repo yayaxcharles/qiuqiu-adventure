@@ -16,7 +16,7 @@ import { voice } from './voice';
 import { World } from './world';
 
 export type Screen = 'title' | 'play' | 'pause' | 'continue' | 'gameover' | 'result' | 'ending' | 'loading';
-import { FONT } from './fonts';   // 同 render.ts（10-09）
+import { FONT, SYS } from './fonts';   // 同 render.ts（10-09）
 const CONTINUE_SECONDS = 10;
 const RESULT_ROW = 0.55;
 
@@ -184,7 +184,10 @@ export class Game {
       ctx.font = `900 40px ${FONT}`; ctx.lineWidth = 8; ctx.strokeStyle = '#2a0a0a'; ctx.fillStyle = '#fff';
       ctx.strokeText(go, VIEW_W / 2, VIEW_H - 190); ctx.fillText(go, VIEW_W / 2, VIEW_H - 190);
     }
-    this.drawKeys(ctx, VIEW_H - 128);
+    this.drawKeys(ctx, VIEW_H - 140);
+    // 作者與信箱（同爪破魔塔首頁那行），壓在最底下
+    ctx.font = `bold 18px ${SYS}`; ctx.fillStyle = 'rgba(255,248,236,.82)'; // 系統字：遊戲字型的精簡檔沒有「彥呈©」
+    ctx.fillText('© 2026 葉彥呈 Charles Y.C. Yeh ｜ yayaxyayax@gmail.com', VIEW_W / 2, VIEW_H - 16);
   }
 
   /** 按鍵表（標題、暫停畫面）：一行一組「鍵：動作」，不寫教學句子（第二版第 7 節） */
