@@ -1,0 +1,310 @@
+{
+ "_說明": "背景生物（tools/export_ambient.py 產生）：stage＝哪一關用；frames 照順序循環播 fps；w、h＝畫面上畫的大小（像素）；facing＝圖上朝向",
+ "creatures": {
+  "goose": {
+   "stage": "s1",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp",
+    "13.webp",
+    "14.webp",
+    "15.webp",
+    "16.webp",
+    "17.webp",
+    "18.webp",
+    "19.webp",
+    "20.webp",
+    "21.webp",
+    "22.webp",
+    "23.webp"
+   ],
+   "w": 60,
+   "h": 58,
+   "fps": 12,
+   "facing": "left"
+  },
+  "bat": {
+   "stage": "s2",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp",
+    "13.webp"
+   ],
+   "w": 42,
+   "h": 44,
+   "fps": 12,
+   "facing": "left"
+  },
+  "rice_cat": {
+   "stage": "s1",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp"
+   ],
+   "w": 60,
+   "h": 66,
+   "fps": 12,
+   "facing": "left"
+  },
+  "cart_cat": {
+   "stage": "s1",
+   "frames": [
+    "00.webp"
+   ],
+   "w": 91,
+   "h": 66,
+   "fps": 1,
+   "facing": "left"
+  },
+  "deer": {
+   "stage": "s1",
+   "frames": [
+    "00.webp"
+   ],
+   "w": 58,
+   "h": 62,
+   "fps": 1,
+   "facing": "left"
+  },
+  "torch_bandit": {
+   "stage": "s1",
+   "frames": [
+    "00.webp"
+   ],
+   "w": 54,
+   "h": 66,
+   "fps": 1,
+   "facing": "left"
+  },
+  "fox": {
+   "stage": "s2",
+   "frames": [
+    "00.webp"
+   ],
+   "w": 87,
+   "h": 46,
+   "fps": 1,
+   "facing": "left"
+  },
+  "carp": {
+   "stage": "s2",
+   "frames": [
+    "00.webp"
+   ],
+   "w": 56,
+   "h": 56,
+   "fps": 1,
+   "facing": "left"
+  },
+  "mech_soldier": {
+   "stage": "s3",
+   "frames": [
+    "00.webp"
+   ],
+   "w": 33,
+   "h": 52,
+   "fps": 1,
+   "facing": "left"
+  },
+  "parade_kasa": {
+   "stage": "s2",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp",
+    "13.webp",
+    "14.webp",
+    "15.webp",
+    "16.webp",
+    "17.webp",
+    "18.webp",
+    "19.webp",
+    "20.webp",
+    "21.webp",
+    "22.webp",
+    "23.webp",
+    "24.webp"
+   ],
+   "w": 49,
+   "h": 51,
+   "fps": 12.5,
+   "facing": "left"
+  },
+  "parade_lantern": {
+   "stage": "s2",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp",
+    "13.webp",
+    "14.webp",
+    "15.webp",
+    "16.webp",
+    "17.webp",
+    "18.webp",
+    "19.webp"
+   ],
+   "w": 45,
+   "h": 47,
+   "fps": 12.63,
+   "facing": "left"
+  },
+  "parade_tanuki": {
+   "stage": "s2",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp",
+    "13.webp",
+    "14.webp",
+    "15.webp",
+    "16.webp"
+   ],
+   "w": 37,
+   "h": 41,
+   "fps": 12.75,
+   "facing": "left"
+  },
+  "parade_kappa": {
+   "stage": "s2",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp"
+   ],
+   "w": 33,
+   "h": 50,
+   "fps": 12.48,
+   "facing": "left"
+  },
+  "parade_dancer": {
+   "stage": "s2",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp",
+    "13.webp",
+    "14.webp",
+    "15.webp",
+    "16.webp"
+   ],
+   "w": 36,
+   "h": 54,
+   "fps": 12.36,
+   "facing": "left"
+  },
+  "parade_fox": {
+   "stage": "s2",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp"
+   ],
+   "w": 53,
+   "h": 53,
+   "fps": 16.0,
+   "facing": "left"
+  },
+  "claw_shadow": {
+   "stage": "s3",
+   "frames": [
+    "00.webp",
+    "01.webp",
+    "02.webp",
+    "03.webp",
+    "04.webp",
+    "05.webp",
+    "06.webp",
+    "07.webp",
+    "08.webp",
+    "09.webp",
+    "10.webp",
+    "11.webp",
+    "12.webp",
+    "13.webp",
+    "14.webp"
+   ],
+   "w": 288,
+   "h": 243,
+   "fps": 12.86,
+   "facing": "left"
+  }
+ }
+}

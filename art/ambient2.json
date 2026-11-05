@@ -1,0 +1,1144 @@
+{
+ "_說明": "天氣、背景生物、大場面（2026-09-27，tools/gen_ambient2.py 生、tools/post_ambient2.py 後製）。使用者裁定：大場面（火箭、隕石、碎鐵、閃電）只當背景熱鬧、不扣血，所以都畫得偏小、偏暗、帶霧色，放在遠景或中景層。每項 frames 是同一種東西的幾張（「種」＝隨機挑、「格」＝照順序播）。黑底生成的光效（霧、雨、光束、火花、流星、閃電、火焰、光團）已轉成帶半透明的透明圖，可直接用 alpha 疊；標 lighter／screen 的用加亮混合更好看。display 是建議的遊戲畫面大小（1280x720 畫面、球球 190 高、地面線 y≈596）。原圖、提示詞在 art_raw/ambient/（prompts.json），拼版總覽與每關模擬畫面在 art_raw/ambient/_check/。",
+ "_圖層": {
+  "sky": "畫在 far 長卷之後、midfar 之前；貼畫面座標（不隨鏡頭捲或極慢）",
+  "far": "同上位置，但跟著 far 的速率捲（黏在遠山上）",
+  "midfar": "畫在 midfar 長卷之後、mid 之前，跟 midfar 速率捲",
+  "mid": "畫在 mid 長卷之後、地形與角色之前；跟 mid 速率捲，標「速率 1.0」的是黏在地形上",
+  "fore": "角色之後（擋在前面），速率 1.2～1.4",
+  "overlay": "最後畫（HUD 之前），貼整個畫面"
+ },
+ "items": {
+  "fog_s1_far": {
+   "stage": "s1",
+   "zone": "竹林",
+   "use": "遠層霧帶：橫在遠山前面慢慢飄（竹林）",
+   "layer": "midfar",
+   "tileX": true,
+   "anchor": "center-left",
+   "display": {
+    "w": 1600,
+    "h": 639,
+    "y": 380,
+    "y說明": "遠層＝圖的垂直中心放在 y；近層＝圖底放在 y（地面線下 40，底部被地形蓋住）"
+   },
+   "alpha": 0.55,
+   "blend": "normal",
+   "drift": "左右飄 8～15 px/秒（兩層反向更有層次），可疊兩份錯開半張",
+   "frames": [
+    {
+     "path": "ambient2/fog_s1_far.webp",
+     "w": 1600,
+     "h": 639
+    }
+   ],
+   "source": "fog_s1_far.try1.png"
+  },
+  "fog_s1_near": {
+   "stage": "s1",
+   "zone": "竹林",
+   "use": "近層地面霧：貼著地面慢慢飄（竹林）",
+   "layer": "mid",
+   "tileX": true,
+   "anchor": "bottom-left",
+   "display": {
+    "w": 1600,
+    "h": 639,
+    "y": 636,
+    "y說明": "遠層＝圖的垂直中心放在 y；近層＝圖底放在 y（地面線下 40，底部被地形蓋住）"
+   },
+   "alpha": 0.6,
+   "blend": "normal",
+   "drift": "左右飄 8～15 px/秒（兩層反向更有層次），可疊兩份錯開半張",
+   "frames": [
+    {
+     "path": "ambient2/fog_s1_near.webp",
+     "w": 1600,
+     "h": 639
+    }
+   ],
+   "source": "fog_s1_near.try1.png"
+  },
+  "fog_s2_far": {
+   "stage": "s2",
+   "zone": "河童川",
+   "use": "遠層霧帶：橫在遠山前面慢慢飄（河童川）",
+   "layer": "midfar",
+   "tileX": true,
+   "anchor": "center-left",
+   "display": {
+    "w": 1600,
+    "h": 639,
+    "y": 380,
+    "y說明": "遠層＝圖的垂直中心放在 y；近層＝圖底放在 y（地面線下 40，底部被地形蓋住）"
+   },
+   "alpha": 0.55,
+   "blend": "normal",
+   "drift": "左右飄 8～15 px/秒（兩層反向更有層次），可疊兩份錯開半張",
+   "frames": [
+    {
+     "path": "ambient2/fog_s2_far.webp",
+     "w": 1600,
+     "h": 639
+    }
+   ],
+   "source": "fog_s2_far.try1.png"
+  },
+  "fog_s2_near": {
+   "stage": "s2",
+   "zone": "河童川",
+   "use": "近層地面霧：貼著地面慢慢飄（河童川）",
+   "layer": "mid",
+   "tileX": true,
+   "anchor": "bottom-left",
+   "display": {
+    "w": 1600,
+    "h": 639,
+    "y": 636,
+    "y說明": "遠層＝圖的垂直中心放在 y；近層＝圖底放在 y（地面線下 40，底部被地形蓋住）"
+   },
+   "alpha": 0.6,
+   "blend": "normal",
+   "drift": "左右飄 8～15 px/秒（兩層反向更有層次），可疊兩份錯開半張",
+   "frames": [
+    {
+     "path": "ambient2/fog_s2_near.webp",
+     "w": 1600,
+     "h": 639
+    }
+   ],
+   "source": "fog_s2_near.try1.png"
+  },
+  "fog_s3_far": {
+   "stage": "s3",
+   "zone": "機關城城下／工廠外",
+   "use": "遠層霧帶：橫在遠山前面慢慢飄（機關城城下／工廠外）",
+   "layer": "midfar",
+   "tileX": true,
+   "anchor": "center-left",
+   "display": {
+    "w": 1600,
+    "h": 639,
+    "y": 380,
+    "y說明": "遠層＝圖的垂直中心放在 y；近層＝圖底放在 y（地面線下 40，底部被地形蓋住）"
+   },
+   "alpha": 0.55,
+   "blend": "normal",
+   "drift": "左右飄 8～15 px/秒（兩層反向更有層次），可疊兩份錯開半張",
+   "frames": [
+    {
+     "path": "ambient2/fog_s3_far.webp",
+     "w": 1600,
+     "h": 639
+    }
+   ],
+   "source": "fog_s3_far.try1.png"
+  },
+  "fog_s3_near": {
+   "stage": "s3",
+   "zone": "機關城城下／工廠外",
+   "use": "近層地面霧：貼著地面慢慢飄（機關城城下／工廠外）",
+   "layer": "mid",
+   "tileX": true,
+   "anchor": "bottom-left",
+   "display": {
+    "w": 1600,
+    "h": 639,
+    "y": 636,
+    "y說明": "遠層＝圖的垂直中心放在 y；近層＝圖底放在 y（地面線下 40，底部被地形蓋住）"
+   },
+   "alpha": 0.6,
+   "blend": "normal",
+   "drift": "左右飄 8～15 px/秒（兩層反向更有層次），可疊兩份錯開半張",
+   "frames": [
+    {
+     "path": "ambient2/fog_s3_near.webp",
+     "w": 1600,
+     "h": 639
+    }
+   ],
+   "source": "fog_s3_near.try1.png"
+  },
+  "drizzle_1": {
+   "stage": "s1",
+   "zone": "竹林中段（毛毛雨）",
+   "use": "竹林毛毛雨雨幕（第 1 層：1 遠細密、2 中、3 近粗長）",
+   "layer": "overlay",
+   "tileX": true,
+   "tileY": true,
+   "anchor": "screen",
+   "display": {
+    "w": 512,
+    "h": 512,
+    "說明": "1:1 鋪滿整個畫面、上下左右重複"
+   },
+   "alpha": 0.35,
+   "blend": "normal",
+   "drift": "往左下捲：每秒 y +380、x −68（跟雨絲斜度一致）",
+   "frames": [
+    {
+     "path": "ambient2/drizzle_1.webp",
+     "w": 512,
+     "h": 512
+    }
+   ],
+   "source": "drizzle_1.try1.png"
+  },
+  "drizzle_2": {
+   "stage": "s1",
+   "zone": "竹林中段（毛毛雨）",
+   "use": "竹林毛毛雨雨幕（第 2 層：1 遠細密、2 中、3 近粗長）",
+   "layer": "overlay",
+   "tileX": true,
+   "tileY": true,
+   "anchor": "screen",
+   "display": {
+    "w": 640,
+    "h": 640,
+    "說明": "1:1 鋪滿整個畫面、上下左右重複"
+   },
+   "alpha": 0.45,
+   "blend": "normal",
+   "drift": "往左下捲：每秒 y +520、x −94（跟雨絲斜度一致）",
+   "frames": [
+    {
+     "path": "ambient2/drizzle_2.webp",
+     "w": 640,
+     "h": 640
+    }
+   ],
+   "source": "drizzle_2.try1.png"
+  },
+  "drizzle_3": {
+   "stage": "s1",
+   "zone": "竹林中段（毛毛雨）",
+   "use": "竹林毛毛雨雨幕（第 3 層：1 遠細密、2 中、3 近粗長）",
+   "layer": "overlay",
+   "tileX": true,
+   "tileY": true,
+   "anchor": "screen",
+   "display": {
+    "w": 896,
+    "h": 896,
+    "說明": "1:1 鋪滿整個畫面、上下左右重複"
+   },
+   "alpha": 0.55,
+   "blend": "normal",
+   "drift": "往左下捲：每秒 y +700、x −126（跟雨絲斜度一致）",
+   "frames": [
+    {
+     "path": "ambient2/drizzle_3.webp",
+     "w": 896,
+     "h": 896
+    }
+   ],
+   "source": "drizzle_3.try1.png"
+  },
+  "storm_rain_1": {
+   "stage": "s3",
+   "zone": "天守閣頂（暴風雨第二、三級）",
+   "use": "暴風雨斜打雨幕（第 1 層：1 遠細密、2 中、3 近粗長）；大雨＝1＋2，魔王戰狂風暴雨＝1＋2＋3（第 3 層 alpha 別超過 0.4，會擋到角色）",
+   "layer": "overlay",
+   "tileX": true,
+   "tileY": true,
+   "anchor": "screen",
+   "display": {
+    "w": 512,
+    "h": 512,
+    "說明": "1:1 鋪滿整個畫面、上下左右重複"
+   },
+   "alpha": 0.4,
+   "blend": "normal",
+   "drift": "往左下捲：每秒 y +900、x −477（跟雨絲斜度一致）",
+   "frames": [
+    {
+     "path": "ambient2/storm_rain_1.webp",
+     "w": 512,
+     "h": 512
+    }
+   ],
+   "source": "storm_rain_1.try1.png"
+  },
+  "storm_rain_2": {
+   "stage": "s3",
+   "zone": "天守閣頂（暴風雨第二、三級）",
+   "use": "暴風雨斜打雨幕（第 2 層：1 遠細密、2 中、3 近粗長）；大雨＝1＋2，魔王戰狂風暴雨＝1＋2＋3（第 3 層 alpha 別超過 0.4，會擋到角色）",
+   "layer": "overlay",
+   "tileX": true,
+   "tileY": true,
+   "anchor": "screen",
+   "display": {
+    "w": 768,
+    "h": 768,
+    "說明": "1:1 鋪滿整個畫面、上下左右重複"
+   },
+   "alpha": 0.45,
+   "blend": "normal",
+   "drift": "往左下捲：每秒 y +1250、x −662（跟雨絲斜度一致）",
+   "frames": [
+    {
+     "path": "ambient2/storm_rain_2.webp",
+     "w": 768,
+     "h": 768
+    }
+   ],
+   "source": "storm_rain_2.try1.png"
+  },
+  "storm_rain_3": {
+   "stage": "s3",
+   "zone": "天守閣頂（暴風雨第二、三級）",
+   "use": "暴風雨斜打雨幕（第 3 層：1 遠細密、2 中、3 近粗長）；大雨＝1＋2，魔王戰狂風暴雨＝1＋2＋3（第 3 層 alpha 別超過 0.4，會擋到角色）",
+   "layer": "overlay",
+   "tileX": true,
+   "tileY": true,
+   "anchor": "screen",
+   "display": {
+    "w": 1024,
+    "h": 1024,
+    "說明": "1:1 鋪滿整個畫面、上下左右重複"
+   },
+   "alpha": 0.35,
+   "blend": "normal",
+   "drift": "往左下捲：每秒 y +1700、x −901（跟雨絲斜度一致）",
+   "frames": [
+    {
+     "path": "ambient2/storm_rain_3.webp",
+     "w": 1024,
+     "h": 1024
+    }
+   ],
+   "source": "storm_rain_3.try2.png"
+  },
+  "sunbeam": {
+   "stage": "s1",
+   "zone": "黃昏山村",
+   "use": "夕陽光束（左上斜射）",
+   "layer": "overlay",
+   "tileX": false,
+   "anchor": "top-left",
+   "display": {
+    "w": 1280,
+    "h": 720,
+    "說明": "拉滿整個畫面；可左右翻轉、輕微呼吸（alpha ±0.08）"
+   },
+   "alpha": 0.4,
+   "blend": "screen（沒有就用 lighter；再沒有用 normal＋alpha 0.3）",
+   "frames": [
+    {
+     "path": "ambient2/sunbeam.webp",
+     "w": 1280,
+     "h": 853
+    }
+   ],
+   "source": "sunbeam.try1.png"
+  },
+  "moonbeam": {
+   "stage": "s2",
+   "zone": "河童川",
+   "use": "月光光束（左上斜射；月亮在右上的段落請左右翻轉）",
+   "layer": "overlay",
+   "tileX": false,
+   "anchor": "top-left",
+   "display": {
+    "w": 1280,
+    "h": 720,
+    "說明": "拉滿整個畫面；可左右翻轉、輕微呼吸（alpha ±0.08）"
+   },
+   "alpha": 0.35,
+   "blend": "screen（沒有就用 lighter；再沒有用 normal＋alpha 0.3）",
+   "frames": [
+    {
+     "path": "ambient2/moonbeam.webp",
+     "w": 1280,
+     "h": 853
+    }
+   ],
+   "source": "moonbeam.try1.png"
+  },
+  "fireflies": {
+   "stage": "s1",
+   "zone": "竹林（雨停後）；第二關河童川也可用",
+   "use": "螢火蟲：第 1～3 張＝同一隻亮→中→暗（輪播 1-2-3-2 當閃爍），第 4～6 張＝失焦光點（大中小）",
+   "layer": "mid",
+   "anchor": "center",
+   "display": {
+    "h": "螢火蟲 16～24、光點 20～48（遠的小、近的大）"
+   },
+   "alpha": 0.9,
+   "blend": "lighter（加亮）",
+   "drift": "慢慢繞圈飄，每隻亮暗錯開",
+   "frames": [
+    {
+     "path": "ambient2/fireflies_1.webp",
+     "w": 96,
+     "h": 92
+    },
+    {
+     "path": "ambient2/fireflies_2.webp",
+     "w": 96,
+     "h": 92
+    },
+    {
+     "path": "ambient2/fireflies_3.webp",
+     "w": 96,
+     "h": 92
+    },
+    {
+     "path": "ambient2/fireflies_4.webp",
+     "w": 95,
+     "h": 94
+    },
+    {
+     "path": "ambient2/fireflies_5.webp",
+     "w": 63,
+     "h": 61
+    },
+    {
+     "path": "ambient2/fireflies_6.webp",
+     "w": 33,
+     "h": 33
+    }
+   ],
+   "source": "fireflies.try1.png"
+  },
+  "rice_fluff": {
+   "stage": "s1",
+   "zone": "黃昏山村",
+   "use": "稻穗飛絮（稻殼、絨毛、稻草屑、小稻穗）；4 種隨機挑、邊飄邊慢慢轉",
+   "layer": "fore（近、大、快）或 mid（遠、小、慢）各撒一些",
+   "anchor": "center",
+   "display": {
+    "h": "12～24"
+   },
+   "alpha": 0.95,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/rice_fluff_1.webp",
+     "w": 112,
+     "h": 128
+    },
+    {
+     "path": "ambient2/rice_fluff_2.webp",
+     "w": 127,
+     "h": 124
+    },
+    {
+     "path": "ambient2/rice_fluff_3.webp",
+     "w": 89,
+     "h": 92
+    },
+    {
+     "path": "ambient2/rice_fluff_4.webp",
+     "w": 117,
+     "h": 120
+    }
+   ],
+   "source": "rice_fluff.try1.png"
+  },
+  "paper_petals": {
+   "stage": "s2",
+   "zone": "夜祭燈籠街",
+   "use": "飄落的紙花瓣（粉櫻、紅、白金邊、金梅）；4 種隨機挑、邊飄邊慢慢轉",
+   "layer": "fore（近、大、快）或 mid（遠、小、慢）各撒一些",
+   "anchor": "center",
+   "display": {
+    "h": "14～26"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/paper_petals_1.webp",
+     "w": 128,
+     "h": 123
+    },
+    {
+     "path": "ambient2/paper_petals_2.webp",
+     "w": 107,
+     "h": 120
+    },
+    {
+     "path": "ambient2/paper_petals_3.webp",
+     "w": 115,
+     "h": 99
+    },
+    {
+     "path": "ambient2/paper_petals_4.webp",
+     "w": 96,
+     "h": 91
+    }
+   ],
+   "source": "paper_petals.try1.png"
+  },
+  "ash": {
+   "stage": "s3",
+   "zone": "機關城城下",
+   "use": "飄灰燼（2、4 邊緣帶餘燼紅光）；4 種隨機挑、邊飄邊慢慢轉",
+   "layer": "fore（近、大、快）或 mid（遠、小、慢）各撒一些",
+   "anchor": "center",
+   "display": {
+    "h": "10～22"
+   },
+   "alpha": 0.9,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/ash_1.webp",
+     "w": 78,
+     "h": 109
+    },
+    {
+     "path": "ambient2/ash_2.webp",
+     "w": 109,
+     "h": 70
+    },
+    {
+     "path": "ambient2/ash_3.webp",
+     "w": 60,
+     "h": 65
+    },
+    {
+     "path": "ambient2/ash_4.webp",
+     "w": 128,
+     "h": 126
+    }
+   ],
+   "source": "ash.try1.png"
+  },
+  "sparks": {
+   "stage": "s3",
+   "zone": "工廠",
+   "use": "火花雨（往左下落，尾巴朝右上）；4 種隨機挑、邊飄邊慢慢轉",
+   "layer": "fore（近、大、快）或 mid（遠、小、慢）各撒一些",
+   "anchor": "center",
+   "display": {
+    "h": "24～70"
+   },
+   "alpha": 1.0,
+   "blend": "lighter（加亮）",
+   "frames": [
+    {
+     "path": "ambient2/sparks_1.webp",
+     "w": 68,
+     "h": 73
+    },
+    {
+     "path": "ambient2/sparks_2.webp",
+     "w": 115,
+     "h": 128
+    },
+    {
+     "path": "ambient2/sparks_3.webp",
+     "w": 74,
+     "h": 83
+    },
+    {
+     "path": "ambient2/sparks_4.webp",
+     "w": 100,
+     "h": 125
+    }
+   ],
+   "source": "sparks.try1.png"
+  },
+  "puddles": {
+   "stage": "s1",
+   "zone": "竹林中段（毛毛雨時）",
+   "use": "地上小水窪反光（小、中、大）",
+   "layer": "mid（隨地形捲動、速率 1.0；畫在地面帶上、角色後面）",
+   "anchor": "center＝地面線下 2～4 像素（圖已壓扁，別再拉高）",
+   "display": {
+    "w": "小 90、中 140、大 200（高照原比例）"
+   },
+   "alpha": 0.85,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/puddles_1.webp",
+     "w": 179,
+     "h": 26
+    },
+    {
+     "path": "ambient2/puddles_2.webp",
+     "w": 273,
+     "h": 38
+    },
+    {
+     "path": "ambient2/puddles_3.webp",
+     "w": 360,
+     "h": 45
+    }
+   ],
+   "source": "puddles.try1.png"
+  },
+  "roof_splash": {
+   "stage": "s3",
+   "zone": "天守閣頂（大雨、狂風暴雨）",
+   "use": "屋瓦濺水 3 格（落下→水冠→回落），每格 0.06 秒，播完消失",
+   "layer": "mid（隨地形捲動、速率 1.0，畫在屋瓦地面上）",
+   "anchor": "bottom-center＝屋瓦表面",
+   "display": {
+    "h": "36～60"
+   },
+   "alpha": 0.85,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/roof_splash_1.webp",
+     "w": 200,
+     "h": 147
+    },
+    {
+     "path": "ambient2/roof_splash_2.webp",
+     "w": 200,
+     "h": 147
+    },
+    {
+     "path": "ambient2/roof_splash_3.webp",
+     "w": 200,
+     "h": 147
+    }
+   ],
+   "source": "roof_splash.try1.png"
+  },
+  "eave_drip": {
+   "stage": "s3",
+   "zone": "天守閣頂",
+   "use": "屋簷滴水 2 格輪播（每格 0.12 秒）",
+   "layer": "mid（掛在背景屋簷下，跟 mid 同速率；或掛在地形屋子的簷口，速率 1.0）",
+   "anchor": "top-center＝簷口",
+   "display": {
+    "h": "70～120"
+   },
+   "alpha": 0.8,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/eave_drip_1.webp",
+     "w": 46,
+     "h": 320
+    },
+    {
+     "path": "ambient2/eave_drip_2.webp",
+     "w": 46,
+     "h": 320
+    }
+   ],
+   "source": "eave_drip.try1.png"
+  },
+  "heat_haze": {
+   "stage": "s3",
+   "zone": "工廠（熔爐附近）",
+   "use": "熱浪扭曲用的位移貼圖（灰階，128＝不動）",
+   "frames": [
+    {
+     "path": "ambient2/heat_haze.png",
+     "w": 512,
+     "h": 512
+    }
+   ],
+   "source": "heat_haze.try1.png",
+   "layer": "overlay（只作用在熔爐上方那一塊）",
+   "tileX": true,
+   "tileY": true,
+   "anchor": "screen",
+   "display": {
+    "說明": "取樣位移：dx＝(v−128)/128×3 像素、dy＝(v−128)/128×1.5；貼圖每秒往上捲 40 像素"
+   },
+   "alpha": 1.0,
+   "blend": "位移（不是疊色）；canvas 做不到就改用它當遮罩、上下錯位重畫那一塊"
+  },
+  "kite": {
+   "stage": "s3",
+   "zone": "機關城城下",
+   "use": "機關風箏（靜態圖，程式讓它左右飄、上下晃、輕微轉 ±6 度）",
+   "layer": "midfar",
+   "anchor": "center",
+   "display": {
+    "w": "110～160"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "facing": "left",
+   "frames": [
+    {
+     "path": "ambient2/kite.webp",
+     "w": 420,
+     "h": 280
+    }
+   ],
+   "source": "kite.try1.png"
+  },
+  "airship": {
+   "stage": "s3",
+   "zone": "機關城城下～工廠外",
+   "use": "小飛艇（側面朝左，程式往左慢慢巡邏）",
+   "layer": "midfar",
+   "anchor": "center",
+   "display": {
+    "w": "180～260"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "facing": "left",
+   "propellerAt": {
+    "x": 433,
+    "y": 257,
+    "說明": "螺旋槳中心在飛艇圖裡的像素位置（原圖座標）"
+   },
+   "propellerScale": 0.67,
+   "frames": [
+    {
+     "path": "ambient2/airship.webp",
+     "w": 560,
+     "h": 319
+    }
+   ],
+   "source": "airship.try1.png"
+  },
+  "propeller": {
+   "stage": "s3",
+   "zone": "同飛艇",
+   "use": "飛艇螺旋槳 2 格輪播（每格 0.05 秒）",
+   "layer": "midfar（畫在飛艇上面）",
+   "anchor": "center＝飛艇 propellerAt",
+   "display": {
+    "說明": "寬高＝原圖 × 飛艇縮放 × propellerScale"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/propeller_1.webp",
+     "w": 70,
+     "h": 200
+    },
+    {
+     "path": "ambient2/propeller_2.webp",
+     "w": 70,
+     "h": 200
+    }
+   ],
+   "source": "propeller.try1.png"
+  },
+  "bird_flocks": {
+   "stage": "all",
+   "zone": "第一關黃昏、第三關城下（第二關夜空用少一點）",
+   "use": "遠山上的鳥群剪影：1 人字雁群、2 散開的烏鴉群、3 一排波浪隊形；程式往左飛、整群上下輕晃",
+   "layer": "far（跟遠山同速率或更慢）",
+   "anchor": "center",
+   "display": {
+    "w": "70～160"
+   },
+   "alpha": 0.85,
+   "blend": "normal",
+   "facing": "left",
+   "調色": "剪影是深紫灰，夜裡可再調暗、黃昏可略帶紫",
+   "frames": [
+    {
+     "path": "ambient2/bird_flocks_1.webp",
+     "w": 297,
+     "h": 243
+    },
+    {
+     "path": "ambient2/bird_flocks_2.webp",
+     "w": 285,
+     "h": 196
+    },
+    {
+     "path": "ambient2/bird_flocks_3.webp",
+     "w": 360,
+     "h": 112
+    }
+   ],
+   "source": "bird_flocks.try2.png"
+  },
+  "fire_arrow_fly": {
+   "stage": "s1",
+   "zone": "山賊寨入口",
+   "use": "飛行中的火箭（火矢），箭頭朝左；程式照拋物線飛、跟著速度方向轉",
+   "layer": "midfar 或 mid（背景深度，不扣血）",
+   "anchor": "center",
+   "display": {
+    "w": "70～110"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "facing": "left",
+   "frames": [
+    {
+     "path": "ambient2/fire_arrow_fly.webp",
+     "w": 420,
+     "h": 81
+    }
+   ],
+   "source": "fire_arrow_fly.try1.png"
+  },
+  "fire_arrow_stuck": {
+   "stage": "s1",
+   "zone": "山賊寨入口",
+   "use": "插在地上的火箭（沒有火），火焰另外疊 flame_1～3",
+   "layer": "mid（插在背景地面帶上，跟 mid 同速率）",
+   "anchor": "bottom-center＝插地點",
+   "display": {
+    "h": "70～90（再小火焰就看不清）"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "flameAt": {
+    "x": 124,
+    "y": 265,
+    "說明": "火焰底部中心在這張圖裡的像素位置（原圖座標）"
+   },
+   "flameScale": 0.913,
+   "frames": [
+    {
+     "path": "ambient2/fire_arrow_stuck.webp",
+     "w": 360,
+     "h": 337
+    }
+   ],
+   "source": "fire_arrow_stuck.try1.png"
+  },
+  "flame": {
+   "stage": "s1",
+   "zone": "同上",
+   "use": "火箭上的火焰 3 格輪播（每格 0.08 秒），燒 3～6 秒後縮小熄滅",
+   "layer": "同插地火箭",
+   "anchor": "bottom-center＝fire_arrow_stuck 的 flameAt",
+   "display": {
+    "說明": "寬高＝原圖 × 火箭縮放 × flameScale"
+   },
+   "alpha": 0.95,
+   "blend": "lighter 或 normal",
+   "frames": [
+    {
+     "path": "ambient2/flame_1.webp",
+     "w": 156,
+     "h": 240
+    },
+    {
+     "path": "ambient2/flame_2.webp",
+     "w": 156,
+     "h": 240
+    },
+    {
+     "path": "ambient2/flame_3.webp",
+     "w": 156,
+     "h": 240
+    }
+   ],
+   "source": "flame.try1.png"
+  },
+  "meteors": {
+   "stage": "s2",
+   "zone": "山頂神社（流星雨）",
+   "use": "流星 2 種（1 白藍細長、2 金色帶火星），往左下劃過",
+   "layer": "sky",
+   "anchor": "center（頭在左下）",
+   "display": {
+    "w": "140～260"
+   },
+   "alpha": 0.9,
+   "blend": "lighter（加亮）",
+   "facing": "往左下（可左右翻）",
+   "frames": [
+    {
+     "path": "ambient2/meteors_1.webp",
+     "w": 506,
+     "h": 296
+    },
+    {
+     "path": "ambient2/meteors_2.webp",
+     "w": 520,
+     "h": 313
+    }
+   ],
+   "source": "meteors.try1.png"
+  },
+  "big_meteor": {
+   "stage": "s2",
+   "zone": "山頂神社（魔王前）",
+   "use": "大隕石劃過天空（頭在左下、尾巴拖到右上），落到遠山後接 impact_glow",
+   "layer": "sky",
+   "anchor": "center",
+   "display": {
+    "w": "200～280（再大就像要砸到玩家）"
+   },
+   "alpha": 0.92,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/big_meteor.webp",
+     "w": 900,
+     "h": 604
+    }
+   ],
+   "source": "big_meteor.try1.png"
+  },
+  "impact_glow": {
+   "stage": "s2",
+   "zone": "山頂神社",
+   "use": "遠山被砸中爆出的光團 4 格（閃光→光罩→火球蘑菇雲→餘光），每格 0.15 秒、第 4 格淡出 1 秒",
+   "layer": "far（畫在遠山那一層之後、midfar 之前，底部被近一點的山擋住）",
+   "anchor": "bottom-center＝遠山稜線",
+   "display": {
+    "w": "160～260"
+   },
+   "alpha": 1.0,
+   "blend": "lighter（加亮）",
+   "frames": [
+    {
+     "path": "ambient2/impact_glow_1.webp",
+     "w": 420,
+     "h": 342
+    },
+    {
+     "path": "ambient2/impact_glow_2.webp",
+     "w": 420,
+     "h": 342
+    },
+    {
+     "path": "ambient2/impact_glow_3.webp",
+     "w": 420,
+     "h": 342
+    },
+    {
+     "path": "ambient2/impact_glow_4.webp",
+     "w": 420,
+     "h": 342
+    }
+   ],
+   "source": "impact_glow.try1.png"
+  },
+  "scrap": {
+   "stage": "s3",
+   "zone": "工廠（鍛爐爆炸後）",
+   "use": "燒紅碎鐵 4 種（自帶往右上的火尾），像隕石一樣往左下砸",
+   "layer": "mid（在工廠背景前、角色後；不扣血）",
+   "anchor": "center",
+   "display": {
+    "h": "28～50"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "facing": "往左下",
+   "frames": [
+    {
+     "path": "ambient2/scrap_1.webp",
+     "w": 167,
+     "h": 195
+    },
+    {
+     "path": "ambient2/scrap_2.webp",
+     "w": 136,
+     "h": 200
+    },
+    {
+     "path": "ambient2/scrap_3.webp",
+     "w": 164,
+     "h": 173
+    },
+    {
+     "path": "ambient2/scrap_4.webp",
+     "w": 116,
+     "h": 182
+    }
+   ],
+   "source": "scrap.try1.png"
+  },
+  "forge_blast": {
+   "stage": "s3",
+   "zone": "工廠",
+   "use": "鍛爐爆炸 6 格（閃光→火球→黑煙→散去），每格 0.1 秒；同時噴出 scrap",
+   "layer": "mid（背景層：畫在工廠牆前、角色後）",
+   "anchor": "bottom-center＝鍛爐爐口",
+   "display": {
+    "h": "220～280（大，但別蓋到球球頭上；模擬畫面用 250）"
+   },
+   "alpha": 0.8,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/forge_blast_1.webp",
+     "w": 506,
+     "h": 447
+    },
+    {
+     "path": "ambient2/forge_blast_2.webp",
+     "w": 506,
+     "h": 447
+    },
+    {
+     "path": "ambient2/forge_blast_3.webp",
+     "w": 506,
+     "h": 447
+    },
+    {
+     "path": "ambient2/forge_blast_4.webp",
+     "w": 506,
+     "h": 447
+    },
+    {
+     "path": "ambient2/forge_blast_5.webp",
+     "w": 506,
+     "h": 447
+    },
+    {
+     "path": "ambient2/forge_blast_6.webp",
+     "w": 506,
+     "h": 447
+    }
+   ],
+   "source": "forge_blast.try1.png"
+  },
+  "strike": {
+   "stage": "s3",
+   "zone": "天守閣頂（魔王前）",
+   "use": "劈中屋脊的閃電 2 格（第 1 格劈中＋閃光 0.08 秒、第 2 格殘影 0.15 秒），配全畫面閃白",
+   "layer": "midfar（劈遠方天守閣的屋脊）",
+   "anchor": "bottom-center＝劈中點（屋脊）",
+   "display": {
+    "h": "從畫面頂到劈中點，約 300～480"
+   },
+   "alpha": 1.0,
+   "blend": "lighter（加亮）",
+   "frames": [
+    {
+     "path": "ambient2/strike_1.webp",
+     "w": 324,
+     "h": 900
+    },
+    {
+     "path": "ambient2/strike_2.webp",
+     "w": 324,
+     "h": 900
+    }
+   ],
+   "source": "strike.try1.png"
+  },
+  "ridge_chunks": {
+   "stage": "s3",
+   "zone": "天守閣頂",
+   "use": "斷掉的屋脊碎塊 3 塊（大段屋脊、幾片瓦、脊端飾瓦），劈中後往外噴、邊轉邊落",
+   "layer": "midfar（跟被劈的天守閣同一層）",
+   "anchor": "center",
+   "display": {
+    "w": "30～90"
+   },
+   "alpha": 1.0,
+   "blend": "normal",
+   "frames": [
+    {
+     "path": "ambient2/ridge_chunks_1.webp",
+     "w": 320,
+     "h": 203
+    },
+    {
+     "path": "ambient2/ridge_chunks_2.webp",
+     "w": 165,
+     "h": 139
+    },
+    {
+     "path": "ambient2/ridge_chunks_3.webp",
+     "w": 138,
+     "h": 137
+    }
+   ],
+   "source": "ridge_chunks.try1.png"
+  }
+ },
+ "vids_pending": {
+  "_說明": "要用 Google Vids 動起來的背景生物：綠幕參考圖在 vids/ambient/，透明原圖在 art_raw/ambient/；動畫做好後再照 display 縮小、調暗（往這關霧色靠約 3 成、暗 3 成）當背景用。擺放：走路的腳底放在 mid 長卷畫出來的地面上（民家前石台、瞭望台、城牆頂、石燈籠台階，約 y 150～550），不要放在遊戲地面線（y≈596）上，否則看起來像小一號的敵人；飛的放在天空露出來的地方。模擬畫面 art_raw/ambient/_check/mock_*.png 用透明原圖示範了位置。",
+  "goose": {
+   "stage": "s1",
+   "zone": "黃昏山村～村尾",
+   "use": "人字雁（單隻，飛）：程式複製 5～7 隻排成人字",
+   "layer": "far／midfar（天空）",
+   "display": "身長 40～60",
+   "greenRef": "vids/ambient/goose_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/goose.try1.png",
+   "facing": "left"
+  },
+  "bat": {
+   "stage": "s2",
+   "zone": "夜祭街～河童川",
+   "use": "蝙蝠（單隻，飛）：程式複製成一群亂飛",
+   "layer": "midfar（天空）",
+   "display": "高 30～45",
+   "greenRef": "vids/ambient/bat_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/bat.try1.png",
+   "facing": "left"
+  },
+  "rice_cat": {
+   "stage": "s1",
+   "zone": "黃昏山村",
+   "use": "扛米袋的村貓，從背景走過",
+   "layer": "mid（走在 mid 長卷畫的民家前石台上，約 y 497）",
+   "display": "高 60～70",
+   "greenRef": "vids/ambient/rice_cat_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/rice_cat.try2.png",
+   "facing": "left"
+  },
+  "cart_cat": {
+   "stage": "s1",
+   "zone": "黃昏山村",
+   "use": "推小車的村貓",
+   "layer": "mid（同上）",
+   "display": "高 60～70",
+   "greenRef": "vids/ambient/cart_cat_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/cart_cat.try2.png",
+   "facing": "left"
+  },
+  "deer": {
+   "stage": "s1",
+   "zone": "竹林",
+   "use": "鹿：在遠處竹林、石燈籠間走、跳走",
+   "layer": "mid（竹林石燈籠台座附近，約 y 548）",
+   "display": "高 55～65",
+   "greenRef": "vids/ambient/deer_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/deer.try1.png",
+   "facing": "left"
+  },
+  "torch_bandit": {
+   "stage": "s1",
+   "zone": "山賊寨",
+   "use": "舉火把巡邏的山賊（瞭望台上、木柵後）",
+   "layer": "mid（瞭望台平台約 y 256）",
+   "display": "高 60～70",
+   "greenRef": "vids/ambient/torch_bandit_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/torch_bandit.try1.png",
+   "facing": "left"
+  },
+  "fox": {
+   "stage": "s2",
+   "zone": "往山頂神社",
+   "use": "狐狸：在石燈籠間跑",
+   "layer": "mid（石燈籠旁的矮樹叢上，約 y 530）",
+   "display": "高 40～50",
+   "greenRef": "vids/ambient/fox_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/fox.try1.png",
+   "facing": "left"
+  },
+  "carp": {
+   "stage": "s2",
+   "zone": "河童川",
+   "use": "鯉魚跳出水面（程式配水花）",
+   "layer": "mid（背景河面）",
+   "display": "身長 50～60",
+   "greenRef": "vids/ambient/carp_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/carp.try1.png",
+   "facing": "left"
+  },
+  "mech_soldier": {
+   "stage": "s3",
+   "zone": "機關城城下（城牆上）",
+   "use": "拿長槍行軍的機關貓兵，一排走過",
+   "layer": "mid（城牆頂約 y 152）",
+   "display": "高 45～55",
+   "greenRef": "vids/ambient/mech_soldier_參考圖_綠幕.png",
+   "transparentRaw": "art_raw/ambient/mech_soldier.try1.png",
+   "facing": "left"
+  }
+ }
+}

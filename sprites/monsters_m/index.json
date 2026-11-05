@@ -1,0 +1,32 @@
+{
+ "monsters": [
+  "armor_ghost",
+  "black_ninja",
+  "broom_centipede",
+  "crow_small",
+  "drum_tanuki",
+  "fox_miko",
+  "frog_daimyo",
+  "guardian_statue",
+  "iron_arhat",
+  "iron_claw",
+  "kappa",
+  "kasa_obake",
+  "lantern_ghost",
+  "mask_dancer",
+  "mini_broom",
+  "orange_bandit",
+  "orange_king",
+  "paper_crane",
+  "plated_beetle",
+  "rat",
+  "roomba_king",
+  "tadpole",
+  "tanuki_kid",
+  "tanuki_lord",
+  "tengu",
+  "vacuum",
+  "wild_boar",
+  "wraith_samurai"
+ ]
+}

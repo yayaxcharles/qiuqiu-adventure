@@ -1,0 +1,1504 @@
+{
+ "_說明": "站得上去的東西與道具（tools/gen_terrain.py 生、tools/post_terrain.py 後製，畫風跟 panels 長卷背景一致）。座標一律是圖片像素、左上角 (0,0)。displayScale＝顯示時乘多少（道具類檔案存 2 倍大＝0.5；地面帶與崖壁存 1:1＝1）。standY＝腳踩的那條線在圖上第幾列；tileX／tileY／repeat＝這張可左右／上下／重複接；anchor＝擺放基準點。seam 是接縫檢查數字（1 左右＝看不出來）。模擬的遊戲畫面在 art_raw/terrain/_check/。",
+ "ground": {
+  "village": {
+   "path": "terrain/ground_village.webp",
+   "w": 976,
+   "h": 259,
+   "standY": 18,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.899,
+   "seam": 1.07,
+   "bottomColor": "#130b04",
+   "source": "ground_village.try1.png",
+   "use": "山村土路（第一關 0～10,600）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下請用 bottomColor 補滿到畫面底"
+  },
+  "bamboo": {
+   "path": "terrain/ground_bamboo.webp",
+   "w": 976,
+   "h": 297,
+   "standY": 34,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.838,
+   "seam": 1.21,
+   "bottomColor": "#100802",
+   "source": "ground_bamboo.try1.png",
+   "use": "竹林落葉土（第一關 10,600～16,170）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下請用 bottomColor 補滿到畫面底"
+  },
+  "bandit": {
+   "path": "terrain/ground_bandit.webp",
+   "w": 976,
+   "h": 256,
+   "standY": 25,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.866,
+   "seam": 1.27,
+   "bottomColor": "#0a0502",
+   "source": "ground_bandit.try1.png",
+   "use": "山賊寨木板泥地（第一關 16,170～）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下請用 bottomColor 補滿到畫面底"
+  },
+  "_zones": {
+   "s1_1_ground": "village",
+   "s1_2_ground": "bamboo",
+   "s1_3_ground": "bandit"
+  },
+  "s2_street": {
+   "path": "terrain/ground_s2_street.webp",
+   "w": 976,
+   "h": 287,
+   "standY": 29,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.831,
+   "seam": 1.03,
+   "bottomColor": "#03060c",
+   "source": "s2_ground_street.try1.png",
+   "use": "第二關·夜祭石板街：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s2_bank": {
+   "path": "terrain/ground_s2_bank.webp",
+   "w": 976,
+   "h": 262,
+   "standY": 54,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.673,
+   "seam": 1.07,
+   "bottomColor": "#01040b",
+   "source": "s2_ground_bank.try1.png",
+   "use": "第二關·河堤木棧道泥地：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s2_shrine": {
+   "path": "terrain/ground_s2_shrine.webp",
+   "w": 976,
+   "h": 265,
+   "standY": 14,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.912,
+   "seam": 0.96,
+   "bottomColor": "#01040d",
+   "source": "s2_ground_shrine.try1.png",
+   "use": "第二關·神社石徑（落楓葉）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s3_town": {
+   "path": "terrain/ground_s3_town.webp",
+   "w": 976,
+   "h": 285,
+   "standY": 29,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.918,
+   "seam": 1.16,
+   "bottomColor": "#0a0706",
+   "source": "s3_ground_town.try1.png",
+   "use": "第三關·城下石板路：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s3_grate": {
+   "path": "terrain/ground_s3_grate.webp",
+   "w": 976,
+   "h": 248,
+   "standY": 20,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.847,
+   "seam": 1.18,
+   "bottomColor": "#040200",
+   "source": "s3_ground_grate.try1.png",
+   "use": "第三關·工廠鐵格柵地板：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  },
+  "s3_roof": {
+   "path": "terrain/ground_s3_roof.webp",
+   "w": 976,
+   "h": 294,
+   "standY": 21,
+   "tileX": true,
+   "displayScale": 1.0,
+   "flatness": 0.994,
+   "seam": 1.78,
+   "bottomColor": "#030407",
+   "source": "s3_ground_roof.try1.png",
+   "use": "第三關·天守閣瓦屋頂（雨中）：左右重複；圖的第 standY 列＝腳踩的線，圖底以下用 bottomColor 補滿到畫面底"
+  }
+ },
+ "wall": {
+  "stone": {
+   "top": {
+    "path": "terrain/wall_stone_top.webp",
+    "w": 282,
+    "h": 191,
+    "standY": 21
+   },
+   "body": {
+    "path": "terrain/wall_stone_body.webp",
+    "w": 282,
+    "h": 571,
+    "tileY": true,
+    "seam": 1.3
+   },
+   "faceX": 43,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_stone.try1.png",
+   "use": "石砌擋土牆（山村：上坡高台、民家台地、樓梯、小溪坑邊）：壁面朝左（左邊低、右邊高）。擺法：壁面 x＝落差的 x，頂端那塊的 standY 對齊高處地面的站立線，下面接 body 往下重複到畫面底。左邊高的落差請整組水平翻轉（壁面仍對齊落差 x）。"
+  },
+  "earth": {
+   "top": {
+    "path": "terrain/wall_earth_top.webp",
+    "w": 276,
+    "h": 199,
+    "standY": 29
+   },
+   "body": {
+    "path": "terrain/wall_earth_body.webp",
+    "w": 276,
+    "h": 563,
+    "tileY": true,
+    "seam": 1.29
+   },
+   "faceX": 75,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_earth.try1.png",
+   "use": "土崖帶樹根（竹林：坑邊、斜坡落差；也可用在山村斷崖）：壁面朝左（左邊低、右邊高）。擺法：壁面 x＝落差的 x，頂端那塊的 standY 對齊高處地面的站立線，下面接 body 往下重複到畫面底。左邊高的落差請整組水平翻轉（壁面仍對齊落差 x）。"
+  },
+  "log": {
+   "top": {
+    "path": "terrain/wall_log_top.webp",
+    "w": 298,
+    "h": 195,
+    "standY": 25
+   },
+   "body": {
+    "path": "terrain/wall_log_body.webp",
+    "w": 298,
+    "h": 567,
+    "tileY": true,
+    "seam": 0.98
+   },
+   "faceX": 39,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "wall_log.try1.png",
+   "use": "木樁擋土牆（山賊寨：斜坡落差、壕溝邊）：壁面朝左（左邊低、右邊高）。擺法：壁面 x＝落差的 x，頂端那塊的 standY 對齊高處地面的站立線，下面接 body 往下重複到畫面底。左邊高的落差請整組水平翻轉（壁面仍對齊落差 x）。"
+  },
+  "s2_embank": {
+   "top": {
+    "path": "terrain/wall_s2_embank_top.webp",
+    "w": 255,
+    "h": 219,
+    "standY": 49
+   },
+   "body": {
+    "path": "terrain/wall_s2_embank_body.webp",
+    "w": 255,
+    "h": 543,
+    "tileY": true,
+    "seam": 0.95
+   },
+   "faceX": 27,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "s2_wall_embank.try2.png",
+   "use": "第二關·石砌河堤（河段落差、坑邊）：擺法同第一批崖壁（壁面朝左；左邊高就整組水平翻轉；頂塊 standY 對齊高處站立線，壁身往下重複到畫面底）。"
+  },
+  "s2_shrine": {
+   "top": {
+    "path": "terrain/wall_s2_shrine_top.webp",
+    "w": 268,
+    "h": 194,
+    "standY": 24
+   },
+   "body": {
+    "path": "terrain/wall_s2_shrine_body.webp",
+    "w": 268,
+    "h": 568,
+    "tileY": true,
+    "seam": 1.23
+   },
+   "faceX": 24,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "s2_wall_shrine.try1.png",
+   "use": "第二關·神社石垣：擺法同第一批崖壁（壁面朝左；左邊高就整組水平翻轉；頂塊 standY 對齊高處站立線，壁身往下重複到畫面底）。"
+  },
+  "s3_castle": {
+   "top": {
+    "path": "terrain/wall_s3_castle_top.webp",
+    "w": 283,
+    "h": 175,
+    "standY": 5
+   },
+   "body": {
+    "path": "terrain/wall_s3_castle_body.webp",
+    "w": 283,
+    "h": 587,
+    "tileY": true,
+    "seam": 0.99
+   },
+   "faceX": 42,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "s3_wall_castle.try1.png",
+   "use": "第三關·城牆石垣：擺法同第一批崖壁（壁面朝左；左邊高就整組水平翻轉；頂塊 standY 對齊高處站立線，壁身往下重複到畫面底）。"
+  },
+  "s3_iron": {
+   "top": {
+    "path": "terrain/wall_s3_iron_top.webp",
+    "w": 275,
+    "h": 202,
+    "standY": 32
+   },
+   "body": {
+    "path": "terrain/wall_s3_iron_body.webp",
+    "w": 275,
+    "h": 560,
+    "tileY": true,
+    "seam": 0.85
+   },
+   "faceX": 35,
+   "faces": "left",
+   "fadeRight": 70,
+   "displayScale": 1.0,
+   "source": "s3_wall_iron.try1.png",
+   "use": "第三關·鐵板牆（工廠）：擺法同第一批崖壁（壁面朝左；左邊高就整組水平翻轉；頂塊 standY 對齊高處站立線，壁身往下重複到畫面底）。"
+  }
+ },
+ "house": {
+  "left": {
+   "path": "terrain/house_left.webp",
+   "w": 109,
+   "h": 315,
+   "ridgeX": 80
+  },
+  "mid": {
+   "path": "terrain/house_mid.webp",
+   "w": 163,
+   "h": 315,
+   "repeat": true
+  },
+  "right": {
+   "path": "terrain/house_right.webp",
+   "w": 262,
+   "h": 315,
+   "ridgeX": 183
+  },
+  "standY": 21,
+  "bottomY": 315,
+  "displayScale": 0.5,
+  "split": {
+   "P": 163,
+   "a0": 77,
+   "r0": 750,
+   "midSeam": 1.51
+  },
+  "source": "house.try1.png",
+  "use": "屋頂平台底下的民家（屋脊＝站得上去的那條線）。拼法：左端＋中段×n＋右端，三塊都頂端對齊、緊貼著排；left.ridgeX～right.ridgeX 是屋脊（能站的範圍），屋簷會多伸出去一點。檔案是 2 倍大，顯示時 ×0.5（屋脊到圖底約 146 像素＝屋脊比地面高 140、圖底埋進地面 6）。平台寬 w：n＝round((w/0.5 − (屋脊在左端與右端各占的寬)) ÷ 中段寬)，再把整棟水平縮放到屋脊剛好＝w（誤差在正負 20% 內看不出來）。"
+ },
+ "rail": {
+  "bamboo": {
+   "left": {
+    "path": "terrain/rail_bamboo_left.webp",
+    "w": 122,
+    "h": 62
+   },
+   "mid": {
+    "path": "terrain/rail_bamboo_mid.webp",
+    "w": 111,
+    "h": 62,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/rail_bamboo_right.webp",
+    "w": 187,
+    "h": 62
+   },
+   "standY": 10,
+   "displayScale": 0.5,
+   "split": {
+    "P": 111,
+    "a0": 100,
+    "r0": 652,
+    "midSeam": 0.68
+   },
+   "source": "rail_bamboo.try1.png",
+   "post": "bamboo",
+   "use": "竹架（第一關竹林）平台面：左端＋中段×n＋右端，頂端第 standY 列＝腳踩的線；檔案 2 倍大、顯示 ×0.5；寬度不剛好就整條水平縮放（正負 20% 內）。支柱用 posts 裡對應的那根，從平台面往下重複到地面。"
+  },
+  "plank": {
+   "left": {
+    "path": "terrain/rail_plank_left.webp",
+    "w": 132,
+    "h": 57
+   },
+   "mid": {
+    "path": "terrain/rail_plank_mid.webp",
+    "w": 126,
+    "h": 57,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/rail_plank_right.webp",
+    "w": 128,
+    "h": 57
+   },
+   "standY": 7,
+   "displayScale": 0.5,
+   "split": {
+    "P": 126,
+    "a0": 107,
+    "r0": 764,
+    "midSeam": 1.31
+   },
+   "source": "rail_plank.try1.png",
+   "post": "square",
+   "use": "木架（第一關寨內）平台面：左端＋中段×n＋右端，頂端第 standY 列＝腳踩的線；檔案 2 倍大、顯示 ×0.5；寬度不剛好就整條水平縮放（正負 20% 內）。支柱用 posts 裡對應的那根，從平台面往下重複到地面。"
+  },
+  "s2_bridge": {
+   "left": {
+    "path": "terrain/s2_bridge_left.webp",
+    "w": 157,
+    "h": 195
+   },
+   "mid": {
+    "path": "terrain/s2_bridge_mid.webp",
+    "w": 155,
+    "h": 195,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/s2_bridge_right.webp",
+    "w": 119,
+    "h": 195
+   },
+   "standY": 135,
+   "bandH": 56,
+   "displayScale": 0.5,
+   "split": {
+    "P": 155,
+    "a0": 126,
+    "r0": 931,
+    "midSeam": 0.54
+   },
+   "source": "s2_bridge.try1.png",
+   "use": "第二關·朱紅木橋橋面（平橋）：左端＋中段×n＋右端；standY＝橋面頂（欄杆在上面、畫在角色後面）；檔案 2 倍大、顯示 ×0.5；橋墩用 post.s2_red 或 post.s2_pile 往下接到水面或地面。",
+   "post": "s2_red"
+  },
+  "s2_stage": {
+   "left": {
+    "path": "terrain/s2_stage_left.webp",
+    "w": 157,
+    "h": 245
+   },
+   "mid": {
+    "path": "terrain/s2_stage_mid.webp",
+    "w": 117,
+    "h": 245,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/s2_stage_right.webp",
+    "w": 159,
+    "h": 245
+   },
+   "standY": 45,
+   "bandH": 191,
+   "displayScale": 0.5,
+   "split": {
+    "P": 117,
+    "a0": 134,
+    "r0": 964,
+    "midSeam": 1.06
+   },
+   "source": "s2_stage.try1.png",
+   "use": "第二關·祭典木台（櫓台頂）：左端＋中段×n＋右端；standY＝台面頂；紅白布幕垂在台面下；支柱用 post.s2_square。",
+   "post": "s2_square"
+  },
+  "s3_catwalk": {
+   "left": {
+    "path": "terrain/s3_catwalk_left.webp",
+    "w": 181,
+    "h": 165
+   },
+   "mid": {
+    "path": "terrain/s3_catwalk_mid.webp",
+    "w": 185,
+    "h": 165,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/s3_catwalk_right.webp",
+    "w": 319,
+    "h": 165
+   },
+   "standY": 76,
+   "bandH": 81,
+   "displayScale": 0.5,
+   "split": {
+    "P": 185,
+    "a0": 144,
+    "r0": 885,
+    "midSeam": 1.01
+   },
+   "source": "s3_catwalk.try1.png",
+   "use": "第三關·鐵製走道：左端＋中段×n＋右端；standY＝格柵走道頂（扶手在上面、畫在角色後面）；支柱用 post.s3_ibeam。",
+   "post": "s3_ibeam"
+  },
+  "s3_conveyor": {
+   "left": {
+    "path": "terrain/s3_conveyor_left.webp",
+    "w": 154,
+    "h": 121
+   },
+   "mid": {
+    "path": "terrain/s3_conveyor_mid.webp",
+    "w": 98,
+    "h": 121,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/s3_conveyor_right.webp",
+    "w": 164,
+    "h": 121
+   },
+   "standY": 11,
+   "bandH": 106,
+   "displayScale": 0.5,
+   "split": {
+    "P": 98,
+    "a0": 135,
+    "r0": 962,
+    "midSeam": 0.82
+   },
+   "source": "s3_conveyor.try1.png",
+   "use": "第三關·輸送帶：左端＋中段×n＋右端；standY＝皮帶頂；中段有 4 格（midFrames，皮帶往右跑），輪播約每秒 12 格；要往左跑就倒著播；支架用 post.s3_lattice。",
+   "post": "s3_lattice",
+   "midFrames": [
+    {
+     "path": "terrain/s3_conveyor_mid_0.webp",
+     "w": 98,
+     "h": 121
+    },
+    {
+     "path": "terrain/s3_conveyor_mid_1.webp",
+     "w": 98,
+     "h": 121
+    },
+    {
+     "path": "terrain/s3_conveyor_mid_2.webp",
+     "w": 98,
+     "h": 121
+    },
+    {
+     "path": "terrain/s3_conveyor_mid_3.webp",
+     "w": 98,
+     "h": 121
+    }
+   ],
+   "fps": 12,
+   "note": "只捲動凸塊與皮帶那幾列（中段圖最上面 28%），滾輪與框架不動；腳踩在凸塊上緣附近"
+  }
+ },
+ "post": {
+  "bamboo": {
+   "path": "terrain/post_bamboo.webp",
+   "w": 34,
+   "h": 416,
+   "tileY": true,
+   "seam": 0.71,
+   "displayScale": 0.5
+  },
+  "bamboo_thin": {
+   "path": "terrain/post_bamboo_thin.webp",
+   "w": 19,
+   "h": 416,
+   "tileY": true,
+   "seam": 0.57,
+   "displayScale": 0.5
+  },
+  "square": {
+   "path": "terrain/post_square.webp",
+   "w": 40,
+   "h": 416,
+   "tileY": true,
+   "seam": 0.46,
+   "displayScale": 0.5
+  },
+  "log": {
+   "path": "terrain/post_log.webp",
+   "w": 46,
+   "h": 416,
+   "tileY": true,
+   "seam": 1.05,
+   "displayScale": 0.5
+  },
+  "_use": "平台支柱：中心對齊柱子的 x，從平台面往下垂直重複到地面（坑裡就到畫面底）；檔案 2 倍大、顯示 ×0.5。",
+  "_source": "posts.try1.png",
+  "s2_red": {
+   "path": "terrain/post_s2_red.webp",
+   "w": 42,
+   "h": 329,
+   "tileY": true,
+   "seam": 0.58,
+   "displayScale": 0.5,
+   "source": "s2_posts.try1.png",
+   "use": "第二關支柱：s2_red 朱紅橋柱、s2_square 祭典木台方柱、s2_pile 河中木樁；中心對齊柱子 x、從平台面往下重複"
+  },
+  "s2_square": {
+   "path": "terrain/post_s2_square.webp",
+   "w": 45,
+   "h": 329,
+   "tileY": true,
+   "seam": 0.59,
+   "displayScale": 0.5,
+   "source": "s2_posts.try1.png",
+   "use": "第二關支柱：s2_red 朱紅橋柱、s2_square 祭典木台方柱、s2_pile 河中木樁；中心對齊柱子 x、從平台面往下重複"
+  },
+  "s2_pile": {
+   "path": "terrain/post_s2_pile.webp",
+   "w": 44,
+   "h": 329,
+   "tileY": true,
+   "seam": 0.86,
+   "displayScale": 0.5,
+   "source": "s2_posts.try1.png",
+   "use": "第二關支柱：s2_red 朱紅橋柱、s2_square 祭典木台方柱、s2_pile 河中木樁；中心對齊柱子 x、從平台面往下重複"
+  },
+  "s3_ibeam": {
+   "path": "terrain/post_s3_ibeam.webp",
+   "w": 46,
+   "h": 406,
+   "tileY": true,
+   "seam": 0.67,
+   "displayScale": 0.5,
+   "source": "s3_posts.try1.png",
+   "use": "第三關支柱：s3_ibeam 鐵 I 字柱（走道）、s3_lattice 格子鋼架（輸送帶）、s3_pipe 銅蒸氣管柱"
+  },
+  "s3_lattice": {
+   "path": "terrain/post_s3_lattice.webp",
+   "w": 50,
+   "h": 406,
+   "tileY": true,
+   "seam": 0.92,
+   "displayScale": 0.5,
+   "source": "s3_posts.try1.png",
+   "use": "第三關支柱：s3_ibeam 鐵 I 字柱（走道）、s3_lattice 格子鋼架（輸送帶）、s3_pipe 銅蒸氣管柱"
+  },
+  "s3_pipe": {
+   "path": "terrain/post_s3_pipe.webp",
+   "w": 56,
+   "h": 406,
+   "tileY": true,
+   "seam": 0.48,
+   "displayScale": 0.5,
+   "source": "s3_posts.try1.png",
+   "use": "第三關支柱：s3_ibeam 鐵 I 字柱（走道）、s3_lattice 格子鋼架（輸送帶）、s3_pipe 銅蒸氣管柱"
+  }
+ },
+ "props": {
+  "crate": {
+   "path": "props2/crate.webp",
+   "w": 178,
+   "h": 142,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "木箱：底部中間貼地",
+   "source": "props_barrels.try1.png",
+   "displayH": 70
+  },
+  "crate_broken": {
+   "path": "props2/crate_broken.webp",
+   "w": 196,
+   "h": 109,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "木箱打爛後的殘骸（跟完好版同縮放、同錨點）",
+   "source": "props_barrels.try1.png"
+  },
+  "barrel": {
+   "path": "props2/barrel.webp",
+   "w": 163,
+   "h": 180,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "酒桶：底部中間貼地",
+   "source": "props_barrels.try1.png",
+   "displayH": 90
+  },
+  "barrel_broken": {
+   "path": "props2/barrel_broken.webp",
+   "w": 219,
+   "h": 127,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "酒桶打爛後的殘骸（跟完好版同縮放、同錨點）",
+   "source": "props_barrels.try1.png"
+  },
+  "powder": {
+   "path": "props2/powder.webp",
+   "w": 150,
+   "h": 201,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "火藥桶（含引信）：底部中間貼地",
+   "source": "props_barrels.try1.png",
+   "displayH": 100
+  },
+  "powder_broken": {
+   "path": "props2/powder_broken.webp",
+   "w": 216,
+   "h": 128,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "火藥桶（含引信）打爛後的殘骸（跟完好版同縮放、同錨點）",
+   "source": "props_barrels.try1.png"
+  },
+  "cage": {
+   "path": "props2/cage.webp",
+   "w": 339,
+   "h": 339,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "竹籠（關村貓；籠內透明，村貓畫在籠子後面）",
+   "source": "props_cage_stall.try1.png",
+   "displayH": 170
+  },
+  "cage_broken": {
+   "path": "props2/cage_broken.webp",
+   "w": 431,
+   "h": 208,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "竹籠打爛後的殘骸（同縮放、同錨點）",
+   "source": "props_cage_stall.try1.png"
+  },
+  "stall": {
+   "path": "props2/stall.webp",
+   "w": 428,
+   "h": 330,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "攤位",
+   "source": "props_cage_stall.try1.png",
+   "displayH": 165
+  },
+  "stall_broken": {
+   "path": "props2/stall_broken.webp",
+   "w": 480,
+   "h": 221,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "攤位打爛後的殘骸（同縮放、同錨點）",
+   "source": "props_cage_stall.try1.png"
+  },
+  "tower": {
+   "path": "props2/tower.webp",
+   "w": 563,
+   "h": 842,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瞭望台：底部中間貼地",
+   "source": "tower.try1.png",
+   "displayH": 420
+  },
+  "tower_broken": {
+   "path": "props2/tower_broken.webp",
+   "w": 563,
+   "h": 842,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "瞭望台打爛後（跟完好版同一個裁切框：直接換圖就對齊）",
+   "source": "tower_broken.try2.png"
+  },
+  "gate": {
+   "path": "props2/gate.webp",
+   "w": 612,
+   "h": 888,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "寨門：底部中間貼地",
+   "source": "gate.try1.png",
+   "displayH": 430
+  },
+  "gate_broken": {
+   "path": "props2/gate_broken.webp",
+   "w": 612,
+   "h": 888,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "寨門打爛後（跟完好版同一個裁切框：直接換圖就對齊）",
+   "source": "gate_broken.try2.png"
+  },
+  "onigiri": {
+   "path": "props2/onigiri.webp",
+   "w": 114,
+   "h": 105,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "飯糰（掉落物，中心對齊）",
+   "source": "items_small.try1.png",
+   "displaySize": 56
+  },
+  "fish": {
+   "path": "props2/fish.webp",
+   "w": 154,
+   "h": 64,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "魚乾（掉落物，頭朝左）",
+   "source": "items_small.try1.png",
+   "displaySize": 76
+  },
+  "fish_bone": {
+   "path": "props2/fish_bone.webp",
+   "w": 142,
+   "h": 62,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "魚骨頭（橘皮大王丟的，頭朝左，旋轉用）",
+   "source": "items_small.try1.png",
+   "displaySize": 70
+  },
+  "maple_red": {
+   "path": "props2/maple_red.webp",
+   "w": 64,
+   "h": 60,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "紅楓葉（飄落粒子）",
+   "source": "items_small.try1.png",
+   "displaySize": 30
+  },
+  "maple_orange": {
+   "path": "props2/maple_orange.webp",
+   "w": 64,
+   "h": 64,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "橘楓葉（飄落粒子）",
+   "source": "items_small.try1.png",
+   "displaySize": 30
+  },
+  "king_pack": {
+   "path": "props2/king_pack.webp",
+   "w": 341,
+   "h": 291,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "橘皮大王背上的魚乾竹簍（背帶在左邊；大王朝右時請水平翻轉）",
+   "source": "king_pack.try1.png",
+   "displayW": 170
+  },
+  "king_pack_broken": {
+   "path": "props2/king_pack_broken.webp",
+   "w": 428,
+   "h": 241,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "竹簍炸爛掉在地上（同縮放、底部貼地）",
+   "source": "king_pack.try1.png"
+  },
+  "burrow": {
+   "path": "props2/burrow.webp",
+   "w": 262,
+   "h": 95,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "地洞（鼠兵冒出來的洞）：底部中間貼地、洞口在地面線上",
+   "source": "burrow.try1.png",
+   "displayW": 130
+  },
+  "burrow_burst": {
+   "path": "props2/burrow_burst.webp",
+   "w": 326,
+   "h": 152,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "地洞剛被衝開（土塊飛起）：底部中間貼地、洞口在地面線上",
+   "source": "burrow.try1.png",
+   "displayW": 130
+  },
+  "debris_plank": {
+   "path": "props2/debris_plank.webp",
+   "w": 66,
+   "h": 66,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：木板碎片（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_splinter": {
+   "path": "props2/debris_splinter.webp",
+   "w": 57,
+   "h": 66,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：木刺（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_stave": {
+   "path": "props2/debris_stave.webp",
+   "w": 42,
+   "h": 68,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：桶板（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_hoop": {
+   "path": "props2/debris_hoop.webp",
+   "w": 67,
+   "h": 68,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：竹箍（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_bamboo": {
+   "path": "props2/debris_bamboo.webp",
+   "w": 64,
+   "h": 62,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：竹筒碎片（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_stone": {
+   "path": "props2/debris_stone.webp",
+   "w": 63,
+   "h": 52,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：石塊（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_straw": {
+   "path": "props2/debris_straw.webp",
+   "w": 66,
+   "h": 59,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：稻草（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "debris_char": {
+   "path": "props2/debris_char.webp",
+   "w": 61,
+   "h": 57,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "碎片粒子：燒焦木塊（中心旋轉）",
+   "source": "debris.try1.png"
+  },
+  "weapon_H": {
+   "path": "props2/weapon_H.webp",
+   "w": 350,
+   "h": 336,
+   "use": "掉落道具圖示：H 棒手裏劍連射（取代 icons/weapon_H 的苦無圖；大小跟其他 weapon_* 圖示一樣）",
+   "center": [
+    175,
+    168
+   ],
+   "source": "icon_H.try1.png"
+  },
+  "s1_bamboo_fore": {
+   "path": "props2/s1_bamboo_fore.webp",
+   "w": 1105,
+   "h": 1800,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "竹林大竹叢（取代 art.json 舊的 props_s1_bamboo 亮綠版；前景或背景都可用）：底部中間貼地，上端超出畫面頂。當前景時請配合暗一點或半透明。",
+   "source": "s1_bamboo_fore.try1.png",
+   "displayH": 900
+  },
+  "s2_lantern_stall": {
+   "path": "props2/s2_lantern_stall.webp",
+   "w": 433,
+   "h": 340,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·燈籠攤（可打爛）",
+   "source": "s2_props_a.try1.png",
+   "displayH": 170
+  },
+  "s2_crate": {
+   "path": "props2/s2_crate.webp",
+   "w": 179,
+   "h": 145,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·祭典木箱（可打爛）",
+   "source": "s2_props_a.try1.png",
+   "displayH": 72
+  },
+  "s2_lantern_stall_broken": {
+   "path": "props2/s2_lantern_stall_broken.webp",
+   "w": 539,
+   "h": 240,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "燈籠攤打爛後（同縮放、同錨點）",
+   "source": "s2_props_a.try1.png"
+  },
+  "s2_crate_broken": {
+   "path": "props2/s2_crate_broken.webp",
+   "w": 248,
+   "h": 111,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "祭典木箱打爛後",
+   "source": "s2_props_a.try1.png"
+  },
+  "s2_sake_stack": {
+   "path": "props2/s2_sake_stack.webp",
+   "w": 300,
+   "h": 260,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·酒樽堆（可打爛）",
+   "source": "s2_props_b.try1.png",
+   "displayH": 130
+  },
+  "s2_stone_lantern": {
+   "path": "props2/s2_stone_lantern.webp",
+   "w": 175,
+   "h": 300,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·石燈籠（可打爛）",
+   "source": "s2_props_b.try1.png",
+   "displayH": 150
+  },
+  "s2_sake_stack_broken": {
+   "path": "props2/s2_sake_stack_broken.webp",
+   "w": 361,
+   "h": 180,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "酒樽堆打爛後",
+   "source": "s2_props_b.try1.png"
+  },
+  "s2_stone_lantern_broken": {
+   "path": "props2/s2_stone_lantern_broken.webp",
+   "w": 389,
+   "h": 160,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "石燈籠打爛後",
+   "source": "s2_props_b.try1.png"
+  },
+  "s2_offering_box": {
+   "path": "props2/s2_offering_box.webp",
+   "w": 248,
+   "h": 125,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·賽錢箱（可打爛）",
+   "source": "s2_props_c.try1.png",
+   "displayH": 62
+  },
+  "s2_signboard": {
+   "path": "props2/s2_signboard.webp",
+   "w": 422,
+   "h": 299,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·木製看板（可打爛；板面空白）",
+   "source": "s2_props_c.try1.png",
+   "displayH": 150
+  },
+  "s2_offering_box_broken": {
+   "path": "props2/s2_offering_box_broken.webp",
+   "w": 319,
+   "h": 148,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "賽錢箱打爛後（撒出金幣）",
+   "source": "s2_props_c.try1.png"
+  },
+  "s2_signboard_broken": {
+   "path": "props2/s2_signboard_broken.webp",
+   "w": 480,
+   "h": 284,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "看板打爛後",
+   "source": "s2_props_c.try1.png"
+  },
+  "s2_shrine_bell": {
+   "path": "props2/s2_shrine_bell.webp",
+   "w": 277,
+   "h": 441,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·神社大鈴（裝飾；自己帶木架，底部貼地）",
+   "source": "s2_decor.try1.png",
+   "displayH": 220
+  },
+  "s2_ema_rack": {
+   "path": "props2/s2_ema_rack.webp",
+   "w": 311,
+   "h": 322,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第二關·繪馬架（裝飾）",
+   "source": "s2_decor.try1.png",
+   "displayH": 160
+  },
+  "s3_turret_mount": {
+   "path": "props2/s3_turret_mount.webp",
+   "w": 295,
+   "h": 224,
+   "displayScale": 0.5,
+   "anchor": "center",
+   "use": "第三關·甲蟲砲台的牆上底座（空的轉盤）：貼在牆上，砲台畫在轉盤中心；錨點 center",
+   "source": "s3_turret_mount.try1.png",
+   "displayH": 110
+  },
+  "s3_oil_drum": {
+   "path": "props2/s3_oil_drum.webp",
+   "w": 192,
+   "h": 192,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第三關·鐵皮油桶（可打爛）",
+   "source": "s3_props_a.try1.png",
+   "displayH": 95
+  },
+  "s3_gearbox": {
+   "path": "props2/s3_gearbox.webp",
+   "w": 280,
+   "h": 182,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第三關·齒輪箱（可打爛）",
+   "source": "s3_props_a.try1.png",
+   "displayH": 90
+  },
+  "s3_oil_drum_broken": {
+   "path": "props2/s3_oil_drum_broken.webp",
+   "w": 275,
+   "h": 176,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "油桶打爛後（漏油）",
+   "source": "s3_props_a.try1.png"
+  },
+  "s3_gearbox_broken": {
+   "path": "props2/s3_gearbox_broken.webp",
+   "w": 313,
+   "h": 178,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "齒輪箱打爛後",
+   "source": "s3_props_a.try1.png"
+  },
+  "s3_crate": {
+   "path": "props2/s3_crate.webp",
+   "w": 186,
+   "h": 146,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第三關·機關城木箱（鐵包角，可打爛）",
+   "source": "s3_props_b.try2.png",
+   "displayH": 72
+  },
+  "s3_steam_pipe": {
+   "path": "props2/s3_steam_pipe.webp",
+   "w": 179,
+   "h": 240,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第三關·蒸氣管段（可打爛）",
+   "source": "s3_props_b.try2.png",
+   "displayH": 120
+  },
+  "s3_crate_broken": {
+   "path": "props2/s3_crate_broken.webp",
+   "w": 279,
+   "h": 143,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "機關城木箱打爛後",
+   "source": "s3_props_b.try2.png"
+  },
+  "s3_steam_pipe_broken": {
+   "path": "props2/s3_steam_pipe_broken.webp",
+   "w": 308,
+   "h": 243,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "蒸氣管段打爛後（噴蒸氣）",
+   "source": "s3_props_b.try2.png"
+  },
+  "s3_gate": {
+   "path": "props2/s3_gate.webp",
+   "w": 832,
+   "h": 867,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第三關·機關城城門（守門石獅守的那扇，打爛才過得去）：底部中間貼地",
+   "source": "s3_gate.try1.png",
+   "displayH": 430
+  },
+  "s3_gate_broken": {
+   "path": "props2/s3_gate_broken.webp",
+   "w": 832,
+   "h": 867,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "use": "第三關·機關城城門（守門石獅守的那扇，打爛才過得去）打爛後（跟完好版同一個裁切框：直接換圖就對齊）",
+   "source": "s3_gate_broken.try1.png"
+  }
+ },
+ "deck": {
+  "s1_palisade": {
+   "left": {
+    "path": "terrain/s1_palisade_left.webp",
+    "w": 237,
+    "h": 465
+   },
+   "mid": {
+    "path": "terrain/s1_palisade_mid.webp",
+    "w": 183,
+    "h": 465,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/s1_palisade_right.webp",
+    "w": 341,
+    "h": 465
+   },
+   "standY": 123,
+   "bandH": 335,
+   "displayScale": 0.5,
+   "split": {
+    "P": 183,
+    "a0": 201,
+    "r0": 1334,
+    "midSeam": 1.87
+   },
+   "source": "s1_palisade.try1.png",
+   "use": "山賊寨木柵（取代 art.json 舊的 props_s1_palisade 亮色版）：左端＋中段×n＋右端，底部貼地。頂上是削尖的木樁，不能站；standY 只是木樁實心部分的上緣（當擋牆時用）。",
+   "standable": false,
+   "anchor": "bottom"
+  },
+  "s1_rampart": {
+   "left": {
+    "path": "terrain/s1_rampart_left.webp",
+    "w": 239,
+    "h": 366
+   },
+   "mid": {
+    "path": "terrain/s1_rampart_mid.webp",
+    "w": 175,
+    "h": 366,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/s1_rampart_right.webp",
+    "w": 253,
+    "h": 366
+   },
+   "standY": 70,
+   "bandH": 281,
+   "displayScale": 0.5,
+   "split": {
+    "P": 175,
+    "a0": 204,
+    "r0": 1454,
+    "midSeam": 1.38
+   },
+   "source": "s1_rampart.try1.png",
+   "use": "山賊寨木造矮牆（上面鋪木板，可以站）：左端＋中段×n＋右端，底部貼地；圖上第 standY 列＝木板走道頂＝腳踩的線。",
+   "standable": true,
+   "anchor": "bottom"
+  },
+  "s3_ridge": {
+   "left": {
+    "path": "terrain/s3_ridge_left.webp",
+    "w": 192,
+    "h": 305
+   },
+   "mid": {
+    "path": "terrain/s3_ridge_mid.webp",
+    "w": 178,
+    "h": 305,
+    "repeat": true
+   },
+   "right": {
+    "path": "terrain/s3_ridge_right.webp",
+    "w": 223,
+    "h": 305
+   },
+   "standY": 107,
+   "bandH": 191,
+   "displayScale": 0.5,
+   "split": {
+    "P": 178,
+    "a0": 157,
+    "r0": 904,
+    "midSeam": 0.99
+   },
+   "source": "s3_ridge.try1.png",
+   "use": "第三關·天守閣屋脊（雨中，可以站）：左端＋中段×n＋右端，底部貼地（圖底埋進地面帶 4 像素）；standY＝屋脊頂＝腳踩的線。要架高就在下面接 s3_roof 地面帶的瓦片剖面或鐵板牆。",
+   "standable": true,
+   "anchor": "bottom"
+  }
+ },
+ "building": {
+  "s2_stallroof": {
+   "left": {
+    "path": "terrain/s2_stallroof_left.webp",
+    "w": 125,
+    "h": 323,
+    "ridgeX": 25
+   },
+   "mid": {
+    "path": "terrain/s2_stallroof_mid.webp",
+    "w": 244,
+    "h": 323,
+    "repeat": true
+   },
+   "midVariants": [
+    {
+     "path": "terrain/s2_stallroof_mid1.webp",
+     "w": 244,
+     "h": 323,
+     "repeat": true
+    },
+    {
+     "path": "terrain/s2_stallroof_mid2.webp",
+     "w": 244,
+     "h": 323,
+     "repeat": true
+    },
+    {
+     "path": "terrain/s2_stallroof_mid3.webp",
+     "w": 244,
+     "h": 323,
+     "repeat": true
+    }
+   ],
+   "right": {
+    "path": "terrain/s2_stallroof_right.webp",
+    "w": 174,
+    "h": 323,
+    "ridgeX": 147
+   },
+   "standY": 21,
+   "bottomY": 323,
+   "displayScale": 0.5,
+   "split": {
+    "P": 244,
+    "a0": 77,
+    "r0": 1124,
+    "midSeam": 1.13
+   },
+   "source": "s2_stallroof.try1.png",
+   "use": "第二關·可以站上去的攤位長屋：格式同 house（左端＋中段×n＋右端、頂端對齊緊貼著排），屋脊橫樑＝站立線，left.ridgeX～right.ridgeX 是能站的範圍；檔案 2 倍大、顯示 ×0.5（屋脊到圖底約 150）。 中段可以在 mid 與 midVariants 之間輪流挑（寬度都一樣、可以互相接），一整排才不會每間都一樣。"
+  }
+ },
+ "stair": {
+  "stone": {
+   "top": {
+    "path": "terrain/stair_stone_top.webp",
+    "w": 241,
+    "h": 203,
+    "standY": 40
+   },
+   "body": {
+    "path": "terrain/stair_stone_body.webp",
+    "w": 241,
+    "h": 91,
+    "tileY": true,
+    "seam": 1.22
+   },
+   "faceX": 33,
+   "faces": "left",
+   "treadW": 104,
+   "riserH": 28,
+   "displayScale": 0.5,
+   "source": "s1_stairs.try1.png",
+   "measured": {
+    "risers": [
+     187,
+     446,
+     709,
+     966,
+     1223
+    ],
+    "treadPx": 258,
+    "riserPx": 122
+   },
+   "use": "石階（第一關山村樓梯；第二關神社石階也可以用）：一階一塊，格式同崖壁（壁面＝立面朝左、左低右高；下樓梯整組水平翻轉）。每一階：立面 x 對齊落差的 x，頂塊 standY 對齊那一階踏面的站立線，壁身往下重複到畫面底。圖的踏面寬 treadW 像素（顯示後），比關卡的階寬（40、60）寬：從最低的一階畫到最高的一階，高的那階會蓋住低的那階多出來的部分。"
+  }
+ },
+ "platform": {
+  "s2_torii": {
+   "path": "terrain/platform_s2_torii.webp",
+   "w": 836,
+   "h": 660,
+   "standY": 43,
+   "standX0": 147,
+   "standX1": 674,
+   "displayScale": 0.5,
+   "anchor": "bottom-center",
+   "source": "s2_torii.try1.png",
+   "use": "第二關·大鳥居（上橫樑可以站）：底部中間貼地；standY＝上橫樑中段頂；standX0～standX1＝能站的左右範圍（兩端微翹，不要站到最尾端）。"
+  },
+  "s3_lift": {
+   "path": "terrain/platform_s3_lift.webp",
+   "w": 460,
+   "h": 287,
+   "standY": 215,
+   "standX0": 3,
+   "standX1": 457,
+   "displayScale": 0.5,
+   "anchor": "stand-line",
+   "source": "s3_lift.try1.png",
+   "use": "第三關·升降台：standY＝台面頂、standX0～standX1＝能站的範圍；鋼索往上超出圖頂（請往上接到畫面頂，可以用 post 或畫線延長）。"
+  }
+ },
+ "water": {
+  "s2_river": {
+   "frames": [
+    {
+     "path": "terrain/water_s2_river_0.webp",
+     "w": 976,
+     "h": 313
+    },
+    {
+     "path": "terrain/water_s2_river_1.webp",
+     "w": 976,
+     "h": 313
+    },
+    {
+     "path": "terrain/water_s2_river_2.webp",
+     "w": 976,
+     "h": 313
+    },
+    {
+     "path": "terrain/water_s2_river_3.webp",
+     "w": 976,
+     "h": 313
+    }
+   ],
+   "surfaceY": 14,
+   "tileX": true,
+   "fps": 6,
+   "displayScale": 1.0,
+   "seam": 1.08,
+   "bottomColor": "#000307",
+   "source": "s2_water.try1.png",
+   "use": "第二關·河面（河段、坑；河童從這裡冒出來）：4 格輪播（約每秒 6 格）；每格都左右無縫重複；第 surfaceY 列＝水面線，圖底以下用 bottomColor 補到畫面底"
+  }
+ },
+ "anim": {
+  "s1_campfire": {
+   "base": {
+    "path": "props2/s1_campfire_base.webp",
+    "w": 281,
+    "h": 144,
+    "displayScale": 0.5,
+    "anchor": "bottom-center",
+    "use": "營火柴堆（不含火焰）：底部中間貼地",
+    "source": "s1_campfire_base.try1.png",
+    "displayH": 70
+   },
+   "frames": [
+    {
+     "path": "props2/s1_campfire_flame_0.webp",
+     "w": 159,
+     "h": 240
+    },
+    {
+     "path": "props2/s1_campfire_flame_1.webp",
+     "w": 159,
+     "h": 240
+    },
+    {
+     "path": "props2/s1_campfire_flame_2.webp",
+     "w": 159,
+     "h": 240
+    },
+    {
+     "path": "props2/s1_campfire_flame_3.webp",
+     "w": 159,
+     "h": 240
+    }
+   ],
+   "fps": 10,
+   "displayScale": 0.5,
+   "frameAnchor": "bottom-center",
+   "baseX": 82,
+   "source": "s1_campfire_flames.try1.png",
+   "use": "營火（取代 art.json 舊的 props_s1_campfire）：先畫柴堆（底部中間貼地），再把火焰格的底部中間對齊柴堆中心、往上約柴堆高度的 45%（火從柴堆中間冒出來）；4 格輪播約每秒 10 格；火焰格有半透明邊緣。"
+  },
+  "s3_steam_vent": {
+   "base": {
+    "path": "props2/s3_vent_base.webp",
+    "w": 175,
+    "h": 148,
+    "displayScale": 0.5,
+    "anchor": "bottom-center",
+    "use": "第三關·蒸氣噴口（底座）：底部中間貼地",
+    "source": "s3_vent_base.try1.png",
+    "displayH": 72
+   },
+   "frames": [
+    {
+     "path": "props2/s3_vent_steam_0.webp",
+     "w": 249,
+     "h": 460
+    },
+    {
+     "path": "props2/s3_vent_steam_1.webp",
+     "w": 249,
+     "h": 460
+    },
+    {
+     "path": "props2/s3_vent_steam_2.webp",
+     "w": 249,
+     "h": 460
+    },
+    {
+     "path": "props2/s3_vent_steam_3.webp",
+     "w": 249,
+     "h": 460
+    }
+   ],
+   "fps": 8,
+   "displayScale": 0.5,
+   "frameAnchor": "bottom-center",
+   "baseX": 118,
+   "source": "s3_vent_steam.try1.png",
+   "use": "蒸氣噴口：底座底部中間貼地；噴氣時把蒸氣格的底部中間對齊噴嘴口（底座頂端中間，約底座圖寬的 45% 處）。4 格＝噴出→最高→散開→變弱，可以照噴氣節奏播（不噴時只畫底座）。"
+  }
+ },
+ "ending": {
+  "rescued": {
+   "path": "ui/ending_rescued.webp",
+   "w": 1920,
+   "h": 1080,
+   "source": "ending.try1.png",
+   "crop": [
+    0,
+    136,
+    1536,
+    1000
+   ],
+   "use": "結局圖：暴風雨過後天守閣頂的夕陽，球球跟 15 隻被救的村貓合照。16:9，直接鋪滿 1280x720 畫面。原圖 1536x1024（3:2），切掉上方天空成 16:9 後放大到 1920x1080（放大約 1.25 倍）。"
+  }
+ },
+ "_說明2": "第二批（tools/gen_terrain2.py 生、tools/post_terrain2.py 後製）：鍵名加了關卡前綴。新區塊：deck（長條、無支柱，standable＝能不能站）、building（格式同 house）、stair（石階，格式同崖壁）、platform（單張站台，standX0～standX1＝能站的範圍）、water（水面帶＋4 格）、anim（柴堆／噴口＋動畫格）、ending（結局圖）。第一批的鍵都沒動。模擬畫面在 art_raw/terrain/_check/s1b_*、s2_*、s3_*。"
+}

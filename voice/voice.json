@@ -1,0 +1,1855 @@
+{
+ "version": "2026-09-27",
+ "format": "mp3 單聲道 24 kHz 48 kbps；路徑相對於網站根目錄（public）",
+ "priority_order": [
+  "announcer",
+  "boss",
+  "qiuqiu",
+  "villager",
+  "grunt"
+ ],
+ "priority_note": "數字越大越優先：同時要講話時，新的一句優先順序比正在講的高才打斷；同順序不打斷、直接略過",
+ "roles": {
+  "announcer": {
+   "name": "播報員",
+   "voices": {
+    "ja": "ja-jp-podcaster-7"
+   },
+   "priority": 5,
+   "volume": 1.0
+  },
+  "qiuqiu": {
+   "name": "球球",
+   "voices": {
+    "ja": "leda"
+   },
+   "priority": 3,
+   "volume": 0.9
+  },
+  "villager1": {
+   "name": "村貓甲",
+   "voices": {
+    "ja": "sulafat"
+   },
+   "priority": 2,
+   "volume": 0.85
+  },
+  "villager2": {
+   "name": "村貓乙",
+   "voices": {
+    "ja": "laomedeia"
+   },
+   "priority": 2,
+   "volume": 0.85
+  },
+  "villager3": {
+   "name": "村貓丙",
+   "voices": {
+    "ja": "achird"
+   },
+   "priority": 2,
+   "volume": 0.85
+  },
+  "drum_tanuki": {
+   "name": "太鼓狸",
+   "voices": {
+    "ja": "puck"
+   },
+   "priority": 4,
+   "volume": 1.0
+  },
+  "orange_king": {
+   "name": "橘皮大王",
+   "voices": {
+    "ja": "fenrir"
+   },
+   "priority": 4,
+   "volume": 1.0
+  },
+  "frog_daimyo": {
+   "name": "蛙大名",
+   "voices": {
+    "ja": "algieba"
+   },
+   "priority": 4,
+   "volume": 1.0
+  },
+  "tanuki_lord": {
+   "name": "狸大人",
+   "voices": {
+    "ja": "enceladus"
+   },
+   "priority": 4,
+   "volume": 1.0
+  },
+  "roomba_king": {
+   "name": "掃地機王",
+   "voices": {
+    "ja": "pulcherrima"
+   },
+   "priority": 4,
+   "volume": 1.0
+  },
+  "iron_claw": {
+   "name": "鐵爪機關貓",
+   "voices": {
+    "ja": "algenib"
+   },
+   "priority": 4,
+   "volume": 1.0
+  },
+  "grunt": {
+   "name": "小兵",
+   "voices": {
+    "ja": "orus"
+   },
+   "priority": 1,
+   "volume": 0.7
+  }
+ },
+ "events_note": "events[事件] 是一串「角色＋可用音檔」，已照優先順序排好；clips 裡隨機挑一個（ok=false 的先別用）。同一事件有兩個角色時（任務完成、打倒魔王：播報員喊完球球再講），可以依序播或只播第一個；村貓的 captiveThank／captiveGive 有甲乙丙三個角色：每隻被救的村貓隨機分到一個，謝謝跟給道具用同一個角色",
+ "events": {
+  "missionStart:stage1": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_m1_start",
+      "file": "voice/announcer/ann_m1_start.mp3",
+      "text": "任務一、開始！",
+      "variant": 1,
+      "dur": 2.12,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "missionStart:stage2": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_m2_start",
+      "file": "voice/announcer/ann_m2_start.mp3",
+      "text": "任務二、開始！",
+      "variant": 1,
+      "dur": 2.05,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "missionStart:stage3": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_m3_start",
+      "file": "voice/announcer/ann_m3_start.mp3",
+      "text": "任務三、開始！",
+      "variant": 1,
+      "dur": 2.14,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "missionStart": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_go",
+      "file": "voice/announcer/ann_go.mp3",
+      "text": "いざ、出陣！",
+      "variant": 1,
+      "dur": 1.69,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "missionComplete": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_clear_1",
+      "file": "voice/announcer/ann_clear_1.mp3",
+      "text": "任務完了！",
+      "variant": 1,
+      "dur": 1.62,
+      "ok": true
+     },
+     {
+      "id": "ann_clear_2",
+      "file": "voice/announcer/ann_clear_2.mp3",
+      "text": "見事なり！",
+      "variant": 2,
+      "dur": 1.31,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.9,
+    "clips": [
+     {
+      "id": "qq_clear_1",
+      "file": "voice/qiuqiu/qq_clear_1.mp3",
+      "text": "搞定喵！",
+      "variant": 1,
+      "dur": 0.96,
+      "ok": true
+     },
+     {
+      "id": "qq_clear_2",
+      "file": "voice/qiuqiu/qq_clear_2.mp3",
+      "text": "輕鬆過關喵！",
+      "variant": 2,
+      "dur": 0.91,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossEnter": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_warn_1",
+      "file": "voice/announcer/ann_warn_1.mp3",
+      "text": "警告！強敵接近！",
+      "variant": 1,
+      "dur": 2.47,
+      "ok": true
+     },
+     {
+      "id": "ann_warn_2",
+      "file": "voice/announcer/ann_warn_2.mp3",
+      "text": "気をつけろ、大物だ！",
+      "variant": 2,
+      "dur": 2.01,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossDown": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_bossdown",
+      "file": "voice/announcer/ann_bossdown.mp3",
+      "text": "討ち取ったり！",
+      "variant": 1,
+      "dur": 1.31,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.9,
+    "clips": [
+     {
+      "id": "qq_bossdown_1",
+      "file": "voice/qiuqiu/qq_bossdown_1.mp3",
+      "text": "哼哼，你輸了喵！",
+      "variant": 1,
+      "dur": 2.23,
+      "ok": true
+     },
+     {
+      "id": "qq_bossdown_2",
+      "file": "voice/qiuqiu/qq_bossdown_2.mp3",
+      "text": "這就是忍者貓的厲害！",
+      "variant": 2,
+      "dur": 2.19,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:10": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_10",
+      "file": "voice/announcer/ann_count_10.mp3",
+      "text": "十！",
+      "variant": 1,
+      "dur": 0.87,
+      "ok": true
+     }
+    ],
+    "hint": "遊戲的接關倒數目前畫面上從 9 開始（CONTINUE_SECONDS=10、顯示 ceil-1），10 這句可不用"
+   }
+  ],
+  "continueCount:9": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_9",
+      "file": "voice/announcer/ann_count_9.mp3",
+      "text": "九！",
+      "variant": 1,
+      "dur": 0.91,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:8": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_8",
+      "file": "voice/announcer/ann_count_8.mp3",
+      "text": "八！",
+      "variant": 1,
+      "dur": 1.01,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:7": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_7",
+      "file": "voice/announcer/ann_count_7.mp3",
+      "text": "七！",
+      "variant": 1,
+      "dur": 0.92,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:6": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_6",
+      "file": "voice/announcer/ann_count_6.mp3",
+      "text": "六！",
+      "variant": 1,
+      "dur": 0.9,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:5": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_5",
+      "file": "voice/announcer/ann_count_5.mp3",
+      "text": "五！",
+      "variant": 1,
+      "dur": 0.83,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:4": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_4",
+      "file": "voice/announcer/ann_count_4.mp3",
+      "text": "四！",
+      "variant": 1,
+      "dur": 0.86,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:3": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_3",
+      "file": "voice/announcer/ann_count_3.mp3",
+      "text": "三！",
+      "variant": 1,
+      "dur": 1.0,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:2": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_2",
+      "file": "voice/announcer/ann_count_2.mp3",
+      "text": "二！",
+      "variant": 1,
+      "dur": 0.82,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:1": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_1",
+      "file": "voice/announcer/ann_count_1.mp3",
+      "text": "一！",
+      "variant": 1,
+      "dur": 0.88,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continueCount:0": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_count_0",
+      "file": "voice/announcer/ann_count_0.mp3",
+      "text": "ゼロ！",
+      "variant": 1,
+      "dur": 0.92,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "continuePrompt": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_continue",
+      "file": "voice/announcer/ann_continue.mp3",
+      "text": "まだやれるか！",
+      "variant": 1,
+      "dur": 1.57,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "gameOver": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_over_1",
+      "file": "voice/announcer/ann_over_1.mp3",
+      "text": "任務失敗……",
+      "variant": 1,
+      "dur": 1.7,
+      "ok": true
+     },
+     {
+      "id": "ann_over_2",
+      "file": "voice/announcer/ann_over_2.mp3",
+      "text": "無念……",
+      "variant": 2,
+      "dur": 1.03,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:H": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_H",
+      "file": "voice/announcer/ann_w_H.mp3",
+      "text": "棒手裏剣、連射！",
+      "variant": 1,
+      "dur": 1.87,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:R": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_R",
+      "file": "voice/announcer/ann_w_R.mp3",
+      "text": "風魔手裏剣！",
+      "variant": 1,
+      "dur": 1.54,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:F": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_F",
+      "file": "voice/announcer/ann_w_F.mp3",
+      "text": "火薬竹筒！",
+      "variant": 1,
+      "dur": 1.88,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:S": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_S",
+      "file": "voice/announcer/ann_w_S.mp3",
+      "text": "撒菱！",
+      "variant": 1,
+      "dur": 1.28,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:L": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_L",
+      "file": "voice/announcer/ann_w_L.mp3",
+      "text": "鎖鎌！",
+      "variant": 1,
+      "dur": 1.26,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:C": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_C",
+      "file": "voice/announcer/ann_w_C.mp3",
+      "text": "式神、折り鶴！",
+      "variant": 1,
+      "dur": 1.9,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:I": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_I",
+      "file": "voice/announcer/ann_w_I.mp3",
+      "text": "鼠花火！",
+      "variant": 1,
+      "dur": 1.45,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:D": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_D",
+      "file": "voice/announcer/ann_w_D.mp3",
+      "text": "毛玉弾！",
+      "variant": 1,
+      "dur": 1.28,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:B": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_B",
+      "file": "voice/announcer/ann_w_B.mp3",
+      "text": "吹き矢！",
+      "variant": 1,
+      "dur": 1.14,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:bigbomb": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_bigbomb",
+      "file": "voice/announcer/ann_w_bigbomb.mp3",
+      "text": "焙烙玉！",
+      "variant": 1,
+      "dur": 1.36,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:smoke": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_smoke",
+      "file": "voice/announcer/ann_w_smoke.mp3",
+      "text": "煙玉！",
+      "variant": 1,
+      "dur": 1.27,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "pickup:bomb": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_w_bomb",
+      "file": "voice/announcer/ann_w_bomb.mp3",
+      "text": "爆裂符、補充！",
+      "variant": 1,
+      "dur": 1.93,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "extraLife": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_1up_1",
+      "file": "voice/announcer/ann_1up_1.mp3",
+      "text": "ワンナップ！",
+      "variant": 1,
+      "dur": 1.16,
+      "ok": true
+     },
+     {
+      "id": "ann_1up_2",
+      "file": "voice/announcer/ann_1up_2.mp3",
+      "text": "命、ひとつ追加！",
+      "variant": 2,
+      "dur": 2.15,
+      "ok": true
+     }
+    ],
+    "hint": "遊戲目前沒有加命道具，先備著"
+   }
+  ],
+  "combo:5": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_combo_5",
+      "file": "voice/announcer/ann_combo_5.mp3",
+      "text": "五人斬り！",
+      "variant": 1,
+      "dur": 1.24,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "combo:10": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_combo_10",
+      "file": "voice/announcer/ann_combo_10.mp3",
+      "text": "十人斬り！",
+      "variant": 1,
+      "dur": 1.4,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "combo:20": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_combo_20",
+      "file": "voice/announcer/ann_combo_20.mp3",
+      "text": "二十人斬り！",
+      "variant": 1,
+      "dur": 1.51,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "combo:30": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_combo_30",
+      "file": "voice/announcer/ann_combo_30.mp3",
+      "text": "三十人斬り！",
+      "variant": 1,
+      "dur": 1.76,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "combo:50": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_combo_50",
+      "file": "voice/announcer/ann_combo_50.mp3",
+      "text": "五十人斬り！",
+      "variant": 1,
+      "dur": 1.49,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "allRescued": [
+   {
+    "role": "announcer",
+    "priority": 5,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "ann_allrescued",
+      "file": "voice/announcer/ann_allrescued.mp3",
+      "text": "村の猫、全員救出！",
+      "variant": 1,
+      "dur": 2.78,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "fire": [
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "qq_throw_1",
+      "file": "voice/qiuqiu/qq_throw_1.mp3",
+      "text": "はっ！",
+      "variant": 1,
+      "dur": 0.31,
+      "ok": true
+     },
+     {
+      "id": "qq_throw_2",
+      "file": "voice/qiuqiu/qq_throw_2.mp3",
+      "text": "せいっ！",
+      "variant": 2,
+      "dur": 0.43,
+      "ok": true
+     },
+     {
+      "id": "qq_throw_3",
+      "file": "voice/qiuqiu/qq_throw_3.mp3",
+      "text": "とりゃっ！",
+      "variant": 3,
+      "dur": 0.52,
+      "ok": true
+     }
+    ],
+    "hint": "丟東西很頻繁：建議約三成機率才喊、同一種喊聲 0.6 秒內不重播；按住連丟時不要每發都喊"
+   }
+  ],
+  "claw": [
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "qq_claw_1",
+      "file": "voice/qiuqiu/qq_claw_1.mp3",
+      "text": "にゃっ！",
+      "variant": 1,
+      "dur": 0.31,
+      "ok": true
+     },
+     {
+      "id": "qq_claw_2",
+      "file": "voice/qiuqiu/qq_claw_2.mp3",
+      "text": "にゃあっ！",
+      "variant": 2,
+      "dur": 0.6,
+      "ok": true
+     },
+     {
+      "id": "qq_claw_3",
+      "file": "voice/qiuqiu/qq_claw_3.mp3",
+      "text": "せやっ！",
+      "variant": 3,
+      "dur": 0.45,
+      "ok": true
+     }
+    ],
+    "hint": "同上，約四成機率"
+   }
+  ],
+  "jump": [
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "qq_jump_1",
+      "file": "voice/qiuqiu/qq_jump_1.mp3",
+      "text": "ほっ！",
+      "variant": 1,
+      "dur": 0.25,
+      "ok": true
+     },
+     {
+      "id": "qq_jump_2",
+      "file": "voice/qiuqiu/qq_jump_2.mp3",
+      "text": "やっ！",
+      "variant": 2,
+      "dur": 0.28,
+      "ok": true
+     },
+     {
+      "id": "qq_jump_3",
+      "file": "voice/qiuqiu/qq_jump_3.mp3",
+      "text": "とうっ！",
+      "variant": 3,
+      "dur": 0.43,
+      "ok": true
+     }
+    ],
+    "hint": "約三成機率，二段跳不喊"
+   }
+  ],
+  "playerHurt": [
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "qq_hurt_1",
+      "file": "voice/qiuqiu/qq_hurt_1.mp3",
+      "text": "いてっ！",
+      "variant": 1,
+      "dur": 0.44,
+      "ok": true
+     },
+     {
+      "id": "qq_hurt_2",
+      "file": "voice/qiuqiu/qq_hurt_2.mp3",
+      "text": "うにゃっ！",
+      "variant": 2,
+      "dur": 0.5,
+      "ok": true
+     },
+     {
+      "id": "qq_hurt_3",
+      "file": "voice/qiuqiu/qq_hurt_3.mp3",
+      "text": "ぐっ！",
+      "variant": 3,
+      "dur": 0.18,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "playerDown": [
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "qq_down_1",
+      "file": "voice/qiuqiu/qq_down_1.mp3",
+      "text": "にゃああっ！",
+      "variant": 1,
+      "dur": 1.14,
+      "ok": true
+     },
+     {
+      "id": "qq_down_2",
+      "file": "voice/qiuqiu/qq_down_2.mp3",
+      "text": "やられた……",
+      "variant": 2,
+      "dur": 1.07,
+      "ok": true
+     },
+     {
+      "id": "qq_down_3",
+      "file": "voice/qiuqiu/qq_down_3.mp3",
+      "text": "うにゃ……",
+      "variant": 3,
+      "dur": 1.01,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "respawn": [
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.9,
+    "clips": [
+     {
+      "id": "qq_respawn_1",
+      "file": "voice/qiuqiu/qq_respawn_1.mp3",
+      "text": "再來一次喵！",
+      "variant": 1,
+      "dur": 1.13,
+      "ok": true
+     },
+     {
+      "id": "qq_respawn_2",
+      "file": "voice/qiuqiu/qq_respawn_2.mp3",
+      "text": "我還沒輸喵！",
+      "variant": 2,
+      "dur": 1.61,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "captiveFreed": [
+   {
+    "role": "qiuqiu",
+    "priority": 3,
+    "volume": 0.9,
+    "clips": [
+     {
+      "id": "qq_rescue_1",
+      "file": "voice/qiuqiu/qq_rescue_1.mp3",
+      "text": "別怕，我來救你了！",
+      "variant": 1,
+      "dur": 2.03,
+      "ok": true
+     },
+     {
+      "id": "qq_rescue_2",
+      "file": "voice/qiuqiu/qq_rescue_2.mp3",
+      "text": "沒事了，快回家吧！",
+      "variant": 2,
+      "dur": 2.25,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "captiveThank": [
+   {
+    "role": "villager1",
+    "priority": 2,
+    "volume": 0.85,
+    "clips": [
+     {
+      "id": "vil1_thank_1",
+      "file": "voice/villager1/vil1_thank_1.mp3",
+      "text": "謝謝你！",
+      "variant": 1,
+      "dur": 1.8,
+      "ok": true
+     },
+     {
+      "id": "vil1_thank_2",
+      "file": "voice/villager1/vil1_thank_2.mp3",
+      "text": "謝謝你喔，球球！",
+      "variant": 2,
+      "dur": 2.65,
+      "ok": true
+     }
+    ],
+    "hint": "村貓被救時隨機挑一隻村貓的聲音（甲乙丙），同一隻村貓的謝謝跟給道具用同一個聲音"
+   },
+   {
+    "role": "villager2",
+    "priority": 2,
+    "volume": 0.85,
+    "clips": [
+     {
+      "id": "vil2_thank_1",
+      "file": "voice/villager2/vil2_thank_1.mp3",
+      "text": "謝謝你！",
+      "variant": 1,
+      "dur": 1.06,
+      "ok": true
+     },
+     {
+      "id": "vil2_thank_2",
+      "file": "voice/villager2/vil2_thank_2.mp3",
+      "text": "球球哥哥好厲害！",
+      "variant": 2,
+      "dur": 3.45,
+      "ok": true
+     }
+    ],
+    "hint": "村貓被救時隨機挑一隻村貓的聲音（甲乙丙），同一隻村貓的謝謝跟給道具用同一個聲音"
+   },
+   {
+    "role": "villager3",
+    "priority": 2,
+    "volume": 0.85,
+    "clips": [
+     {
+      "id": "vil3_thank_1",
+      "file": "voice/villager3/vil3_thank_1.mp3",
+      "text": "謝謝你！",
+      "variant": 1,
+      "dur": 0.97,
+      "ok": true
+     },
+     {
+      "id": "vil3_thank_2",
+      "file": "voice/villager3/vil3_thank_2.mp3",
+      "text": "多謝啦，少年仔！",
+      "variant": 2,
+      "dur": 1.24,
+      "ok": true
+     }
+    ],
+    "hint": "村貓被救時隨機挑一隻村貓的聲音（甲乙丙），同一隻村貓的謝謝跟給道具用同一個聲音"
+   }
+  ],
+  "captiveGive": [
+   {
+    "role": "villager1",
+    "priority": 2,
+    "volume": 0.85,
+    "clips": [
+     {
+      "id": "vil1_give_1",
+      "file": "voice/villager1/vil1_give_1.mp3",
+      "text": "這個給你！",
+      "variant": 1,
+      "dur": 1.07,
+      "ok": true
+     },
+     {
+      "id": "vil1_give_2",
+      "file": "voice/villager1/vil1_give_2.mp3",
+      "text": "這個拿去用，小心喔！",
+      "variant": 2,
+      "dur": 2.01,
+      "ok": true
+     }
+    ],
+    "hint": "跟上一句同一隻村貓的聲音"
+   },
+   {
+    "role": "villager2",
+    "priority": 2,
+    "volume": 0.85,
+    "clips": [
+     {
+      "id": "vil2_give_1",
+      "file": "voice/villager2/vil2_give_1.mp3",
+      "text": "這個給你！",
+      "variant": 1,
+      "dur": 0.8,
+      "ok": true
+     },
+     {
+      "id": "vil2_give_2",
+      "file": "voice/villager2/vil2_give_2.mp3",
+      "text": "這個借你用！",
+      "variant": 2,
+      "dur": 1.11,
+      "ok": true
+     }
+    ],
+    "hint": "跟上一句同一隻村貓的聲音"
+   },
+   {
+    "role": "villager3",
+    "priority": 2,
+    "volume": 0.85,
+    "clips": [
+     {
+      "id": "vil3_give_1",
+      "file": "voice/villager3/vil3_give_1.mp3",
+      "text": "這個給你！",
+      "variant": 1,
+      "dur": 1.23,
+      "ok": true
+     },
+     {
+      "id": "vil3_give_2",
+      "file": "voice/villager3/vil3_give_2.mp3",
+      "text": "拿去！好好教訓他們！",
+      "variant": 2,
+      "dur": 2.65,
+      "ok": true
+     }
+    ],
+    "hint": "跟上一句同一隻村貓的聲音"
+   }
+  ],
+  "bossEnter:drum_tanuki": [
+   {
+    "role": "drum_tanuki",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "drum_enter_1",
+      "file": "voice/drum_tanuki/drum_enter_1.mp3",
+      "text": "咚咚！誰敢過來！",
+      "variant": 1,
+      "dur": 3.06,
+      "ok": true
+     },
+     {
+      "id": "drum_enter_2",
+      "file": "voice/drum_tanuki/drum_enter_2.mp3",
+      "text": "祭典才正要開始咧！",
+      "variant": 2,
+      "dur": 2.79,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:小的們！": [
+   {
+    "role": "drum_tanuki",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "drum_summon",
+      "file": "voice/drum_tanuki/drum_summon.mp3",
+      "text": "小的們！",
+      "variant": 1,
+      "dur": 1.18,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossPhase:drum_tanuki": [
+   {
+    "role": "drum_tanuki",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "drum_phase_1",
+      "file": "voice/drum_tanuki/drum_phase_1.mp3",
+      "text": "咚咚咚咚！節奏加快啦！",
+      "variant": 1,
+      "dur": 1.82,
+      "ok": true
+     }
+    ],
+    "hint": "太鼓狸是中魔王，遊戲目前沒有第二階段；可改在血量剩一半時播"
+   }
+  ],
+  "bossDown:drum_tanuki": [
+   {
+    "role": "drum_tanuki",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "drum_down_1",
+      "file": "voice/drum_tanuki/drum_down_1.mp3",
+      "text": "哎喲……鼓皮破了啦……",
+      "variant": 1,
+      "dur": 3.39,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossEnter:orange_king": [
+   {
+    "role": "orange_king",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "king_enter_1",
+      "file": "voice/orange_king/king_enter_1.mp3",
+      "text": "喵嗚嗚——！這座山寨是本王的！",
+      "variant": 1,
+      "dur": 5.22,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossPhase:orange_king": [
+   {
+    "role": "orange_king",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "king_phase_1",
+      "file": "voice/orange_king/king_phase_1.mp3",
+      "text": "可惡——！本王生氣了！",
+      "variant": 1,
+      "dur": 3.05,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossDown:orange_king": [
+   {
+    "role": "orange_king",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "king_down_1",
+      "file": "voice/orange_king/king_down_1.mp3",
+      "text": "不可能！本王怎麼會輸……",
+      "variant": 1,
+      "dur": 2.83,
+      "ok": true
+     },
+     {
+      "id": "king_down_2",
+      "file": "voice/orange_king/king_down_2.mp3",
+      "text": "本王的魚乾……全部沒了……",
+      "variant": 2,
+      "dur": 3.48,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossEnter:frog_daimyo": [
+   {
+    "role": "frog_daimyo",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "frog_enter_1",
+      "file": "voice/frog_daimyo/frog_enter_1.mp3",
+      "text": "呱！誰敢在本大名的沼澤撒野！",
+      "variant": 1,
+      "dur": 5.1,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:蝌蚪們，上！": [
+   {
+    "role": "frog_daimyo",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "frog_summon",
+      "file": "voice/frog_daimyo/frog_summon.mp3",
+      "text": "蝌蚪們，上！",
+      "variant": 1,
+      "dur": 1.95,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossPhase:frog_daimyo": [
+   {
+    "role": "frog_daimyo",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "frog_phase_1",
+      "file": "voice/frog_daimyo/frog_phase_1.mp3",
+      "text": "呱呱呱——！本大名要認真了！",
+      "variant": 1,
+      "dur": 4.03,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossDown:frog_daimyo": [
+   {
+    "role": "frog_daimyo",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "frog_down_1",
+      "file": "voice/frog_daimyo/frog_down_1.mp3",
+      "text": "呱……本大名……竟然輸了……",
+      "variant": 1,
+      "dur": 4.12,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossEnter:tanuki_lord": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_enter_1",
+      "file": "voice/tanuki_lord/tanuki_enter_1.mp3",
+      "text": "哼哼，想上山？先過本大人這關！",
+      "variant": 1,
+      "dur": 5.07,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:變！": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_stone",
+      "file": "voice/tanuki_lord/tanuki_stone.mp3",
+      "text": "變！",
+      "variant": 1,
+      "dur": 0.67,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:分身術！": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_clone",
+      "file": "voice/tanuki_lord/tanuki_clone.mp3",
+      "text": "分身術！",
+      "variant": 1,
+      "dur": 1.46,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:巨大化！": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_giant",
+      "file": "voice/tanuki_lord/tanuki_giant.mp3",
+      "text": "巨大化！",
+      "variant": 1,
+      "dur": 1.02,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:頭好暈…": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_dizzy",
+      "file": "voice/tanuki_lord/tanuki_dizzy.mp3",
+      "text": "頭好暈…",
+      "variant": 1,
+      "dur": 1.43,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:那是假的啦！": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_fake_1",
+      "file": "voice/tanuki_lord/tanuki_fake_1.mp3",
+      "text": "那是假的啦！",
+      "variant": 1,
+      "dur": 1.73,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:嘿嘿，猜錯了～": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_fake_2",
+      "file": "voice/tanuki_lord/tanuki_fake_2.mp3",
+      "text": "嘿嘿，猜錯了～",
+      "variant": 1,
+      "dur": 1.91,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossPhase:tanuki_lord": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_phase_1",
+      "file": "voice/tanuki_lord/tanuki_phase_1.mp3",
+      "text": "可惡——！本大人要動真格了！",
+      "variant": 1,
+      "dur": 2.98,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossDown:tanuki_lord": [
+   {
+    "role": "tanuki_lord",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "tanuki_down_1",
+      "file": "voice/tanuki_lord/tanuki_down_1.mp3",
+      "text": "怎麼可能……本大人的變身術……",
+      "variant": 1,
+      "dur": 3.6,
+      "ok": true
+     },
+     {
+      "id": "tanuki_down_2",
+      "file": "voice/tanuki_lord/tanuki_down_2.mp3",
+      "text": "嘿嘿……算你厲害……下次就沒這麼好運了……",
+      "variant": 2,
+      "dur": 4.76,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossEnter:roomba_king": [
+   {
+    "role": "roomba_king",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "roomba_enter_1",
+      "file": "voice/roomba_king/roomba_enter_1.mp3",
+      "text": "清掃開始！全部吸進來！",
+      "variant": 1,
+      "dur": 4.25,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:吸——！": [
+   {
+    "role": "roomba_king",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "roomba_suck",
+      "file": "voice/roomba_king/roomba_suck.mp3",
+      "text": "吸——！",
+      "variant": 1,
+      "dur": 0.94,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossPhase:roomba_king": [
+   {
+    "role": "roomba_king",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "roomba_phase_1",
+      "file": "voice/roomba_king/roomba_phase_1.mp3",
+      "text": "警告，灰塵量超標，切換強力模式。",
+      "variant": 1,
+      "dur": 6.78,
+      "ok": true
+     }
+    ],
+    "hint": "掃地機王是中魔王，遊戲目前沒有第二階段；可改在血量剩一半時播"
+   }
+  ],
+  "bossDown:roomba_king": [
+   {
+    "role": "roomba_king",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "roomba_down_1",
+      "file": "voice/roomba_king/roomba_down_1.mp3",
+      "text": "系統……故障……清掃……中止……",
+      "variant": 1,
+      "dur": 4.16,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossEnter:iron_claw": [
+   {
+    "role": "iron_claw",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "claw_enter_1",
+      "file": "voice/iron_claw/claw_enter_1.mp3",
+      "text": "喀嚓……入侵者，排除！",
+      "variant": 1,
+      "dur": 4.29,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:出動！": [
+   {
+    "role": "iron_claw",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "claw_summon",
+      "file": "voice/iron_claw/claw_summon.mp3",
+      "text": "出動！",
+      "variant": 1,
+      "dur": 0.92,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:暴走——！": [
+   {
+    "role": "iron_claw",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "claw_rampage",
+      "file": "voice/iron_claw/claw_rampage.mp3",
+      "text": "暴走——！",
+      "variant": 1,
+      "dur": 1.11,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossPhase:iron_claw": [
+   {
+    "role": "iron_claw",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "claw_phase_1",
+      "file": "voice/iron_claw/claw_phase_1.mp3",
+      "text": "裝甲……脫落！全力運轉——！",
+      "variant": 1,
+      "dur": 3.74,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "bossDown:iron_claw": [
+   {
+    "role": "iron_claw",
+    "priority": 4,
+    "volume": 1.0,
+    "clips": [
+     {
+      "id": "claw_down_1",
+      "file": "voice/iron_claw/claw_down_1.mp3",
+      "text": "機關……停止……怎麼……可能……",
+      "variant": 1,
+      "dur": 4.49,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "notice": [
+   {
+    "role": "grunt",
+    "priority": 1,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "grunt_notice_1",
+      "file": "voice/grunt/grunt_notice_1.mp3",
+      "text": "在那裡！",
+      "variant": 1,
+      "dur": 0.43,
+      "ok": true
+     },
+     {
+      "id": "grunt_notice_2",
+      "file": "voice/grunt/grunt_notice_2.mp3",
+      "text": "發現了！",
+      "variant": 2,
+      "dur": 1.02,
+      "ok": true
+     },
+     {
+      "id": "grunt_notice_3",
+      "file": "voice/grunt/grunt_notice_3.mp3",
+      "text": "是球球！",
+      "variant": 3,
+      "dur": 0.59,
+      "ok": true
+     }
+    ],
+    "hint": "小兵發現你：同一時間只放一句、全場每 4 秒最多一次，避免吵"
+   }
+  ],
+  "say:別跑！": [
+   {
+    "role": "grunt",
+    "priority": 1,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "grunt_chase",
+      "file": "voice/grunt/grunt_chase.mp3",
+      "text": "別跑！",
+      "variant": 1,
+      "dur": 0.9,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:看棍！": [
+   {
+    "role": "grunt",
+    "priority": 1,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "grunt_attack",
+      "file": "voice/grunt/grunt_attack.mp3",
+      "text": "看棍！",
+      "variant": 1,
+      "dur": 0.8,
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "say:哇啊啊！": [
+   {
+    "role": "grunt",
+    "priority": 1,
+    "volume": 0.7,
+    "clips": [
+     {
+      "id": "grunt_flee",
+      "file": "voice/grunt/grunt_flee.mp3",
+      "text": "哇啊啊！",
+      "variant": 1,
+      "dur": 1.2,
+      "ok": true
+     }
+    ]
+   }
+  ]
+ },
+ "say": {
+  "咚咚！誰敢過來！": "bossEnter:drum_tanuki",
+  "小的們！": "say:小的們！",
+  "喵嗚嗚——！這座山寨是本王的！": "bossEnter:orange_king",
+  "可惡——！本王生氣了！": "bossPhase:orange_king",
+  "呱！誰敢在本大名的沼澤撒野！": "bossEnter:frog_daimyo",
+  "蝌蚪們，上！": "say:蝌蚪們，上！",
+  "呱呱呱——！本大名要認真了！": "bossPhase:frog_daimyo",
+  "哼哼，想上山？先過本大人這關！": "bossEnter:tanuki_lord",
+  "變！": "say:變！",
+  "分身術！": "say:分身術！",
+  "巨大化！": "say:巨大化！",
+  "頭好暈…": "say:頭好暈…",
+  "那是假的啦！": "say:那是假的啦！",
+  "嘿嘿，猜錯了～": "say:嘿嘿，猜錯了～",
+  "可惡——！本大人要動真格了！": "bossPhase:tanuki_lord",
+  "清掃開始！全部吸進來！": "bossEnter:roomba_king",
+  "吸——！": "say:吸——！",
+  "喀嚓……入侵者，排除！": "bossEnter:iron_claw",
+  "出動！": "say:出動！",
+  "暴走——！": "say:暴走——！",
+  "裝甲……脫落！全力運轉——！": "bossPhase:iron_claw",
+  "別跑！": "say:別跑！",
+  "看棍！": "say:看棍！",
+  "哇啊啊！": "say:哇啊啊！"
+ },
+ "say_note": "遊戲裡 w.say(敵人, 字幕) 顯示這些字幕時，查 events[say[字幕]] 播同一句（字幕跟配音一字不差）",
+ "pending": [],
+ "pending_note": "還沒生成的句子（額度用完），檔案還不存在"
+}

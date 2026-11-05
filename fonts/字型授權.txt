@@ -1,0 +1,9 @@
+本資料夾的字型檔是下列開源字型的子集（只留遊戲用到的字，tools/make_fonts.py 產生），授權皆為 SIL Open Font License 1.1：
+
+wenkai-sub.woff2  霞鶩文楷 TC Medium（LXGW WenKai TC）v1.522
+                  Copyright LXGW；https://github.com/lxgw/LxgwWenkaiTC
+huninn-sub.woff2  jf 粉圓（jf-openhuninn）v2.1
+                  Copyright justfont；https://github.com/justfont/open-huninn-font
+
+SIL Open Font License 1.1 全文：https://openfontlicense.org
+子集檔保留原字型的名稱表（含著作權與授權資訊）。依授權，修改版不可使用原字型的保留名稱，本子集僅供本遊戲內嵌使用、不單獨散布。
