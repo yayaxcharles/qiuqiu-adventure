@@ -19,7 +19,7 @@ describe('遊戲字型 fonts.ts（10-09）', () => {
     for (const f of ['wenkai-sub.woff2', 'huninn-sub.woff2', '字型授權.txt']) expect(FONTS, f).toContain(f);
   });
   it('狀態列、遊戲畫面、觸控按鈕都吃同一個字型設定（不再各自寫死微軟正黑體）', () => {
-    for (const f of ['../src/render.ts', '../src/game.ts']) expect(SRC[f], f).toContain("import { FONT } from './fonts'");
+    for (const f of ['../src/render.ts', '../src/game.ts']) expect(SRC[f], f).toMatch(/import \{ FONT\b[^}]*\} from '\.\/fonts'/);
     expect(SRC['../src/touch.ts']).toContain('var(--qq-font');
   });
 });
